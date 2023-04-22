@@ -4,10 +4,9 @@ Authors: Patrick Farley and Hans-Joachim Edert
 
 In this blog, we will provide some basic technical information about SAS, as well as a reference architecture for SAS Viya on Red Hat OpenShift.
 
-## SAS Viya on OpenShift Reference Architecture
 This reference architecture will show how SAS Viya is containerized to run with Kubernetes on the Red Hat OpenShift Container Platform. As SAS rolled out Viya for Kubernetes, they made a specific design decision to take advantage of core services provided by that specific Kubernetes distribution. For example, on Azure AKS, SAS takes advantage of Active Directory for RBAC controls and Azure Security Vault for key management, among other things. SAS followed the same pattern when moving to AWS EKS and Google GKE. For OpenShift deployments, SAS takes advantage of the OpenShift Ingress Operator, cert manager, OpenShift GitOps for deployment. They also take advantage of OpenShift Routes and SCCs (Security Context Constraints) as part of their deployments.  
 
-## SAS Viya on OpenShift Product Architecture Overview
+## SAS Viya on OpenShift Reference Architecture
 SAS Viya is a platform for Analytics. Moving SAS Viya to OpenShift gives Viya unprecedented scalability that was unavailable in the legacy product. SAS takes advantage of the scalability by breaking Viya down into different workload types and then assigning each workload to a class of nodes. This ensures that the proper resources are available to specific workloads.
 
 <img width="1089" alt="image" src="https://user-images.githubusercontent.com/48925593/233742961-78c57b46-be7d-4843-8511-5fcc5799b7c9.png">
@@ -15,11 +14,14 @@ SAS Viya is a platform for Analytics. Moving SAS Viya to OpenShift gives Viya un
 _Figure 1_
 
 In the current iteration of SAS Viya on OpenShift, SAS only supports VMware vSphere as the deployment platform. At the time of this document, BareMetal is on the roadmap as an alternative for on-prem deployments. This is not a statement of will or will not work. It is what SAS has tested and is willing to support.  
+
 Although SAS Viya on OpenShift is currently fully supported only on VMware vSphere, it is possible to deploy it on different infrastructure providers, such as Azure, AWS and BareMetal under the [“SAS Support for Alternative Kubernetes Distributions”](https://support.sas.com/en/technical-support/services-policies.html#k8s) policy.
+
 
 
 ## Core Platform
 VMware vSphere 7.0.1 is the virtual machine platform that is currently supported. The details of VMware configuration will not be covered in this document with the assumption that VMware vSphere is well known in most environments. There are discussions about other platforms like Nutanix and others. However, this is only a roadmap topic for now. 
+
 On top of VMware vSphere 7.0.1 is Red Hat OpenShift 4.10 - 4.12. The specific OpenShift requirements to support SAS Viya deployment, are:
 
 - **OpenShift Ingress Operator**
@@ -81,6 +83,7 @@ This node pool is where system and connection services will be deployed. This is
 
 ### OpenShift Monitoring and Logging (Default Node Pool) 
 This is the node pool set up for non-SAS workloads. When customers have external applications that need to connect to SAS Compute or CAS services, this is where the application can run. Also, any non-tainted pod will run in this node pool. Other services such as monitoring and logging services will run in this node pool such as Grafana, Prometheus Kibana, Elasticsearch, etc. 
+
 
 
 ## SAS Viya on OpenShift Deployment
