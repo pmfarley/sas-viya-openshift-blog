@@ -110,7 +110,7 @@ The SAS Viya Deployment Operator provides an automated method for deploying and 
 
 **Note:** SAS recommends using only one mode of operator in a cluster. When a new SASDeployment is created or an existing SASDeployment is updated, the operator updates the SAS Viya deployment to match the state that is described in the CR. The operator determines the release of SAS Viya that it is working with. It also uses the appropriately versioned tools for that release while deploying and updating the SAS Viya software. Thus, a single instance of the operator can manage all SAS Viya deployments in the cluster.
 
-The SAS Viya Deployment Operator requires updates occasionally but not at the same frequency as SAS Viya. Although there is a manual way to deploy SAS Viya, it HIGHLY recommended that deployments use the deployment operator. For specific information about using the deployment operator please follow instructions found in the [SAS documentation](https://documentation.sas.com/doc/en/itopscdc/v_024/itopscon/n1ob03chiyninhn19sm1ssfgss7w.htm#p0txgh8kivjna6n1jzl6zsts0vep).
+The SAS Viya Deployment Operator requires updates occasionally but not at the same frequency as SAS Viya. Although there is a manual way to deploy SAS Viya, it HIGHLY recommended that deployments use the deployment operator. For specific information about using the deployment operator please follow instructions found in the [SAS documentation](https://documentation.sas.com/doc/en/itopscdc/v_039/itopscon/n1ob03chiyninhn19sm1ssfgss7w.htm).
 
 
 
