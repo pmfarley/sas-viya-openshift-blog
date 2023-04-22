@@ -24,23 +24,23 @@ On top of VMware vSphere 7.0.1 is Red Hat OpenShift 4.10 - 4.12. The specific Op
 
 - **OpenShift Ingress Operator**
 
-SAS has specific requirements for forwarding cookies during transaction execution. As such, they used special techniques using the HA-Proxy to make that happen. So, in this iteration only the OpenShift Ingress Operator is supported. 
+   SAS has specific requirements for forwarding cookies during transaction execution. As such, they used special techniques using the HA-Proxy to make that happen. So, in this iteration only the OpenShift Ingress Operator is supported. 
 
 - **cert-utils-operator**
 
-SAS requires the use of this operator to manage certificates for TLS support and create keystores.
+   SAS requires the use of this operator to manage certificates for TLS support and create keystores.
 
 - **cert-manager**
 
-SAS relies on cert-manager to generate certificates for TLS. However, they do support OpenSSL-based cert managers as well. 
+   SAS relies on cert-manager to generate certificates for TLS. However, they do support OpenSSL-based cert managers as well. 
 
 - **Security Context Constraints (SCCs)**
 
-SAS makes use of SCCs with OpenShift. They require multiple custom SCCs to support SAS Viya Services. The SAS documentation provides important information about the required SCCs, which helps to understand their use in your environment and to address any concerns. 
+   SAS makes use of SCCs with OpenShift. They require multiple custom SCCs to support SAS Viya Services. The SAS documentation provides important information about the required SCCs, which helps to understand their use in your environment and to address any concerns. 
 
 - **OpenShift Routes**
 
-SAS prefers the use of native features with the environments with their products, so they take advantage of OpenShift routes. During deployment, yaml setting changes for the cluster ingress controller are provided to apply the proper configuration for OpenShift Routes. 
+   SAS prefers the use of native features with the environments with their products, so they take advantage of OpenShift routes. During deployment, yaml setting changes for the cluster ingress controller are provided to apply the proper configuration for OpenShift Routes. 
 
 
 ## SAS Viya Components
