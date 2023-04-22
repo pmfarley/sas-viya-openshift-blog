@@ -20,7 +20,7 @@ Although SAS Viya on OpenShift is currently fully supported only on VMware vSphe
 
 
 ## Core Platform
-VMware vSphere 7.0.1 is the virtual machine platform that is currently supported. The details of VMware configuration will not be covered in this document with the assumption that VMware vSphere is well known in most environments. There are discussions about other platforms like Nutanix and others. However, this is only a roadmap topic for now. 
+VMware vSphere 7.0.1 is the virtual machine platform that is currently supported. The details of VMware configuration will not be covered in this document with the assumption that VMware vSphere is well known in most environments. 
 
 On top of VMware vSphere 7.0.1 is Red Hat OpenShift 4.10 - 4.12. The specific OpenShift requirements to support SAS Viya deployment, are:
 
@@ -38,7 +38,8 @@ On top of VMware vSphere 7.0.1 is Red Hat OpenShift 4.10 - 4.12. The specific Op
 
 - **Security Context Constraints (SCCs)**
 
-   SAS makes use of SCCs with OpenShift. They require multiple custom SCCs to support SAS Viya Services. The SAS documentation provides important information about the required SCCs, which helps to understand their use in your environment and to address any concerns. 
+   SAS makes use of SCCs with OpenShift. They require multiple custom SCCs to support SAS Viya Services. The SAS documentation provides information about the required SCCs, which helps to understand their use in your environment and to address any concerns. 
+   **Note:** For additional details about SCC types, see [SCCs and Pod Service Accounts](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0bqwd5t5y2va7n1u9xb57lfa9wx.htm#p1qz3rq1f758xkn1pctnlw7c3kn6) in _System Requirements for the SAS Viya Platform_.
 
 - **OpenShift Routes**
 
