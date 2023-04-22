@@ -2,9 +2,11 @@
 # SAS Viya on Red Hat OpenShift 
 Authors: Patrick Farley and Hans-Joachim Edert
 
-In this blog, we will provide some basic technical information about SAS, as well as a reference architecture for SAS Viya on Red Hat OpenShift.
+In this blog, we will provide some basic technical information about SAS Viya, as well as a reference architecture for SAS Viya on Red Hat OpenShift Container Platform. This reference architecture will show how SAS Viya is containerized to run with Kubernetes on Red Hat OpenShift. 
 
-This reference architecture will show how SAS Viya is containerized to run with Kubernetes on the Red Hat OpenShift Container Platform. As SAS rolled out Viya for Kubernetes, they made a specific design decision to take advantage of core services provided by that specific Kubernetes distribution. For example, on Azure AKS, SAS takes advantage of Active Directory for RBAC controls and Azure Security Vault for key management, among other things. SAS followed the same pattern when moving to AWS EKS and Google GKE. For OpenShift deployments, SAS takes advantage of the OpenShift Ingress Operator, cert manager, OpenShift GitOps for deployment. They also take advantage of OpenShift Routes and SCCs (Security Context Constraints) as part of their deployments.  
+As SAS rolled out Viya for Kubernetes, they made a specific design decision to take advantage of core services provided by a specific Kubernetes distribution. For example, on Azure AKS, SAS takes advantage of Active Directory for RBAC controls and Azure Security Vault for key management, among other things. SAS followed the same pattern when moving to AWS EKS and Google GKE. 
+
+For Red Hat OpenShift deployments, SAS takes advantage of the OpenShift Ingress Operator, cert manager, OpenShift GitOps for deployment, and they also take advantage of OpenShift Routes and SCCs (Security Context Constraints) as part of their deployments.  
 
 ## SAS Viya on OpenShift Reference Architecture
 SAS Viya is a platform for Analytics. Moving SAS Viya to OpenShift gives Viya unprecedented scalability that was unavailable in the legacy product. SAS takes advantage of the scalability by breaking Viya down into different workload types and then assigning each workload to a class of nodes. This ensures that the proper resources are available to specific workloads.
