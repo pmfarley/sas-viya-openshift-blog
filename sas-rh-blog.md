@@ -113,5 +113,5 @@ The SAS Viya Deployment Operator provides an automated method for deploying and 
 The SAS Viya Deployment Operator requires updates occasionally but not at the same frequency as SAS Viya. Although there is a manual way to deploy SAS Viya, it HIGHLY recommended that deployments use the deployment operator. For specific information about using the deployment operator please follow instructions found in the [SAS documentation](https://documentation.sas.com/doc/en/itopscdc/v_024/itopscon/n1ob03chiyninhn19sm1ssfgss7w.htm#p0txgh8kivjna6n1jzl6zsts0vep).
 
 
-Learn more about RHODS to see what Red Hat can do for you, please visit [this page](https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-data-science). Want a more hands-on experience? Try out our other [Learning Paths](developers.redhat.com/learn/openshift-data-science) using the RHODS Sandbox or in your own cluster.
+
 
