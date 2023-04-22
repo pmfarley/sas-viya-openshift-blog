@@ -119,7 +119,7 @@ The SAS Viya Deployment Operator requires updates occasionally but not at the sa
 ### OpenShift GitOps
 OpenShift Pipelines and OpenShift GitOps are two components of the Red Hat OpenShift Container Platform (OCP) that provide a turnkey CI/CD automation solution for  continuous integration (CI) and continuous delivery (CD) tasks. They are based on the Tekton and ArgoCD open-source projects.
 
-A SAS Viya deployment can utilize OpenShift GitOps to monitor a Git repository for changes to the CR manifest and automatically sync its’ contents to the cluster.  Pushing the CR manifest to the Git repository will trigger a sync with OpenShift GitOps. The CR will be deployed to Kubernetes, which in turn triggers the Operator and the deployment to start.
+OpenShift GitOps can be used to provide additional automation for a SAS Viya deployment; monitoring a Git repository for changes to the CR manifest and automatically syncing its’ contents to the cluster.  Pushing the CR manifest to the Git repository triggers a sync with OpenShift GitOps. The CR will be deployed to Kubernetes, which in turn triggers the Operator and the deployment to start.
 
 
 
