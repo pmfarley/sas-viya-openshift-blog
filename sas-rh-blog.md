@@ -40,7 +40,7 @@ On top of VMware vSphere 7.0.1 is Red Hat OpenShift 4.10 - 4.12. The specific Op
 
 - **Security Context Constraints (SCCs)**
 
-   SAS makes use of SCCs with OpenShift. They require multiple custom SCCs to support SAS Viya Services. The SAS documentation provides information about the required SCCs, which helps to understand their use in your environment and to address any concerns. 
+    SAS requires multiple custom SCCs to support SAS Viya Services with OpenShift. The SAS documentation provides information about the required SCCs to help  understand their use in your environment and to address any security concerns. 
    
    For more information, see [Security Context Constraints and Service Accounts](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p1h8it1wdu2iaxn1bkd8anfcuxny.htm#p09z7ivwp61280n1jezh6i6qmoml) in _SAS Viya Platform: Deployment Guide_.
    
