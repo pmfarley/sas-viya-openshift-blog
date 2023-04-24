@@ -17,7 +17,7 @@ _Figure 1_
 
 In the current iteration of SAS Viya on OpenShift, SAS only supports VMware vSphere as the deployment platform. At the time of this document, BareMetal is on the roadmap as an alternative for on-prem deployments. This is not a statement of will or will not work. It is what SAS has tested and is willing to support.  
 
-Although SAS Viya on OpenShift is currently fully supported only on VMware vSphere, it is possible to deploy it on different infrastructure providers, such as Azure, AWS and BareMetal under the [“SAS Support for Alternative Kubernetes Distributions”](https://support.sas.com/en/technical-support/services-policies.html#k8s) policy.
+Although SAS Viya on OpenShift is currently fully supported only on VMware vSphere, it is possible to deploy it on different infrastructure providers, such as Azure, AWS, Google and on BareMetal under the [“SAS Support for Alternative Kubernetes Distributions”](https://support.sas.com/en/technical-support/services-policies.html#k8s) policy.
 
 
 
