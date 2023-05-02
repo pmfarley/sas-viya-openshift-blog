@@ -21,6 +21,8 @@ SAS Viya is an integrated platform that covers the entire AI and Analytics lifec
 
 Moving SAS Viya to OpenShift gives Viya unprecedented scalability that was unavailable in previous SAS releases. SAS takes advantage of the scalability by breaking Viya down into different workload types and recommends assigning each workload to a class of nodes, i.e., to a Machine Pool. This ensures that the proper resources are available to specific workloads. The following diagram shows the separation of workloads to pools.
 
+![image](https://user-images.githubusercontent.com/48925593/235716577-0ff2874b-3b9f-4404-b5e4-82961a4f6904.png)
+
 <img width="1089" alt="image" src="https://user-images.githubusercontent.com/48925593/233742961-78c57b46-be7d-4843-8511-5fcc5799b7c9.png">
 
 _Figure 1_
