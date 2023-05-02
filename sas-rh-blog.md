@@ -1,54 +1,66 @@
 
 # SAS Viya on Red Hat OpenShift 
-Authors: Patrick Farley and Hans-Joachim Edert
+_Authors: Patrick Farley and Hans-Joachim Edert_
 
-In this blog, we will provide some basic technical information about SAS Viya, as well as a reference architecture for SAS Viya on Red Hat OpenShift Container Platform. This reference architecture will show how SAS Viya is containerized to run with Kubernetes on Red Hat OpenShift. 
+In this blog, we will provide some basic technical information about SAS Viya, as well as a reference architecture for SAS Viya on Red Hat OpenShift Container Platform (OCP). This reference architecture will show how SAS Viya is containerized to run with Kubernetes on Red Hat OpenShift.
 
-As SAS rolled out Viya for Kubernetes, they made a specific design decision to take advantage of core services provided by a specific Kubernetes distribution. For example, on Azure AKS, SAS takes advantage of Active Directory for RBAC controls and Azure Security Vault for key management, among other things. SAS followed the same pattern when moving to AWS EKS and Google GKE. 
+A few introductory words before we get into the technical details.
 
-For Red Hat OpenShift deployments, SAS takes advantage of the OpenShift Ingress Operator, cert manager, OpenShift GitOps for deployment, and they also take advantage of OpenShift Routes and SCCs (Security Context Constraints) as part of their deployments.  
+Since the launch of SAS Viya in 2020, SAS has offered a fully containerized analytic platform based on a cloud-native architecture. Due to the scale of the platform, SAS Viya requires Kubernetes as an underlying runtime environment and takes full advantage of the native benefits of this technology.  
+
+SAS supports numerous Kubernetes distributions, both in the public and private cloud. In fact, many SAS customers - partly due to specific use cases that do not allow otherwise from a regulatory perspective, but also due to strategic considerations - prefer to run their application infrastructure in a private cloud environment. 
+
+In these cases, Red Hat OpenShift provides an optimal foundation for the SAS software stack. OpenShift offers both a hardened Kubernetes with many highly valued enterprise features as an execution platform, but also comes with an extensive ecosystem with a particular focus on supporting DevSecOps capabilities.
+
+SAS and Red Hat have enjoyed a productive partnership for more than a decade - while Red Hat Enterprise Linux was the preferred operating system in earlier SAS releases, today SAS has based their container images on the Red Hat Universal Base Image.
+
+Moreover, for Red Hat OpenShift deployments, SAS takes advantage of the OpenShift Ingress Operator, the cert-utils operator, OpenShift GitOps for deployment (optionally), and integrates into OpenShift’s security approach which is based on SCCs (Security Context Constraints) as part of their deployments.
 
 ## SAS Viya on OpenShift Reference Architecture
-SAS Viya is a platform for Analytics. Moving SAS Viya to OpenShift gives Viya unprecedented scalability that was unavailable in the legacy product. SAS takes advantage of the scalability by breaking Viya down into different workload types and then assigning each workload to a class of nodes. This ensures that the proper resources are available to specific workloads.
+SAS Viya is an integrated platform that covers the entire AI and Analytics lifecycle. Thus, it is not just a single application, but a suite of integrated applications. One of the fundamental differences here is the nature of the workload that SAS Viya brings to the OpenShift platform. This affects the need for resources (CPU, memory, storage) and entails special security-specific requirements.
+
+Moving SAS Viya to OpenShift gives Viya unprecedented scalability that was unavailable in previous SAS releases. SAS takes advantage of the scalability by breaking Viya down into different workload types and recommends assigning each workload to a class of nodes, i.e., to a Machine Pool. This ensures that the proper resources are available to specific workloads. The following diagram shows the separation of workloads to pools.
 
 <img width="1089" alt="image" src="https://user-images.githubusercontent.com/48925593/233742961-78c57b46-be7d-4843-8511-5fcc5799b7c9.png">
 
 _Figure 1_
 
-In the current iteration of SAS Viya on OpenShift, SAS only supports VMware vSphere as the deployment platform. At the time of this document, BareMetal is on the roadmap as an alternative for on-prem deployments. This is not a statement of will or will not work. It is what SAS has tested and is willing to support.  
+Note that the setup of pools is not mandatory and there might be good reasons to ignore the recommendation if the existing cluster infrastructure is not suitable for such a split. The placement of SAS workload classes can be enabled by applying predefined Kubernetes node labels and node taints.
 
-Although SAS Viya on OpenShift is currently fully supported only on VMware vSphere, it is possible to deploy it on different infrastructure providers, such as Azure, AWS, Google and on BareMetal under the [“SAS Support for Alternative Kubernetes Distributions”](https://support.sas.com/en/technical-support/services-policies.html#k8s) policy.
+In the current iteration of SAS Viya on OpenShift, SAS only supports VMware vSphere as the deployment platform. At the time of this document, BareMetal is on the roadmap as an alternative for on-premise deployments.  When deployed on a different infrastructure provider, such as Azure, AWS, Google or BareMetal, SAS Viya runs under the [“SAS Support for Alternative Kubernetes Distributions”](https://support.sas.com/en/technical-support/services-policies.html#k8s) policy.
 
 
 
 ## Core Platform
 VMware vSphere 7.0.1 is the virtual machine platform that is currently supported. The details of VMware configuration will not be covered in this document with the assumption that VMware vSphere is well known in most environments. 
 
-On top of VMware vSphere 7.0.1 is Red Hat OpenShift 4.10 - 4.12. The specific OpenShift requirements to support SAS Viya deployment, are:
+At the time this blog was written, Red Hat OpenShift versions 4.10 - 4.12 are supported for SAS Viya. Additional details are provided later within this document; for some of the specific OpenShift components that support SAS Viya deployment; but they are provided here, at a high-level:
 
 - **OpenShift Ingress Operator**
 
    SAS has specific requirements for forwarding cookies during transaction execution. As such, they used special techniques using the HA-Proxy to make that happen. So, in this iteration only the OpenShift Ingress Operator is supported. 
 
-- **cert-utils-operator**
+- **OpenShift Ingress Operator**
 
-   SAS requires the use of this operator to manage certificates for TLS support and create keystores.
-
-- **cert-manager**
-
-   SAS relies on cert-manager to generate certificates for TLS. However, they do support OpenSSL-based cert managers as well. 
-
-- **Security Context Constraints (SCCs)**
-
-    SAS requires multiple custom SCCs to support SAS Viya Services with OpenShift. The SAS documentation provides information about the required SCCs to help  understand their use in your environment and to address any security concerns. 
-   
-   For more information, see [Security Context Constraints and Service Accounts](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p1h8it1wdu2iaxn1bkd8anfcuxny.htm#p09z7ivwp61280n1jezh6i6qmoml) in _SAS Viya Platform: Deployment Guide_.
-   
-   **Note:** For additional details about SCC types, see [SCCs and Pod Service Accounts](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0bqwd5t5y2va7n1u9xb57lfa9wx.htm#p1qz3rq1f758xkn1pctnlw7c3kn6) in _System Requirements for the SAS Viya Platform_.
+   SAS has specific requirements for forwarding cookies during transaction execution. As such, they used special techniques using the HAProxy to make that happen. So, in this iteration only the OpenShift Ingress Operator is supported. 
 
 - **OpenShift Routes**
 
-   SAS prefers the use of native features with the environments with their products, so they take advantage of OpenShift routes. During deployment, yaml setting changes for the cluster ingress controller are provided to apply the proper configuration for OpenShift Routes. 
+   SAS prefers the use of native features with the environments with their products, so they take advantage of OpenShift routes. 
+
+- **cert-utils-operator**
+
+   SAS requires the use of this operator to manage certificates for TLS support and create keystores. 
+   
+- **cert-manager**
+
+   SAS Viya supports two different certificate generators, which are used for enforcing full-stack TLS. The default generator uses OpenSSL and is supplied out-of-the-box by SAS. Alternatively, you can optionally deploy and use cert-manager to generate the certificates used to encrypt the pod-to-pod communication.  
+   
+   
+- **Security Context Constraints**
+   
+   Security Context Constraints (SCCs) provide permissions to pods and are required to allow them to run. SAS requires multiple custom SCCs to support SAS Viya Services with OpenShift. The SAS documentation provides information about the required SCCs to help understand their use in your environment and to address any security concerns.  Further details about the required custom SCCs are provided later within this document.
+   
 
 
 ## SAS Viya Components
