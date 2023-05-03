@@ -102,11 +102,11 @@ Note that the final manifest contains objects which require elevated privileges 
 #### SAS Deployment Operator
 SAS provides an operator for deploying and updating SAS Viya. The SAS Deployment Operator is not (yet) a certified operator so it will not be found in the OperatorHub or in the Red Hat Marketplace.
 
-The SAS Viya Deployment Operator provides an automated method for deploying and updating the SAS Viya environments. It runs in the OpenShift cluster and watches for declarative representations of SAS Viya deployments in the form of custom resources (CRs) of the type SASDeployment. The operator can watch for SASDeployments in the namespace where it is deployed (namespace mode) or in all of the namespaces in a cluster (cluster-wide mode). In namespace mode the deployment operator and the SAS Viya deployment are located within the same namespace, while cluster-wide mode locates them within different namespaces.
+The SAS Viya Deployment Operator provides an automated method for deploying and updating the SAS Viya environments. It runs in the OpenShift cluster and watches for declarative representations of SAS Viya deployments in the form of custom resources (CRs) of the type `SASDeployment`. The operator can watch for `SASDeployments` in the namespace where it is deployed (namespace mode) or in all of the namespaces in a cluster (cluster-wide mode). In namespace mode the deployment operator and the SAS Viya deployment are located within the same namespace, while cluster-wide mode locates them within different namespaces.
 
 **Note**: SAS recommends using only one mode of the SAS deployment operator in a cluster. 
 
-When a new SASDeployment CR is created or an existing CR is updated, the Deployment Operator performs an initial deployment or updates an existing deployment to match the state that is described in the CR. The operator determines the release of SAS Viya that it is working with, and uses the appropriately versioned tools for that release while deploying and updating the SAS Viya platform software. Thus, a single instance of the operator can manage all SAS Viya deployments in the cluster.
+When a new `SASDeployment` CR is created or an existing CR is updated, the Deployment Operator performs an initial deployment or updates an existing deployment to match the state that is described in the CR. The operator determines the release of SAS Viya that it is working with, and uses the appropriately versioned tools for that release while deploying and updating the SAS Viya platform software. Thus, a single instance of the operator can manage all SAS Viya deployments in the cluster.
 
 SAS highly recommends using the SAS Viya Deployment Operator. The instructions can be found in Deploy the SAS Viya Deployment Operator.
 
