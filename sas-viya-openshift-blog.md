@@ -262,3 +262,22 @@ The nonroot SCC is a standard SCC defined by OpenShift. For more information abo
    ```oc -n name-of-namespace adm policy add-scc-to-user nonroot -z sas-esp-project```
 
  
+#### sas-microanalytic-score 
+
+To determine if the `sas-microanalytic-score` SCC is needed for your deployment, check for a README file in your deployment assets at `$deploy/sas-bases/overlays/sas-microanalytic-score/service-account/README.md`. If the README file is present, then the SCC is available for deployments on OpenShift. 
+
+_**Why the SCC is needed:**_  
+
+Security context constraints are required in an OpenShift cluster if the `sas-micro-analytic-score` pod needs to mount an NFS volume. If the Python environment is made available through an NFS mount, the service account requires NFS volume mounting privileges. 
+
+For more information, see the README file at `$deploy/sas-bases/overlays/sas-microanalytic-score/service-account/README.md` (for Markdown format) or at `$deploy/sas-bases/docs/configure_sas_micro_analytic_service_to_add_service_account.htm` (for HTML format). 
+
+1. Apply the SCC with the following command: 
+
+   ```oc apply -f sas-bases/overlays/sas-microanalytic-score/service-account/sas-microanalytic-score-scc.yaml```
+
+2. Bind the SCC to the service account with the following command: 
+
+   ```oc -n name-of-namespace adm policy add-scc-to-user sas-microanalytic-score -z sas-microanalytic-score```
+   
+   
