@@ -350,11 +350,11 @@ Perform the following steps; refer to [Adding kernel arguments to nodes](https:/
    kind: MachineConfig 
    metadata: 
      labels: 
-     machineconfiguration.openshift.io/role: worker 
-  name: 05-worker-kernelarg-vmmaxmapcount 
-spec: 
-  kernelArguments: 
-    - vm.max_map_count=262144 
+       machineconfiguration.openshift.io/role: worker
+     name: 05-worker-kernelarg-vmmaxmapcount 
+   spec: 
+     kernelArguments: 
+       - vm.max_map_count=262144```
 
 3. Create the new machine config: 
 
@@ -396,7 +396,7 @@ spec:
 
 #### sas-watchdog-scc 
 
-SAS Watchdog is included in every SAS Viya platform deployment. If you choose to deploy SAS Watchdog, the SCC is required. For more information, see the README file at $deploy/sas-bases/overlays/sas-programming-environment/watchdog/README.md (for Markdown format) or at $deploy/sas-bases/docs/configuring_sas_compute_server_to_use_sas_watchdog.htm (for HTML format). 
+SAS Watchdog is included in every SAS Viya platform deployment. If you choose to deploy SAS Watchdog, the SCC is required. For more information, see the README file at `$deploy/sas-bases/overlays/sas-programming-environment/watchdog/README.md` (for Markdown format) or at `$deploy/sas-bases/docs/configuring_sas_compute_server_to_use_sas_watchdog.htm` (for HTML format). 
 
 _**Why the SCC is needed:**_
 
@@ -412,11 +412,11 @@ _**Why the SCC is needed:**_
 
    Alternatively, you can bind the `hostmount-anyuid` or `anyuid` SCC to the `sas-programming-environment` service account. If you have already bound the SAS Watchdog service account as described above, you cannot bind it again. 
 
-Bind the hostmount-anyuid or anyuid SCC to the sas-programming-environment service account using this command: 
+3. Bind the hostmount-anyuid or anyuid SCC to the sas-programming-environment service account using this command: 
 
-oc -n name-of-namespace adm policy add-scc-to-user hostmount-anyuid -z sas-programming-environment 
+   ```oc -n name-of-namespace adm policy add-scc-to-user hostmount-anyuid -z sas-programming-environment```
 
-Using the anyuid SCC is preferred. Using the `hostmount-anyuid` SCC is only required if you use hostPath mounts. 
+Using the `anyuid` SCC is preferred. Using the `hostmount-anyuid` SCC is only required if you use hostPath mounts. 
 
 **Note**: The `hostmount-anyuid` and `anyuid` SCCs are standard SCCs defined by OpenShift. For more information, see [Managing SCCS in OpenShift](https://cloud.redhat.com/blog/managing-sccs-in-openshift). 
 
