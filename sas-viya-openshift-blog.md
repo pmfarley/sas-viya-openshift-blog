@@ -1,6 +1,8 @@
 
 # SAS Viya on Red Hat OpenShift 
-_May 19, 2023 | by Patrick Farley and Hans-Joachim Edert_
+**TARGET DATE:** _May 19, 2023 | by Patrick Farley and Hans-Joachim Edert_
+
+**<div align="center">DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY</div>**   
 
 **_<div align="center">This blog was written by Patrick Farley, Associate Principal Solutions Architect (Red Hat) </div>_**
 **_<div align="center">and Hans-Joachim Edert, Advisory Business Solutions Manager (SAS Institute) </div>_**
@@ -132,20 +134,20 @@ CAS can be deployed in one of two modes:  _SMP (Symmetric Multi Processing)_, an
 
 These two modes allow an administrator a lot of freedom to configure CAS in a way that helps the users. A user might want to bring up a CAS in SMP mode on a laptop to work on an application that will eventually be deployed onto a large MPP cluster. 
 
-### SAS Microservices and Web Applications (Stateless NODE POOL) 
-SAS Viya has many services often referred to as microservices. These services are found in the stateless node pool. They consist of several services such as auditing, authentication, etc. Also, grouped with these services are a set of stateless web applications that support the SAS Viya deployment. Some of the web apps that run as part of the stateless node pool are things like SAS Data Studio, SAS Model Manager and SAS Data Explorer.
+### OpenShift Routes (CONNECT NODE POOL)
+This node pool is where system and connection services will be deployed. This is how external processes access internal SAS services. The OpenShift Ingress services runs in this node pool along with SAS Connect services. SAS Connect allows other SAS Viya deployments including legacy deployments such as SAS Viya 9 or Viya 3.5 to submit jobs into the SAS Viya OpenShift deployment. This is a great method of migration. The migration can begin by having the old jobs submitting to the new platform. 
 
 ### SAS Compute Services (COMPUTE NODE POOL) 
 SAS Compute Services are a set of SAS Viya microservices that provide API endpoints for requesting a SAS Compute Server session. The compute service also provides API endpoints for creating and managing compute contexts, which are specifications that hold all the information that is needed to run a compute server. 
 
+### OpenShift Monitoring and Logging (DEFAULT NODE POOL) 
+This is the node pool set up for non-SAS workloads. When customers have external applications that need to connect to SAS Compute or CAS services, this is where the application can run. Also, any non-tainted pod will run in this node pool. Other services such as monitoring and logging services will run in this node pool such as Grafana, Prometheus Kibana, Elasticsearch, etc. 
+
 ### Infrastructure Services (STATEFUL NODE POOL) 
 The commodity services are basically the data management and storage services. They are made of several open-source technologies such as the internal SAS Postgres database, as well as Consul and RabbitMQ for messaging. This is where the critical operational data is stored. These services are I/O intensive. 
 
-### OpenShift Routes (SYSTEM or CONNECT NODE POOL)
-This node pool is where system and connection services will be deployed. This is how external processes access internal SAS services. The OpenShift Ingress services runs in this node pool along with SAS Connect services. SAS Connect allows other SAS Viya deployments including legacy deployments such as SAS Viya 9 or Viya 3.5 to submit jobs into the SAS Viya OpenShift deployment. This is a great method of migration. The migration can begin by having the old jobs submitting to the new platform. 
-
-### OpenShift Monitoring and Logging (DEFAULT NODE POOL) 
-This is the node pool set up for non-SAS workloads. When customers have external applications that need to connect to SAS Compute or CAS services, this is where the application can run. Also, any non-tainted pod will run in this node pool. Other services such as monitoring and logging services will run in this node pool such as Grafana, Prometheus Kibana, Elasticsearch, etc. 
+### SAS Microservices and Web Applications (Stateless NODE POOL) 
+SAS Viya has many services often referred to as microservices. These services are found in the stateless node pool. They consist of several services such as auditing, authentication, etc. Also, grouped with these services are a set of stateless web applications that support the SAS Viya deployment. Some of the web apps that run as part of the stateless node pool are things like SAS Data Studio, SAS Model Manager and SAS Data Explorer.
 
 
 
