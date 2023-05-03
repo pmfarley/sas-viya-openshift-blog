@@ -23,7 +23,7 @@ Moving SAS Viya to OpenShift gives Viya unprecedented scalability that was unava
 
 <img width="1089" alt="image" src="https://user-images.githubusercontent.com/48925593/235716577-0ff2874b-3b9f-4404-b5e4-82961a4f6904.png">
 
-`_Figure 1_`
+_<div align="center">Figure 1</div>_
 
 Note that the setup of pools is not mandatory and there might be good reasons to ignore the recommendation if the existing cluster infrastructure is not suitable for such a split. The placement of SAS workload classes can be enabled by applying predefined Kubernetes node labels and node taints.
 
@@ -61,6 +61,24 @@ At the time this blog was written, Red Hat OpenShift versions 4.10 - 4.12 are su
    
    Security Context Constraints (SCCs) provide permissions to pods and are required to allow them to run. SAS requires multiple custom SCCs to support SAS Viya Services with OpenShift. The SAS documentation provides information about the required SCCs to help understand their use in your environment and to address any security concerns.  Further details about the required custom SCCs are provided later within this document.
    
+
+
+### Deployment options – Red Hat OpenShift
+
+There are various methods for [installing Red Hat OpenShift Container Platform on VMware vSphere](https://docs.openshift.com/container-platform/4.12/installing/installing_vsphere/preparing-to-install-on-vsphere.html),  including:
+
+- _Installer-provisioned infrastructure_ (IPI) installation, which allows the installation program to pre-configure and automate the provisioning of the required resources.
+- The [_Assisted Installer_](https://docs.openshift.com/container-platform/4.12/installing/installing_on_prem_assisted/installing-on-prem-assisted.html), which provides a user-friendly installation solution offered directly from the [Red Hat Hybrid Cloud Console](https://console.redhat.com/openshift/assisted-installer/clusters/~new).
+- _User-provisioned infrastructure_ (UPI) installation, which provides a manual type of installation with the most control over the installation and configuration process.
+
+An IPI installation results in an OCP cluster with the vSphere cloud provider configuration settings from the installation, which enables additional automation and dynamic provisioning after installation:
+- [Persistent storage using the VMware CSI or in-tree driver operator](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html).
+- [Host Node management for Node pools using MachineSets](https://docs.openshift.com/container-platform/4.12/machine_management/index.html).
+- [Autoscaling Nodes using the MachineAutoScaler and ClusterAutoScaler operators](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html). 
+
+Information about configuring these capabilities is supplied later within this document.
+
+An [OCP installation on VMware vSphere](https://docs.openshift.com/container-platform/4.12/installing/installing_vsphere/preparing-to-install-on-vsphere.html) using the UPI or Assisted Installer methods can also be set up [post-installation with the vSphere cloud provider configuration](https://access.redhat.com/documentation/en-us/assisted_installer_for_openshift_container_platform/2022/html-single/assisted_installer_for_openshift_container_platform/index#vsphere-post-installation-configuration_installing-on-vsphere), to provide similar automation and dynamic provisioning capability as an IPI installation. This is out of the scope of this blog.
 
 
 ## SAS Viya Components
