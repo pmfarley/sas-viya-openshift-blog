@@ -373,12 +373,12 @@ Perform the following steps; refer to [Adding kernel arguments to nodes](https:/
 6. Check that the kernel argument worked by going to one of the worker nodes and verifying with the sysctl command or by listing the kernel command line arguments (in /proc/cmdline on the host): 
 
    ```oc debug node/vsphere-k685x-worker-4kdtl```
-
+   
    ```sysctl vm.max_map_count```
-
+   
    ```exit```
-
-   Example output 
+   
+   **Example output** 
 
    ```Starting pod/vsphere-k685x-worker-4kdtl-debug ... 
    
