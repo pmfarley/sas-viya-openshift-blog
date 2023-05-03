@@ -88,9 +88,9 @@ An [OCP installation on VMware vSphere](https://docs.openshift.com/container-pla
 
 ### Deployment options – SAS Viya
 There are several approaches for deploying SAS Viya on Red Hat OpenShift, which are described in the SAS Operations Guide:
-•	Manually by running kubectl commands
-•	Using the SAS Deployment Operator
-•	Using the sas-orchestration commandline utility
+- Manually by running kubectl commands
+- Using the SAS Deployment Operator
+- Using the sas-orchestration commandline utility
 
 
 #### Manual deployment
@@ -181,5 +181,50 @@ The required and optional custom SCCs for running SAS Viya on Red Hat OpenShift 
 For more information, see [Security Context Constraints and Service Accounts](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p1h8it1wdu2iaxn1bkd8anfcuxny.htm#p09z7ivwp61280n1jezh6i6qmoml) in SAS Viya Platform: Deployment Guide.
 
 
+### Required SCCs 
 
+A deployment in OpenShift requires multiple custom SCCs to provide permissions to SAS Viya platform services. SCCs are required in order to enable the Pods to run. (Pods provide essential SAS Viya platform components.) In addition, some SCCs can be customized to meet your unique requirements. 
 
+A security context acts like a request for privileges from the OpenShift API. In an OpenShift environment, each Kubernetes Pod starts up with an association with a specific SCC, which limits the privileges that Pod can request. An administrator configures each Pod to run with a certain SCC by granting the corresponding service account for that pod access to the SCC. For example, if Pod A requires its own SCC, an administrator must grant access to that SCC for the service account under which Pod A is launched. Use the OpenShift OC administrative command-line tool to grant or remove these permissions. 
+
+**Note**: For additional details about SCC types, see [SCCs and Pod Service Accounts](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0bqwd5t5y2va7n1u9xb57lfa9wx.htm#p1qz3rq1f758xkn1pctnlw7c3kn6) in _System Requirements for the SAS Viya Platform_. 
+
+The required and optional custom SCCs for running SAS Viya on Red Hat OpenShift are listed here, along with a description and why they are needed.   
+
+For more information, see [Security Context Constraints and Service Accounts](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p1h8it1wdu2iaxn1bkd8anfcuxny.htm#p09z7ivwp61280n1jezh6i6qmoml) in _SAS Viya Platform: Deployment Guide_. 
+
+#### sas-cas-server
+
+Every deployment on OpenShift must apply one of the following SCCs for the CAS server. 
+
+_**Why the SCC is needed:**_
+
+- CAS relies on SETUID, SETGID, and CHOWN capabilities. CAS is launched by a SETUID root executable called caslaunch. By default, caslaunch starts the CAS controller running under the runAsUser/runAsGroup values and a root process named launchsvcs. Caslaunch connects these processes with a pipe.  
+
+- The SETUID and SETGID capabilities are required by launchsvcs in order to launch session processes under the user’s operating-system (host) identity instead of launching them using runAsUser/runAsGroup values.  
+
+- The CHOWN capability is necessary to support Kerberos execution, which requires modification of the ownership of the cache file that is created by a direct Kerberos connection. By default, the cache file is owned by runAsUser/runAsGroup identities, but in order to support Kerberos, it must be owned by the user’s host identity. 
+
+Therefore, at a minimum, the `cas-server-scc` SCC must be applied.  
+If the custom group "CAS Host Account Required" is used, apply the `cas-server-scc-host-launch` SCC.  
+If the CAS server is configured to use a custom SSSD, apply the `cas-server-scc-sssd` SSC. 
+
+For more information on enabling SSSD, see [Configure SSSD](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/n08u2yg8tdkb4jn18u8zsi6yfv3d.htm#n0pshy2wfr9aw0n1g9p5sbbhzyqr). 
+
+1. Apply the SCC with one of the following commands: 
+
+```oc apply -f sas-bases/examples/cas/configure/cas-server-scc.yaml```
+
+```oc apply -f sas-bases/examples/cas/configure/cas-server-scc-host-launch.yaml```
+
+```oc apply -f sas-bases/examples/cas/configure/cas-server-scc-sssd.yaml```
+
+2. Bind the SCC to the service account with the command that includes the name of the SCC that you applied: 
+
+```oc -n name-of-namespace adm policy add-scc-to-user sas-cas-server -z sas-cas-server``` 
+
+```oc -n name-of-namespace adm policy add-scc-to-user sas-cas-server-host -z sas-cas-server``` 
+
+```oc -n name-of-namespace adm policy add-scc-to-user sas-cas-server-sssd -z sas-cas-server``` 
+
+ 
