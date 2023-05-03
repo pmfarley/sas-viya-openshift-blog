@@ -21,6 +21,8 @@ SAS and Red Hat have enjoyed a productive partnership for more than a decade - w
 
 Moreover, for Red Hat OpenShift deployments, SAS takes advantage of the OpenShift Ingress Operator, the cert-utils operator, OpenShift GitOps for deployment (optionally), and integrates into OpenShift’s security approach which is based on SCCs (Security Context Constraints) as part of their deployments.
 
+<br></br>
+
 ## SAS Viya on OpenShift Reference Architecture
 SAS Viya is an integrated platform that covers the entire AI and Analytics lifecycle. Thus, it is not just a single application, but a suite of integrated applications. One of the fundamental differences here is the nature of the workload that SAS Viya brings to the OpenShift platform. This affects the need for resources (CPU, memory, storage) and entails special security-specific requirements.
 
@@ -35,6 +37,7 @@ Note that the setup of pools is not mandatory and there might be good reasons to
 In the current iteration of SAS Viya on OpenShift, SAS only supports VMware vSphere as the deployment platform. At the time of this document, BareMetal is on the roadmap as an alternative for on-premise deployments.  When deployed on a different infrastructure provider, such as Azure, AWS, Google or BareMetal, SAS Viya runs under the [“SAS Support for Alternative Kubernetes Distributions”](https://support.sas.com/en/technical-support/services-policies.html#k8s) policy.
 
 
+<br></br>
 
 ## Core Platform
 VMware vSphere 7.0.1 is the virtual machine platform that is currently supported. The details of VMware configuration will not be covered in this document with the assumption that VMware vSphere is well known in most environments. 
@@ -67,6 +70,7 @@ At the time this blog was written, Red Hat OpenShift versions 4.10 - 4.12 are su
    Security Context Constraints (SCCs) provide permissions to pods and are required to allow them to run. SAS requires multiple custom SCCs to support SAS Viya Services with OpenShift. The SAS documentation provides information about the required SCCs to help understand their use in your environment and to address any security concerns.  Further details about the required custom SCCs are provided later within this document.
    
 
+<br></br>
 
 ### Deployment options – Red Hat OpenShift
 
@@ -85,6 +89,7 @@ Information about configuring these capabilities is supplied later within this d
 
 An [OCP installation on VMware vSphere](https://docs.openshift.com/container-platform/4.12/installing/installing_vsphere/preparing-to-install-on-vsphere.html) using the UPI or Assisted Installer methods can also be set up [post-installation with the vSphere cloud provider configuration](https://access.redhat.com/documentation/en-us/assisted_installer_for_openshift_container_platform/2022/html-single/assisted_installer_for_openshift_container_platform/index#vsphere-post-installation-configuration_installing-on-vsphere), to provide similar automation and dynamic provisioning capability as an IPI installation. This is out of the scope of this blog.
 
+<br></br>
 
 ### Deployment options – SAS Viya
 There are several approaches for deploying SAS Viya on Red Hat OpenShift, which are described in the SAS Operations Guide:
@@ -119,7 +124,7 @@ OpenShift GitOps can be used to provide additional automation for a SAS Viya dep
 For additional information, see the SAS blog titled “[Deploying SAS Viya using Red Hat OpenShift GitOps](https://communities.sas.com/t5/SAS-Communities-Library/Deploying-SAS-Viya-using-Red-Hat-OpenShift-GitOps/ta-p/780616)”
 
 
-
+<br></br>
 
 ## SAS Viya Components
 
@@ -151,6 +156,7 @@ SAS Viya has many services often referred to as microservices. These services ar
 
 
 
+<br></br>
 
 ## SAS Viya on OpenShift Deployment
 
@@ -169,16 +175,7 @@ The following table summarizes cluster requirements in a Red Hat OpenShift envir
 | cert-utils-operator | This operator from the Red Hat Communities is required in order to manage certificates for TLS support and to create keystores. For more information, see [https://github.com/redhat-cop/cert-utils-operator/blob/master/README.md](https://github.com/redhat-cop/cert-utils-operator/blob/master/README.md). |
 
 
-### Required SCCs
-A deployment in OpenShift requires multiple custom SCCs to provide permissions to SAS Viya platform services. SCCs are required in order to enable the Pods to run. (Pods provide essential SAS Viya platform components.) In addition, some SCCs can be customized to meet your unique requirements.
-
-A security context acts like a request for privileges from the OpenShift API. In an OpenShift environment, each Kubernetes Pod starts up with an association with a specific SCC, which limits the privileges that Pod can request. An administrator configures each Pod to run with a certain SCC by granting the corresponding service account for that pod access to the SCC. For example, if Pod A requires its own SCC, an administrator must grant access to that SCC for the service account under which Pod A is launched. Use the OpenShift OC administrative command-line tool to grant or remove these permissions.
-
-**Note**: For additional details about SCC types, see [SCCs and Pod Service Accounts](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0bqwd5t5y2va7n1u9xb57lfa9wx.htm#p1qz3rq1f758xkn1pctnlw7c3kn6) in System Requirements for the SAS Viya Platform.
-
-The required and optional custom SCCs for running SAS Viya on Red Hat OpenShift are listed here, along with a description and why they are needed.  
-
-For more information, see [Security Context Constraints and Service Accounts](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p1h8it1wdu2iaxn1bkd8anfcuxny.htm#p09z7ivwp61280n1jezh6i6qmoml) in SAS Viya Platform: Deployment Guide.
+<br></br>
 
 
 ### Required SCCs 
@@ -192,6 +189,8 @@ A security context acts like a request for privileges from the OpenShift API. In
 The required and optional custom SCCs for running SAS Viya on Red Hat OpenShift are listed here, along with a description and why they are needed.   
 
 For more information, see [Security Context Constraints and Service Accounts](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p1h8it1wdu2iaxn1bkd8anfcuxny.htm#p09z7ivwp61280n1jezh6i6qmoml) in _SAS Viya Platform: Deployment Guide_. 
+
+<br></br>
 
 #### sas-cas-server
 
@@ -227,7 +226,7 @@ For more information on enabling SSSD, see [Configure SSSD](https://documentat
 
    ```oc -n name-of-namespace adm policy add-scc-to-user sas-cas-server-sssd -z sas-cas-server``` 
 
- 
+<br></br>
 #### sas-connect-spawner 
 
 By default, no SCC is required for SAS/CONNECT and you can skip this item. The SCC is required only if you intend to launch your SAS/CONNECT servers in the Spawner pod, rather than in their own pods.  
@@ -236,7 +235,7 @@ For more information, see the README file at `$deploy/sas-bases/examples/sas-c
 
 _**Why the SCC is needed:**_
 
-The SAS/CONNECT Launcher must be able to launch the SAS/CONNECT Server under end user identity. 
+- The SAS/CONNECT Launcher must be able to launch the SAS/CONNECT Server under end user identity. 
 
 1. Apply the SCC with the following command: 
 
@@ -246,14 +245,14 @@ The SAS/CONNECT Launcher must be able to launch the SAS/CONNECT Server u
 
    ```oc -n name-of-namespace adm policy add-scc-to-user sas-connect-spawner -z sas-connect-spawner```
 
- 
+<br></br>
 #### sas-esp-project 
 
 To determine if your deployment includes SAS Event Stream Processing, look for it in the "_License Information_" section of your Software Order Email (SOE) for the list of products that are included in your order. If your SOE is unavailable, look for `$deploy/sas-bases/examples/sas-esp-operator` in your deployment assets. If that directory exists, then your deployment includes SAS Event Stream Processing. If it does not exist, skip this SCC. 
 
-To run SAS Event Stream Processing projects with a user other than "sas", you must bind the `sas-esp-project` service account to the nonroot SCC. 
+To run SAS Event Stream Processing projects with a user other than "sas", you must bind the `sas-esp-project` service account to the `nonroot` SCC. 
 
-The nonroot SCC is a standard SCC defined by OpenShift. For more information about the nonroot SCC, see [Managing SCCs in OpenShift](https://cloud.redhat.com/blog/managing-sccs-in-openshift). 
+The `nonroot` SCC is a standard SCC defined by OpenShift. For more information about the `nonroot` SCC, see [Managing SCCs in OpenShift](https://cloud.redhat.com/blog/managing-sccs-in-openshift). 
 
 1. There is no SCC to apply. 
 
@@ -261,14 +260,14 @@ The nonroot SCC is a standard SCC defined by OpenShift. For more information abo
 
    ```oc -n name-of-namespace adm policy add-scc-to-user nonroot -z sas-esp-project```
 
- 
+<br></br>
 #### sas-microanalytic-score 
 
 To determine if the `sas-microanalytic-score` SCC is needed for your deployment, check for a README file in your deployment assets at `$deploy/sas-bases/overlays/sas-microanalytic-score/service-account/README.md`. If the README file is present, then the SCC is available for deployments on OpenShift. 
 
 _**Why the SCC is needed:**_  
 
-Security context constraints are required in an OpenShift cluster if the `sas-micro-analytic-score` pod needs to mount an NFS volume. If the Python environment is made available through an NFS mount, the service account requires NFS volume mounting privileges. 
+- Security context constraints are required in an OpenShift cluster if the `sas-micro-analytic-score` pod needs to mount an NFS volume. If the Python environment is made available through an NFS mount, the service account requires NFS volume mounting privileges. 
 
 For more information, see the README file at `$deploy/sas-bases/overlays/sas-microanalytic-score/service-account/README.md` (for Markdown format) or at `$deploy/sas-bases/docs/configure_sas_micro_analytic_service_to_add_service_account.htm` (for HTML format). 
 
@@ -281,3 +280,37 @@ For more information, see the README file at `$deploy/sas-bases/overlays/sas-m
    ```oc -n name-of-namespace adm policy add-scc-to-user sas-microanalytic-score -z sas-microanalytic-score```
    
    
+<br></br>
+#### sas-model-publish-kaniko 
+
+To determine if the `sas-model-publish-kaniko` service account exists in your deployment, check for a README file in your deployment assets at `$deploy/sas-bases/examples/sas-model-publish/kaniko/README.md`. If the README file is present and you plan to publish models with SAS Model Manager or SAS Intelligent Decisioning to containers using kaniko, you must bind the `sas-model-publish-kaniko` service account to the `anyuid` SCC. The `anyuid` SCC is a standard SCC defined by OpenShift.  
+
+For more information about the `anyuid` SCC, see [Managing SCCs in OpenShift](https://cloud.redhat.com/blog/managing-sccs-in-openshift). For more information about publishing models with kaniko, see the README at `$deploy/sas-bases/examples/sas-model-publish/kaniko/README.md` (for Markdown format) or at `$deploy/sas-bases/docs/configure_kaniko_for_sas_model_publish_service.htm` (for HTML format). 
+
+1. There is no SCC to apply. 
+
+2. Bind the service account with the following command: 
+
+   ```oc -n name-of-namespace adm policy add-scc-to-user anyuid -z sas-model-publish-kaniko```
+
+ 
+
+#### sas-model-repository 
+
+To determine if the `sas-model-repository` SCC is needed for your deployment, check for a README file in your deployment assets at `$deploy/sas-bases/overlays/sas-model-repository/service-account/README.md`. If the README file is present, then the SCC is available and might be required for deployments on OpenShift. 
+
+_**Why the SCC is needed:**_
+
+The sas-model-repository pod requires a service account with privileges if the Python environment is made available through an NFS mount. NFS volumes are not permitted in the restricted SCC, so an SCC that has NFS in the allowed volumes section is required. 
+
+For more information, see the README file at `$deploy/sas-bases/overlays/sas-model-repository/service-account/README.md` (for Markdown format) or at `$deploy/sas-bases/docs/configure_sas_model_repository_service_to_add_service_account.htm` (for HTML format). 
+
+1. Apply the SCC with the following command: 
+
+   ```oc apply -f sas-bases/overlays/sas-model-repository/service-account/sas-model-repository-scc.yaml```
+
+2. Bind the SCC to the service account with the following command: 
+
+   ```oc -n name-of-namespace adm policy add-scc-to-user sas-model-repository -z sas-model-repository```
+
+
