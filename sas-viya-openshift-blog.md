@@ -213,18 +213,52 @@ For more information on enabling SSSD, see [Configure SSSD](https://documentat
 
 1. Apply the SCC with one of the following commands: 
 
-```oc apply -f sas-bases/examples/cas/configure/cas-server-scc.yaml```
+   ```oc apply -f sas-bases/examples/cas/configure/cas-server-scc.yaml```
 
-```oc apply -f sas-bases/examples/cas/configure/cas-server-scc-host-launch.yaml```
+   ```oc apply -f sas-bases/examples/cas/configure/cas-server-scc-host-launch.yaml```
 
-```oc apply -f sas-bases/examples/cas/configure/cas-server-scc-sssd.yaml```
+   ```oc apply -f sas-bases/examples/cas/configure/cas-server-scc-sssd.yaml```
 
 2. Bind the SCC to the service account with the command that includes the name of the SCC that you applied: 
 
-```oc -n name-of-namespace adm policy add-scc-to-user sas-cas-server -z sas-cas-server``` 
+   ```oc -n name-of-namespace adm policy add-scc-to-user sas-cas-server -z sas-cas-server``` 
 
-```oc -n name-of-namespace adm policy add-scc-to-user sas-cas-server-host -z sas-cas-server``` 
+   ```oc -n name-of-namespace adm policy add-scc-to-user sas-cas-server-host -z sas-cas-server``` 
 
-```oc -n name-of-namespace adm policy add-scc-to-user sas-cas-server-sssd -z sas-cas-server``` 
+   ```oc -n name-of-namespace adm policy add-scc-to-user sas-cas-server-sssd -z sas-cas-server``` 
+
+ 
+#### sas-connect-spawner 
+
+By default, no SCC is required for SAS/CONNECT and you can skip this item. The SCC is required only if you intend to launch your SAS/CONNECT servers in the Spawner pod, rather than in their own pods.  
+
+For more information, see the README file at `$deploy/sas-bases/examples/sas-connect-spawner/openshift/README.md` (for Markdown format) or at `$deploy/sas-bases/docs/granting_security_context_constraints_on_an_openshift_cluster_for_sasconnect.htm` (for HTML format). 
+
+_**Why the SCC is needed:**_
+
+The SAS/CONNECT Launcher must be able to launch the SAS/CONNECT Server under end user identity. 
+
+1. Apply the SCC with the following command: 
+
+   ```oc apply -f sas-bases/examples/sas-connect-spawner/openshift/sas-connect-spawner-scc.yaml```
+
+2. Bind the SCC to the service account with the following command: 
+
+   ```oc -n name-of-namespace adm policy add-scc-to-user sas-connect-spawner -z sas-connect-spawner```
+
+ 
+#### sas-esp-project 
+
+To determine if your deployment includes SAS Event Stream Processing, look for it in the "_License Information_" section of your Software Order Email (SOE) for the list of products that are included in your order. If your SOE is unavailable, look for `$deploy/sas-bases/examples/sas-esp-operator` in your deployment assets. If that directory exists, then your deployment includes SAS Event Stream Processing. If it does not exist, skip this SCC. 
+
+To run SAS Event Stream Processing projects with a user other than "sas", you must bind the `sas-esp-project` service account to the nonroot SCC. 
+
+The nonroot SCC is a standard SCC defined by OpenShift. For more information about the nonroot SCC, see [Managing SCCs in OpenShift](https://cloud.redhat.com/blog/managing-sccs-in-openshift). 
+
+1. There is no SCC to apply. 
+
+2. Bind the SCC to the service account with the following command: 
+
+   ```oc -n name-of-namespace adm policy add-scc-to-user nonroot -z sas-esp-project```
 
  
