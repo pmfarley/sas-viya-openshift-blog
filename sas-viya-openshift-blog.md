@@ -23,7 +23,7 @@ Moving SAS Viya to OpenShift gives Viya unprecedented scalability that was unava
 
 <img width="1089" alt="image" src="https://user-images.githubusercontent.com/48925593/235716577-0ff2874b-3b9f-4404-b5e4-82961a4f6904.png">
 
-_Figure 1_
+`_Figure 1_`
 
 Note that the setup of pools is not mandatory and there might be good reasons to ignore the recommendation if the existing cluster infrastructure is not suitable for such a split. The placement of SAS workload classes can be enabled by applying predefined Kubernetes node labels and node taints.
 
