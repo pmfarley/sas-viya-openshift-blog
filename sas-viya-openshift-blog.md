@@ -149,6 +149,7 @@ This is the node pool set up for non-SAS workloads. When customers have external
 
 
 
+
 ## SAS Viya on OpenShift Deployment
 
 ### Deployment Prerequisites
