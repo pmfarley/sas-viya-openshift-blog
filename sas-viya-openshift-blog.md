@@ -175,9 +175,9 @@ The following table summarizes cluster requirements in a Red Hat OpenShift envir
 
 ### Required SCCs 
 
-A deployment in OpenShift requires multiple custom SCCs to provide permissions to SAS Viya platform services. SCCs are required in order to enable the Pods to run. (Pods provide essential SAS Viya platform components.) In addition, some SCCs can be customized to meet your unique requirements. 
+A deployment in OpenShift requires multiple custom SCCs to provide permissions to SAS Viya platform services. SCCs are required in order to enable the pods to run. (Pods provide essential SAS Viya platform components.) In addition, some SCCs can be customized to meet your unique requirements. 
 
-A security context acts like a request for privileges from the OpenShift API. In an OpenShift environment, each Kubernetes Pod starts up with an association with a specific SCC, which limits the privileges that Pod can request. An administrator configures each Pod to run with a certain SCC by granting the corresponding service account for that pod access to the SCC. For example, if Pod A requires its own SCC, an administrator must grant access to that SCC for the service account under which Pod A is launched. Use the OpenShift OC administrative command-line tool to grant or remove these permissions. 
+A SCC acts like a request for privileges from the OpenShift API. In an OpenShift environment, each Kubernetes pod starts up with an association with a specific SCC, which limits the privileges that Pod can request. An administrator configures each pod to run with a certain SCC by granting the corresponding service account for that pod access to the SCC. For example, if pod A requires its own SCC, an administrator must grant access to that SCC for the service account under which pod A is launched. Use the OpenShift OC administrative command-line tool to grant or remove these permissions. 
 
 **Note**: For additional details about SCC types, see [SCCs and Pod Service Accounts](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0bqwd5t5y2va7n1u9xb57lfa9wx.htm#p1qz3rq1f758xkn1pctnlw7c3kn6) in _System Requirements for the SAS Viya Platform_. 
 
