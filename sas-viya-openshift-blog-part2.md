@@ -1,4 +1,4 @@
-# SAS Viya on Red Hat OpenShift – Part 2: Security and storage considerations
+# SAS Viya on Red Hat OpenShift – Part 2: Security and Storage considerations
 **TARGET DATE:** _May 19, 2023 | by Patrick Farley and Hans-Joachim Edert_
 
 **<div align="center">DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY</div>**   
