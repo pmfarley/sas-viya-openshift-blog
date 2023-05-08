@@ -26,8 +26,7 @@ SAS Viya is an integrated platform that covers the entire AI and Analytics lifec
 
 Moving SAS Viya to OpenShift gives Viya unprecedented scalability that was unavailable in previous SAS releases. SAS takes advantage of the scalability by breaking Viya down into different workload types and recommends assigning each workload to a class of nodes, i.e., to Machine Pools. This ensures that the proper resources are available to specific workloads. _Figure 1_ shows the separation of workloads to pools.
 
-
-![](sas-viya-reference-architecture-ocp.png)
+<img width="1089" alt="image" src="sas-viya-reference-architecture-ocp.png">
 
 **_<div align="center">Figure 1</div>_**
 
@@ -120,7 +119,7 @@ The SAS Viya Deployment Operator provides an automated method for deploying and 
 
 _CLUSTER ADMIN:_ As part of a DevOps pipeline, the operator can largely automate deployments and deployment updates, reducing dependency on the OpenShift administration team. For example, the SAS Deployment Operator nicely integrates with OpenShift GitOps, which are is a component of the Red Hat OpenShift Container Platform (OCP) that provide a turnkey CI/CD automation solution for continuous integration (CI) and continuous delivery (CD) tasks. OpenShift GitOps can be used to provide additional automation for a SAS Viya deployment by monitoring a Git repository for changes to the SAS CR manifest and automatically syncing its’ contents to the cluster. Pushing the CR manifest to the Git repository then triggers a sync with OpenShift GitOps. The CR will be deployed to Kubernetes, which in turn triggers the Operator and the deployment to start. Figure 2 illustrates this workflow:
 
-![](sas-viya-deployment-operator-ocp.png)
+<img width="1089" alt="image" src="sas-viya-deployment-operator-ocp.png">
 
 **_<div align="center">Figure 2</div>_**
 
