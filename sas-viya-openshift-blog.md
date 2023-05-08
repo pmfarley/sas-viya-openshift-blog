@@ -212,8 +212,8 @@ For additional details about SCCs, please see the following:
 
 - For a full list and description of the required SCCs, see [Security Context Constraints and Service Accounts](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p1h8it1wdu2iaxn1bkd8anfcuxny.htm#p09z7ivwp61280n1jezh6i6qmoml) in *SAS Viya Platform: Deployment Guide*.
 - For SCC types, see [SCCs and Pod Service Accounts](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0bqwd5t5y2va7n1u9xb57lfa9wx.htm#p1qz3rq1f758xkn1pctnlw7c3kn6) in *System Requirements for the SAS Viya Platform*.
-- For more information for each SCC, see the README.md file (for Markdown format) below the `$deploy/sas-bases/examples` folder or below `$deploy/sas-bases/docs` (for HTML format).
-- For more information about applying SCCs with OpenShift, see the Red Hat blog titled “[Managing SCCs in OpenShift]”.
+- For more information for each SCC, see the `README.md` file (for Markdown format) below the `$deploy/sas-bases/examples` folder or below `$deploy/sas-bases/docs` (for HTML format).
+- For more information about applying SCCs with OpenShift, see the Red Hat blog titled “[Managing SCCs in OpenShift](https://cloud.redhat.com/blog/managing-sccs-in-openshift)”.
 
 
 |**Service Account Name / SCC Name**|**REQUIRED<br>or<br>Optional**|**When needed**|
@@ -256,7 +256,7 @@ If the CAS server is configured to use a custom SSSD, apply the `cas-server-scc-
 
 To run SAS Event Stream Processing projects with a user other than `sas`, you must bind the `sas-esp-project` service account to the `nonroot` SCC.
 
-The `nonroot` SCC is a standard SCC defined by OpenShift. For more information about the `nonroot` SCC, see [Managing SCCs in OpenShift].
+The `nonroot` SCC is a standard SCC defined by OpenShift. For more information about the `nonroot` SCC, see [Managing SCCs in OpenShift](https://cloud.redhat.com/blog/managing-sccs-in-openshift).
 
 #### ***sas-microanalytic-score***
 **OPTIONAL:** To determine if the `sas-microanalytic-score` SCC is needed for your deployment, check for a README file in your deployment assets at `$deploy/sas-bases/overlays/sas-microanalytic-score/service-account/README.md`. If the README file is present, then the SCC is available for deployments on OpenShift.
@@ -276,9 +276,9 @@ For more information about the `anyuid` SCC, see [Managing SCCs in OpenShift].
 #### ***sas-opendistro***
 **REQUIRED:** Every SAS Viya platform deployment contains sas-opendistro. 
 
-For optimal performance, deploying OpenSearch software requires the `vm.max\_map\_count` kernel parameter to be set on the OpenShift nodes running the stateful workloads to ensure there is adequate virtual memory available for use with mmap for accessing the search indices. 
+For optimal performance, deploying OpenSearch software requires the `vm.max_map_count` kernel parameter to be set on the OpenShift nodes running the stateful workloads to ensure there is adequate virtual memory available for use with mmap for accessing the search indices. 
 
-There are two methods available to set the `vm.max\_map\_count` kernel parameter:
+There are two methods available to set the `vm.max_map_count` kernel parameter:
 
 - Use an init container to add the kernel parameter, which requires the `sas-opendistro` SCC.
 - Use a `MachineConfig` to add the kernel parameter, which does not require a custom SCC.
@@ -295,7 +295,7 @@ Therefore, before you apply the `sas-opendistro-scc.yaml` file, you must modify 
 
 **OPENSEARCH SYSCTL MACHINECONFIG**
 
-` `If privileged containers are not allowed in your environment, a `MachineConfig` can be used to set the `vm.max\_map\_count` kernel parameter for OpenSearch, as an alternative to using this SCC with the init container. All nodes that run workloads in the [stateful workload class](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm) are affected by this requirement.
+If privileged containers are not allowed in your environment, a `MachineConfig` can be used to set the `vm.max_map_count` kernel parameter for OpenSearch, as an alternative to using this SCC with the init container. All nodes that run workloads in the [stateful workload class](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm) are affected by this requirement.
 
 Perform the following steps; refer to [**Adding kernel arguments to nodes**](https://docs.openshift.com/container-platform/4.12/nodes/nodes/nodes-nodes-managing.html#nodes-nodes-kernel-arguments_nodes-nodes-jobs) in the OpenShift documentation.
 
@@ -304,21 +304,23 @@ Perform the following steps; refer to [**Adding kernel arguments to nodes**](htt
    ```oc get machineconfig```
 
 1. Create a `MachineConfig` object file that identifies the kernel argument 
-   (for example, `05-worker-kernelarg-vm.max\_map\_count.yaml`)
+   (for example, `05-worker-kernelarg-vm.max_map_count.yaml`)
 
-   ```apiVersion: machineconfiguration.openshift.io/v1
+   ```
+   apiVersion: machineconfiguration.openshift.io/v1
    kind: MachineConfig
    metadata:
-   labels:
-   machineconfiguration.openshift.io/role: worker
-   name: 05-worker-kernelarg-vmmaxmapcount
+     labels:
+       machineconfiguration.openshift.io/role: worker
+     name: 05-worker-kernelarg-vmmaxmapcount
    spec:
-   kernelArguments:
-   - vm.max\_map\_count=262144
+     kernelArguments:
+       - vm.max_map_count=262144
+   ```  
 
 3. Create the new machine config:
 
-   ```oc create -f 05-worker-kernelarg-vm.max\_map\_count.yaml```
+   ```oc create -f 05-worker-kernelarg-vm.max_map_count.yaml```
 
 4. Check the machine configs to see that the new one was added:
 
@@ -333,32 +335,35 @@ You can see that scheduling on each worker node is disabled as the change is bei
 4. Check that the kernel argument worked by going to one of the worker nodes and verifying with the sysctl command or by listing the kernel command line arguments (in /proc/cmdline on the host):
 
    ```oc debug node/vsphere-k685x-worker-4kdtl
-   sysctl vm.max\_map\_count
-   exit```
+   sysctl vm.max_map_count
+   exit
+   ```
 
-**Example output**
+   **Example output**
 
-   ```Starting pod/vsphere-k685x-worker-4kdtl-debug ...
-   To use host binaries, run 'chroot /host'
-   sh-4.2# sysctl vm.max\_map\_count
-   vm.max\_map\_count = 262144
-   sh-4.2# exit```
+      ```Starting pod/vsphere-k685x-worker-4kdtl-debug ...
+      To use host binaries, run 'chroot /host'
+      sh-4.2# sysctl vm.max_map_count
+      vm.max_map_count = 262144
+      sh-4.2# exit
+      ```
 
-If listing the /proc/cmdline file, you should see the `vm.max\_map\_count=262144` argument added to the other kernel arguments.
+   If listing the /proc/cmdline file, you should see the `vm.max_map_count=262144` argument added to the other kernel arguments.
 
 #### ***sas-watchdog-scc***
 **OPTIONAL:** SAS Watchdog is included in every SAS Viya platform deployment. If you choose to deploy SAS Watchdog, the SCC is required. 
 
 ***Why the SCC is needed:*** SAS Watchdog monitors processes to ensure that they comply with the terms of LOCKDOWN system option. It emulates the restrictions imposed by LOCKDOWN by restricting access only to files that exist in folders that are allowed by LOCKDOWN. It therefore requires elevated privileges provided by the custom SCC.
 
-Alternatively, you can bind the `hostmount-anyuid` or 'anyuid` SCC to the `sas-programming-environment` service account. If you have already bound the SAS Watchdog service account to the `sas-watchdog` SCC, you cannot bind it again.
+Alternatively, you can bind the `hostmount-anyuid` or `anyuid` SCC to the `sas-programming-environment` service account. If you have already bound the SAS Watchdog service account to the `sas-watchdog` SCC, you cannot bind it again.
 
 Using the `anyuid` SCC is preferred. Using the `hostmount-anyuid` SCC is only required if you use hostPath mounts.
 
-**Note:** The `hostmount-anyuid` and `anyuid` SCCs are standard SCCs defined by OpenShift. For more information, see [Managing SCCS in OpenShift][Managing SCCs in OpenShift].
+**Note:** The `hostmount-anyuid` and `anyuid` SCCs are standard SCCs defined by OpenShift. For more information, see [Managing SCCS in OpenShift](https://cloud.redhat.com/blog/managing-sccs-in-openshift).
 
 
 <br></br>
+
 ### **Workload Node Placement**
 The SAS Viya platform consists of multiple [Workload Classes](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0jo17lrlk83rsn1vvs2wqmewkt7). Each class of workload has a unique set of attributes that you must consider when planning your deployment. When planning the placement of the workload, it is helpful to think beyond the initial deployment and to also consider the Kubernetes maintenance life cycle.
 
