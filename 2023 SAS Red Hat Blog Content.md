@@ -1,36 +1,11 @@
-﻿## **Placeholder doc for SAS / Red Hat Blog**
+**TARGET DATE:** _May 19, 2023 | by Patrick Farley and Hans-Joachim Edert_
 
-## **Draft Outline**
+**<div align="center">DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY</div>**   
 
-- High-level description of the joint SAS Viya & Red Hat OpenShift solution 
-- SAS Viya on OpenShift reference architecture 
-  - High level explanation, w/micro-services, etc.
-  - Reference Architecture Diagram
-  - Components, vSphere Hypervisor, Operators, etc.
-  - Security settings/concerns; SCC v2
-- SAS Viya on OpenShift Deployment
-- References at end, with the following:
-  - [Red Hat & SAS Partner Page](https://www.redhat.com/en/partners/sas)
-  - [RED HAT BLOG - Red Hat and SAS collaborate to bring advanced analytic capabilities to the hybrid cloud](https://www.redhat.com/en/blog/red-hat-and-sas-collaborate-bring-advanced-analytic-capabilities-hybrid-cloud)
-  - etc
+**_<div align="center">This blog was written by Patrick Farley, Associate Principal Solutions Architect (Red Hat) </div>_**
+**_<div align="center">and Hans-Joachim Edert, Advisory Business Solutions Manager (SAS Institute) </div>_**
 
-Provided for reference/reuse:
-[SAS Viya on OpenShift Reference Architecture and Sizing Guide \[March 2022\].docx](https://redhat0-my.sharepoint.com/:w:/g/personal/pfarley_redhat_com/EcLxC473ik1IkovIspggREQBCK_-Sd5CC8ouvlfx0FwCNA?e=XnHtqf)
-
-**May 3, 2023:**
-
-- I’ve started propagating the blog draft into this [sas-viya-openshift GitHub page](https://github.com/pmfarley/sas-viya-openshift-blog/blob/main/sas-viya-openshift-blog.md). 
-  This page will be used to submit for the Red Hat Hybrid Cloud Blog:
-  <https://github.com/pmfarley/sas-viya-openshift-blog/blob/main/sas-viya-openshift-blog.md>
-- I’ve created this [sas-viya-openshift Red Hat GPST team public repo on GitHub](https://github.com/redhat-gpst/sas-viya-openshift) to use for a reference in our blog for YAML examples; which is better than using my personal GitHub account: <https://github.com/redhat-gpst/sas-viya-openshift>
-- Here is the [reference architecture diagram of SAS Viya on Azure AKS](https://documentation.sas.com/doc/en/itopscdc/v_039/itopscon/n1d7qc4nfr3s5zn103a1qy0kj4l1.htm#n0hw15ct9nj76fn13l8k9j9gbsrv) (and others): 
-  Should the SAS Viya on OpenShift w/vSphere reference architecture diagram be updated to this same look?  Does this already exist for SAS Viya on OpenShift?
-
-DOC DRAFT START
-# SAS Viya on Red Hat OpenShift  – Part 1: Reference Architecture and Deployment considerations
-*Authors: Patrick Farley and Hans-Joachim Edert*
-
-In this blog, we will <a name="_int_fgfwoqze"></a>provide some basic technical information about SAS Viya, as well as a reference architecture for SAS Viya on Red Hat OpenShift Container Platform (OCP). This reference architecture will show how SAS Viya is containerized to run with Kubernetes on Red Hat OpenShift.
+In this two-part blog, we will provide some basic technical information about SAS Viya, as well as a reference architecture for SAS Viya on Red Hat OpenShift Container Platform (OCP). This reference architecture will show how SAS Viya is containerized to run with Kubernetes on Red Hat OpenShift.
 
 A few introductory words before we get into the technical details.
 
@@ -50,9 +25,9 @@ SAS Viya is an integrated platform that covers the entire AI and Analytics lifec
 Moving SAS Viya to OpenShift gives Viya unprecedented scalability that was unavailable in <a name="_int_7dqcwsaq"></a>previous SAS releases. SAS takes advantage of the scalability by breaking Viya down into different workload types and recommends assigning each workload to a class of nodes, i.e., to a Machine Pool. This ensures that the proper resources are available to specific workloads. Figure 1 shows the separation of workloads to pools.
 
 
-![](Aspose.Words.93ae2569-8718-43c1-aade-ad550ead223a.001.png)
+![](sas-viya-reference-architecture-ocp.png)
 
-*Figure 1*
+**_<div align="center">Figure 1</div>_**
 
 Note that the setup of pools is not mandatory and there might be reasons to ignore the recommendation if the existing cluster infrastructure is not suitable for such a split. Applying a workload placement strategy by using node pools does provide a lot of benefits, as it allows you to tailor-suit the cluster topology to workload requirements, you could for example choose different hardware configurations (nodes with additional storage, with GPU cards etc.). The placement of SAS workload classes can be enabled by applying predefined Kubernetes node labels and node taints.
 
@@ -130,9 +105,9 @@ The SAS Viya Deployment Operator provides an automated method for deploying and 
 
 **CLUSTER ADMIN:** As part of a DevOps pipeline, the operator can largely automate deployments and deployment updates, reducing dependency on the OpenShift administration team. For example, the SAS Deployment Operator nicely integrates with OpenShift GitOps, which are is a component of the Red Hat OpenShift Container Platform (OCP) that provide a turnkey CI/CD automation solution for continuous integration (CI) and continuous delivery (CD) tasks. OpenShift GitOps can be used to provide additional automation for a SAS Viya deployment by monitoring a Git repository for changes to the SAS CR manifest and automatically syncing its’ contents to the cluster. Pushing the CR manifest to the Git repository then triggers a sync with OpenShift GitOps. The CR will be deployed to Kubernetes, which in turn triggers the Operator and the deployment to start. Figure 2 illustrates this workflow:
 
-![](Aspose.Words.93ae2569-8718-43c1-aade-ad550ead223a.002.png)
+![](sas-viya-deployment-operator-ocp.png)
 
-*Figure 2*
+**_<div align="center">Figure 2</div>_**
 
 For additional information, see the SAS blog titled “[Deploying SAS Viya using Red Hat OpenShift GitOps](https://communities.sas.com/t5/SAS-Communities-Library/Deploying-SAS-Viya-using-Red-Hat-OpenShift-GitOps/ta-p/780616)”
 
