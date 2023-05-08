@@ -40,12 +40,12 @@ The core component at the heart of SAS Viya is the Cloud Analytics Server (CAS).
 
 CAS can be deployed in one of two modes:  SMP (Symmetric Multi Processing), and MPP (Massive Parallel Processing). In SMP mode, only one CAS pod is being deployed, in MPP mode multiple CAS pods are used where one pod takes the role of a controller while the other pods are used for running the computations.
 
-In a default configuration, i.e., when a CAS nodepool is being used, each CAS pod runs on a separate worker node, claiming more than 90% of the available CPU and memory resources out-of-the-box. If  there is no nodepool available for CAS, transformer patches applied during the deployment limit the resource usage of CAS to the desired amount ot allow co-existence of CAS with other workloads on the same node.
+In a default configuration, i.e., when a CAS node pool is being used, each CAS pod runs on a separate worker node, claiming more than 90% of the available CPU and memory resources out-of-the-box. If  there is no node pool available for CAS, transformer patches applied during the deployment limit the resource usage of CAS to the desired amount ot allow co-existence of CAS with other workloads on the same node.
 
 ### **SAS Compute Services (COMPUTE NODE POOL)**
 SAS Compute services represent the traditional SAS processing capabilities as used in all previous releases of SAS. A SAS session is launched either interactively by a user from a web application or in batch mode to run as a Kubernetes job to execute submitted SAS code to transform or analyse data. Due to this approach, SAS sessions are highly parallelizable. The number of sessions (or Kubernetes jobs) running in parallel is only limited by the available hardware resources.
 
-The compute nodepool is a good candidate for using the cluster autoscaler, if possible. Often customers have typical usage patterns that would directly benefit from this - for example, by intercepting usage peaks (scaling out for nightly batch workload, scaling in over the weekend, etc.).
+The compute node pool is a good candidate for using the cluster autoscaler, if possible. Often customers have typical usage patterns that would directly benefit from this - for example, by intercepting usage peaks (scaling out for nightly batch workload, scaling in over the weekend, etc.).
 
 ### **SAS Microservices and Web Applications (STATELESS NODE POOL)**
 Most services in any SAS Viya deployment are designed as microservices (also known as 12 factor apps). They are responsible providing central services like auditing, authentication, etc. Also, grouped with these services are a set of stateless web applications which are the user interfaces which are exposed to endusers, for example SAS Data Studio, SAS Model Manager and SAS Data Explorer.
@@ -53,12 +53,12 @@ Most services in any SAS Viya deployment are designed as microservices (also kno
 ### **Infrastructure Services (STATEFUL NODE POOL)**
 The commodity services are basically the metadata management and storage services. They are made of several open-source technologies such as the internal SAS Postgres database, as well as Consul and RabbitMQ for messaging. This is where the critical operational data is stored. These services are rather I/O intensive and do require persistent storage.
 
-In the current iteration of SAS Viya on OpenShift, SAS only supports VMware vSphere as the deployment platform. At the time of this document, BareMetal is on the roadmap as an alternative for on-premise deployments.  When deployed on a different infrastructure provider, such as Azure, AWS, Google or BareMetal, SAS Viya runs under the “[SAS Support for Alternative Kubernetes Distributions](https://support.sas.com/en/technical-support/services-policies.html#k8s)” policy.
-
 <br></br>
 
 ## **Core Platform**
 VMware vSphere 7.0 Update 1 or later is the virtual machine platform that is currently supported. The details of VMware configuration will not be covered in this document with the assumption that VMware vSphere is well known in most environments.
+
+In the current iteration of SAS Viya on OpenShift, SAS only supports VMware vSphere as the deployment platform. At the time of this document, BareMetal is on the roadmap as an alternative for on-premise deployments.  When deployed on a different infrastructure provider, such as Azure, AWS, Google or BareMetal, SAS Viya runs under the “[SAS Support for Alternative Kubernetes Distributions](https://support.sas.com/en/technical-support/services-policies.html#k8s)” policy.
 
 At the time this blog was written, Red Hat OpenShift versions 4.10 - 4.12 are supported for SAS Viya. SAS works to align their SAS Viya Kubernetes support levels with Red Hat OpenShift and typically adds support for the latest OpenShift version updates within 1-2 months of a given OpenShift version release. Additional details are <a name="_int_owinntrs"></a>provided later within this document; for some of the specific OpenShift components that support SAS Viya deployment; but they are <a name="_int_jsjdqbki"></a>provided here, at a high-level:
 
@@ -77,9 +77,9 @@ At the time this blog was written, Red Hat OpenShift versions 4.10 - 4.12 are su
 ### **Deployment options – Red Hat OpenShift**
 There are various methods for [installing Red Hat OpenShift Container Platform on VMware vSphere,](https://docs.openshift.com/container-platform/4.12/installing/installing_vsphere/preparing-to-install-on-vsphere.html)  including:
 
-- *Installer-provisioned infrastructure* (IPI) installation, which allows the installation program to pre-configure and automate the provisioning of the required resources.
-- The [*Assisted Installer*,](https://docs.openshift.com/container-platform/4.12/installing/installing_on_prem_assisted/installing-on-prem-assisted.html) which <a name="_int_0dxvuolc"></a>provides a user-friendly installation solution offered directly from the [Red Hat Hybrid Cloud Console.](https://console.redhat.com/openshift/assisted-installer/clusters/~new)
-- *User-provisioned infrastructure* (UPI) installation, which provides a manual type of installation with the most control over the installation and configuration process.
+- _*Installer-provisioned infrastructure*_ (IPI) installation, which allows the installation program to pre-configure and automate the provisioning of the required resources.
+- The [_*Assisted Installer*_,](https://docs.openshift.com/container-platform/4.12/installing/installing_on_prem_assisted/installing-on-prem-assisted.html) which <a name="_int_0dxvuolc"></a>provides a user-friendly installation solution offered directly from the [Red Hat Hybrid Cloud Console.](https://console.redhat.com/openshift/assisted-installer/clusters/~new)
+- _*User-provisioned infrastructure*_ (UPI) installation, which provides a manual type of installation with the most control over the installation and configuration process.
 
 An IPI installation results in an OCP cluster with the vSphere cloud provider configuration settings from the installation, which enables additional automation and dynamic provisioning after installation:
 
@@ -102,12 +102,12 @@ There are several approaches for deploying SAS Viya on Red Hat OpenShift, which 
 #### ***1. Manual deployment***
 After purchasing a SAS Viya license, customers receive a set of deployment templates (known as the “deployment assets” tarball) in YAML format which they need to modify to create the final deployment manifest (usually called “site.yaml”). SAS uses the `kustomize` tool for modifying the templates. Common customizations include the definition of a mirror repository, configuring TLS, high-availability, storage and other site-specific settings. The final deployment manifest can then be submitted to Kubernetes using multiple `kubectl` commands. 
 
-**CLUSTER ADMIN:** Note that the final manifest contains objects which require elevated privileges for deployment, for example Custom Resource Definitions (CRDs), *PodTemplates*, *ClusterRoleBindings* etc., which means that in most cases the SAS project team will need support from the OpenShift administration team to carry out the deployment. SAS has tagged all resources that need to be deployed according to the required permissions. This enables task sharing between the project team (with namespace-admin permissions) and the administration team (with cluster-admin permissions). However, it is important to keep in mind that this dependency will come up again with later updates for example.
+**CLUSTER ADMIN:** Note that the final manifest contains objects which require elevated privileges for deployment, for example Custom Resource Definitions (CRDs), `PodTemplates`, `ClusterRoleBindings` etc., which means that in most cases the SAS project team will need support from the OpenShift administration team to carry out the deployment. SAS has tagged all resources that need to be deployed according to the required permissions. This enables task sharing between the project team (with namespace-admin permissions) and the administration team (with cluster-admin permissions). However, it is important to keep in mind that this dependency will come up again with later updates for example.
 
 #### ***2. SAS Deployment Operator***
 For that reason, using the SAS Deployment Operator might provide a better solution. SAS provides an operator for deploying and updating SAS Viya. The SAS Deployment Operator is not (yet) a certified operator so it will not be found in the OperatorHub or in the Red Hat Marketplace.
 
-The SAS Viya Deployment Operator provides an automated method for deploying and updating the SAS Viya environments. It runs in the OpenShift cluster and watches for declarative representations of SAS Viya deployments in the form of Custom Resources (CRs) of the type **SASDeployment**. When a new **SASDeployment** CR is created or an existing CR is updated, the Deployment Operator performs an initial deployment or updates an existing deployment to match the state that is described in the CR. A single instance of the operator can manage all SAS Viya deployments in the cluster.
+The SAS Viya Deployment Operator provides an automated method for deploying and updating the SAS Viya environments. It runs in the OpenShift cluster and watches for declarative representations of SAS Viya deployments in the form of Custom Resources (CRs) of the type `SASDeployment`. When a new `SASDeployment` CR is created or an existing CR is updated, the Deployment Operator performs an initial deployment or updates an existing deployment to match the state that is described in the CR. A single instance of the operator can manage all SAS Viya deployments in the cluster.
 
 **CLUSTER ADMIN:** As part of a DevOps pipeline, the operator can largely automate deployments and deployment updates, reducing dependency on the OpenShift administration team. For example, the SAS Deployment Operator nicely integrates with OpenShift GitOps, which are is a component of the Red Hat OpenShift Container Platform (OCP) that provide a turnkey CI/CD automation solution for continuous integration (CI) and continuous delivery (CD) tasks. OpenShift GitOps can be used to provide additional automation for a SAS Viya deployment by monitoring a Git repository for changes to the SAS CR manifest and automatically syncing its’ contents to the cluster. Pushing the CR manifest to the Git repository then triggers a sync with OpenShift GitOps. The CR will be deployed to Kubernetes, which in turn triggers the Operator and the deployment to start. Figure 2 illustrates this workflow:
 
@@ -232,12 +232,12 @@ For additional details about SCCs, please see the following:
 |**sas-programming-environment / hostmount-anyuid** |**Optional**|SAS Watchdog is included in your deployment, and using hostPath mounts.|
 
 #### ***sas-cas-server***
-**REQUIRED:** Every deployment on OpenShift must apply one of the SCCs for the CAS server. By default, in a greenfield SAS Viya deployment for a new customer, we expect CAS to use cloud native storage and not need host launch capabilities.  So, at a minimum, the **cas-server-scc** SCC would be applied.
+**REQUIRED:** Every deployment on OpenShift must apply one of the SCCs for the CAS server. By default, in a greenfield SAS Viya deployment for a new customer, we expect CAS to use cloud native storage and not need host launch capabilities.  So, at a minimum, the `cas-server-scc` SCC would be applied.
 
-**OPTIONAL:** If host launch or SSSD are required, then one of those related SCCs would be need to be applied in place of the **cas-server-scc** SCC.  Typically, host launch is only needed for existing SAS customers who are migrating to the cloud and already have access controls to their data defined using host users and groups.
+**OPTIONAL:** If host launch or SSSD are required, then one of those related SCCs would be need to be applied in place of the `cas-server-scc` SCC.  Typically, host launch is only needed for existing SAS customers who are migrating to the cloud and already have access controls to their data defined using host users and groups.
 
-If the custom group "CAS Host Account Required" is used, apply the **cas-server-scc-host-launch** SCC. 
-If the CAS server is configured to use a custom SSSD, apply the **cas-server-scc-sssd** SSC. For more information on enabling SSSD, see [Configure SSSD](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/n08u2yg8tdkb4jn18u8zsi6yfv3d.htm#n0pshy2wfr9aw0n1g9p5sbbhzyqr).
+If the custom group "CAS Host Account Required" is used, apply the `cas-server-scc-host-launch` SCC. 
+If the CAS server is configured to use a custom SSSD, apply the `cas-server-scc-sssd` SSC. For more information on enabling SSSD, see [Configure SSSD](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/n08u2yg8tdkb4jn18u8zsi6yfv3d.htm#n0pshy2wfr9aw0n1g9p5sbbhzyqr).
 
 ***Why the SCC is needed:*** 
 
@@ -252,69 +252,69 @@ If the CAS server is configured to use a custom SSSD, apply the **cas-server-scc
 ***Why the SCC is needed*:** When launching SAS/CONNECT servers in the Spawner pod, the SAS/CONNECT Launcher must be able to launch the SAS/CONNECT Server under end user identity.
 
 #### ***sas-esp-project***
-**OPTIONAL:** To determine if your deployment includes SAS Event Stream Processing, look for it in the "License Information" section of your Software Order Email (SOE) for the list of products that are included in your order. If your SOE is unavailable, look for $deploy/sas-bases/examples/sas-esp-operator in your deployment assets. If that directory exists, then your deployment includes SAS Event Stream Processing. If it does not exist, skip this SCC.
+**OPTIONAL:** To determine if your deployment includes SAS Event Stream Processing, look for it in the "License Information" section of your Software Order Email (SOE) for the list of products that are included in your order. If your SOE is unavailable, look for `$deploy/sas-bases/examples/sas-esp-operator` in your deployment assets. If that directory exists, then your deployment includes SAS Event Stream Processing. If it does not exist, skip this SCC.
 
-To run SAS Event Stream Processing projects with a user other than "sas", you must bind the **sas-esp-project** service account to the **nonroot** SCC.
+To run SAS Event Stream Processing projects with a user other than `sas`, you must bind the `sas-esp-project` service account to the `nonroot` SCC.
 
-The **nonroot** SCC is a standard SCC defined by OpenShift. For more information about the **nonroot** SCC, see [Managing SCCs in OpenShift].
+The `nonroot` SCC is a standard SCC defined by OpenShift. For more information about the `nonroot` SCC, see [Managing SCCs in OpenShift].
 
 #### ***sas-microanalytic-score***
-**OPTIONAL:** To determine if the **sas-microanalytic-score** SCC is needed for your deployment, check for a README file in your deployment assets at $deploy/sas-bases/overlays/sas-microanalytic-score/service-account/README.md. If the README file is present, then the SCC is available for deployments on OpenShift.
+**OPTIONAL:** To determine if the `sas-microanalytic-score` SCC is needed for your deployment, check for a README file in your deployment assets at `$deploy/sas-bases/overlays/sas-microanalytic-score/service-account/README.md`. If the README file is present, then the SCC is available for deployments on OpenShift.
 
-***Why the SCC is needed:*** Security context constraints are required in an OpenShift cluster if the **sas-micro-analytic-score** pod needs to mount an NFS volume. If the Python environment is made available through an NFS mount, the service account requires NFS volume mounting privileges.
+***Why the SCC is needed:*** Security context constraints are required in an OpenShift cluster if the `sas-micro-analytic-score` pod needs to mount an NFS volume. If the Python environment is made available through an NFS mount, the service account requires NFS volume mounting privileges.
 
 #### ***sas-model-publish-kaniko***
-**OPTIONAL:** To determine if the **sas-model-publish-kaniko** service account exists in your deployment, check for a README file in your deployment assets at $deploy/sas-bases/examples/sas-model-publish/kaniko/README.md. If the README file is present and you plan to publish models with SAS Model Manager or SAS Intelligent Decisioning to containers using kaniko, you must bind the **sas-model-publish-kaniko** service account to the **anyuid** SCC. The **anyuid** SCC is a standard SCC defined by OpenShift. 
+**OPTIONAL:** To determine if the `sas-model-publish-kaniko` service account exists in your deployment, check for a README file in your deployment assets at `$deploy/sas-bases/examples/sas-model-publish/kaniko/README.md`. If the README file is present and you plan to publish models with SAS Model Manager or SAS Intelligent Decisioning to containers using kaniko, you must bind the `sas-model-publish-kaniko` service account to the `anyuid` SCC. The `anyuid` SCC is a standard SCC defined by OpenShift. 
 
-For more information about the **anyuid** SCC, see [Managing SCCs in OpenShift]. 
+For more information about the `anyuid` SCC, see [Managing SCCs in OpenShift]. 
 
 #### ***sas-model-repository***
-**OPTIONAL:** To determine if the **sas-model-repository** SCC is needed for your deployment, check for a README file in your deployment assets at $deploy/sas-bases/overlays/sas-model-repository/service-account/README.md. If the README file is present, then the SCC is available and might be required for deployments on OpenShift.
+**OPTIONAL:** To determine if the `sas-model-repository` SCC is needed for your deployment, check for a README file in your deployment assets at `$deploy/sas-bases/overlays/sas-model-repository/service-account/README.md`. If the README file is present, then the SCC is available and might be required for deployments on OpenShift.
 
-***Why the SCC is needed:*** The **sas-model-repository** pod requires a service account with privileges if the Python environment is made available through an NFS mount. NFS volumes are not permitted in the **restricted** SCC, so an SCC that has NFS in the allowed volumes section is required.
+***Why the SCC is needed:*** The `sas-model-repository` pod requires a service account with privileges if the Python environment is made available through an NFS mount. NFS volumes are not permitted in the `restricted` SCC, so an SCC that has NFS in the allowed volumes section is required.
 
 #### ***sas-opendistro***
 **REQUIRED:** Every SAS Viya platform deployment contains sas-opendistro. 
 
-For optimal performance, deploying OpenSearch software requires the **vm.max\_map\_count** kernel parameter to be set on the OpenShift nodes running the stateful workloads to ensure there is adequate virtual memory available for use with mmap for accessing the search indices. 
+For optimal performance, deploying OpenSearch software requires the `vm.max\_map\_count` kernel parameter to be set on the OpenShift nodes running the stateful workloads to ensure there is adequate virtual memory available for use with mmap for accessing the search indices. 
 
-There are two methods available to set the **vm.max\_map\_count** kernel parameter:
+There are two methods available to set the `vm.max\_map\_count` kernel parameter:
 
-- Use an init container to add the kernel parameter, which requires the **sas-opendistro** SCC.
-- Use a MachineConfig to add the kernel parameter, which does not require a custom SCC.
+- Use an init container to add the kernel parameter, which requires the `sas-opendistro` SCC.
+- Use a `MachineConfig` to add the kernel parameter, which does not require a custom SCC.
 
 **OPENSEARCH SYSCTL INIT CONTAINER**
 
-If your deployment uses an internal instance of OpenSearch, the **sas-opendistro** SCC is required.
+If your deployment uses an internal instance of OpenSearch, the `sas-opendistro` SCC is required.
 
-Deploying OpenSearch on OpenShift requires changes to a few kernel settings. The sysctl-transformer.yaml file can apply the necessary sysctl parameters to configure the kernel, but it requires the following special privileges: **allowPrivilegeEscalation** option enabled, **allowPrivilegedContainer** option enabled, and **runAsUser** set to **RunAsAny**.
+Deploying OpenSearch on OpenShift requires changes to a few kernel settings. The sysctl-transformer.yaml file can apply the necessary sysctl parameters to configure the kernel, but it requires the following special privileges: `allowPrivilegeEscalation` option enabled, `allowPrivilegedContainer` option enabled, and `runAsUser` set to `RunAsAny`.
 
-Therefore, before you apply the **sas-opendistro-scc.yaml** file, you must modify it to enable these privileges. 
+Therefore, before you apply the `sas-opendistro-scc.yaml` file, you must modify it to enable these privileges. 
 
-***Why the SCC is needed:*** To provide a method to set this kernel argument automatically, the SAS Viya platform includes an optional transformer as part of the internal-elasticsearch overlay that adds an init container to automatically set this parameter. The init container must be run at a privileged level (using both the **privileged = true** and **allowPrivilegeEscalation = true** security context options) since it modifies the kernel parameters of the host. The container terminates after it sets the kernel parameter, and the OpenSearch software will then proceed to start as a non-privileged container.
+***Why the SCC is needed:*** To provide a method to set this kernel argument automatically, the SAS Viya platform includes an optional transformer as part of the internal-elasticsearch overlay that adds an init container to automatically set this parameter. The init container must be run at a privileged level (using both the `privileged = true` and `allowPrivilegeEscalation = true` security context options) since it modifies the kernel parameters of the host. The container terminates after it sets the kernel parameter, and the OpenSearch software will then proceed to start as a non-privileged container.
 
 **OPENSEARCH SYSCTL MACHINECONFIG**
 
-` `If privileged containers are not allowed in your environment, a *MachineConfig* can be used to set the **vm.max\_map\_count** kernel parameter for OpenSearch, as an alternative to using this SCC with the init container. All nodes that run workloads in the [stateful workload class](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm) are affected by this requirement.
+` `If privileged containers are not allowed in your environment, a `MachineConfig` can be used to set the `vm.max\_map\_count` kernel parameter for OpenSearch, as an alternative to using this SCC with the init container. All nodes that run workloads in the [stateful workload class](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm) are affected by this requirement.
 
 Perform the following steps; refer to [**Adding kernel arguments to nodes**](https://docs.openshift.com/container-platform/4.12/nodes/nodes/nodes-nodes-managing.html#nodes-nodes-kernel-arguments_nodes-nodes-jobs) in the OpenShift documentation.
 
-1. List existing **MachineConfig** objects for your OpenShift Container Platform cluster to determine how to label your machine config:
+1. List existing MachineConfig` objects for your OpenShift Container Platform cluster to determine how to label your machine config:
 
    ```oc get machineconfig```
 
-1. Create a **MachineConfig** object file that identifies the kernel argument 
-   (for example, **05-worker-kernelarg-<a name="_hlk133266210"></a>vm.max\_map\_count.yaml**)
+1. Create a `MachineConfig` object file that identifies the kernel argument 
+   (for example, `05-worker-kernelarg-vm.max\_map\_count.yaml`)
 
    ```apiVersion: machineconfiguration.openshift.io/v1
    kind: MachineConfig
    metadata:
    labels:
-machineconfiguration.openshift.io/role: worker
-name: 05-worker-kernelarg-vmmaxmapcount
-spec:
-kernelArguments:
-- vm.max\_map\_count=262144
+   machineconfiguration.openshift.io/role: worker
+   name: 05-worker-kernelarg-vmmaxmapcount
+   spec:
+   kernelArguments:
+   - vm.max\_map\_count=262144
 
 3. Create the new machine config:
 
@@ -332,10 +332,9 @@ You can see that scheduling on each worker node is disabled as the change is bei
 
 4. Check that the kernel argument worked by going to one of the worker nodes and verifying with the sysctl command or by listing the kernel command line arguments (in /proc/cmdline on the host):
 
-   ```oc debug node/vsphere-k685x-worker-4kdtl```
-
-   ```sysctl vm.max\_map\_count```
-   ```exit```
+   ```oc debug node/vsphere-k685x-worker-4kdtl
+   sysctl vm.max\_map\_count
+   exit```
 
 **Example output**
 
