@@ -213,11 +213,15 @@ Use the OpenShift CLI tool (`oc`) to apply the SCC, and to assign the SCC to a s
 
 1. Apply the SCC with the following command:
 
-   ```oc apply -f example-scc.yaml```
+   ```
+   oc apply -f example-scc.yaml
+   ```
 
 1. Bind the SCC to the service account with the following command:
 
-   ```oc -n <name-of-namespace> adm policy add-scc-to-user <SCC Name> -z <Service Account Name>```
+   ```
+   oc -n <name-of-namespace> adm policy add-scc-to-user <SCC Name> -z <Service Account Name>
+   ```
 
 For additional details about SCCs, please see the following:
 
@@ -232,12 +236,12 @@ For additional details about SCCs, please see the following:
 |`sas-cas-server`|**REQUIRED**|CAS with cloud native storage|
 |`cas-server-scc-host-launch`|**Optional**|CAS with host launch storage|
 |`cas-server-scc-sssd`|**Optional**|CAS with a custom SSSD|
-|`sas-opendistro`|**REQUIRED**|<p>Internal instance of OpenSearch</p><p>**NOTE**: A MachineConfig can be used as an alternative to this SCC.</p>|
-|`sas-connect-spawner`|**Optional**|<p>SAS/CONNECT servers launch in the Spawner pod, versus dynamically launched their own pods.</p><p>**NOTE**: Only needed with legacy SAS clients. Current SAS clients use dynamically launched pods. See the [SAS Platform Operations Guide](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n1or76vxaxyq38n162ayf8jqals1), for more information.</p>|
+|`sas-opendistro`|**REQUIRED**|<p>Internal instance of OpenSearch</p><p>**NOTE**: A `MachineConfig` can be used as an alternative to this SCC.</p>|
+|`sas-connect-spawner`|**Optional**|<p>SAS/CONNECT servers launch in the Spawner pod, versus dynamically <br>launched their own pods.</p><p>**NOTE**: Only needed with legacy SAS clients. <br>Current SAS clients use dynamically launched pods. <br>See the [SAS Platform Operations Guide](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n1or76vxaxyq38n162ayf8jqals1), for more information.</p>|
 |`sas-esp-project / nonroot`|**Optional**|SAS Event Stream Processing is included in your deployment|
-|`sas-microanalytic-score`|**Optional**|The sas-micro-analytic-score pod uses NFS volume mounts|
+|`sas-microanalytic-score`|**Optional**|The `sas-micro-analytic-score` pod uses NFS volume mounts|
 |`sas-model-publish-kaniko / anyuid`|**Optional**|The kaniko service is used to publish models|
-|`sas-model-repository`|**Optional**|The sas-model-repository pod uses NFS volume mounts|
+|`sas-model-repository`|**Optional**|The `sas-model-repository` pod uses NFS volume mounts|
 |`sas-programming-environment / sas-watchdog`|**Optional**|SAS Watchdog is included in your deployment|
 |`sas-programming-environment / anyuid` |**Optional**|SAS Watchdog is included in your deployment|
 |`sas-programming-environment / hostmount-anyuid` |**Optional**|SAS Watchdog is included in your deployment, and using hostPath mounts.|
@@ -312,7 +316,9 @@ Perform the following steps; refer to [**Adding kernel arguments to nodes**](htt
 
 1. List existing MachineConfig` objects for your OpenShift Container Platform cluster to determine how to label your machine config:
 
-   ```oc get machineconfig```
+   ```
+   oc get machineconfig
+   ```
 
 1. Create a `MachineConfig` object file that identifies the kernel argument 
    (for example, `05-worker-kernelarg-vm.max_map_count.yaml`)
@@ -331,28 +337,36 @@ Perform the following steps; refer to [**Adding kernel arguments to nodes**](htt
 
 3. Create the new machine config:
 
-   ```oc create -f 05-worker-kernelarg-vm.max_map_count.yaml```
+   ```
+   oc create -f 05-worker-kernelarg-vm.max_map_count.yaml
+   ```
 
 4. Check the machine configs to see that the new one was added:
 
-   ```oc get machineconfig```
+   ```
+   oc get machineconfig
+   ```
 
 4. Check the nodes:
 
-   ```oc get nodes```
+   ```
+   oc get nodes
+   ```
 
 You can see that scheduling on each worker node is disabled as the change is being applied.
 
 4. Check that the kernel argument worked by going to one of the worker nodes and verifying with the sysctl command or by listing the kernel command line arguments (in `/proc/cmdline` on the host):
 
-   ```oc debug node/vsphere-k685x-worker-4kdtl
+   ```
+   oc debug node/vsphere-k685x-worker-4kdtl
    sysctl vm.max_map_count
    exit
    ```
 
    **Example output**
 
-      ```Starting pod/vsphere-k685x-worker-4kdtl-debug ...
+      ```
+      Starting pod/vsphere-k685x-worker-4kdtl-debug ...
       To use host binaries, run 'chroot /host'
       sh-4.2# sysctl vm.max_map_count
       vm.max_map_count = 262144
@@ -384,14 +398,14 @@ Properties associated with the pods in your deployment describe the type of work
 
 The following table summarizes the SAS Viya platform default deployment for each workload class:
 
-|***Default Taints and nodeAffinity Settings per Class***|
-| :- |
-|**Workload Class**|**Default Settings**|
-|CAS workloads|Prefer to schedule on nodes that are labeled: `workload.sas.com/class=cas`<br>Tolerate the taint: `workload.sas.com/class=cas:NoSchedule`|
-|<p>Connect workloads</p><p>**Note:** This workload class is not required if you are using dynamically launched pods.</p>|<p>Prefer to schedule on nodes that are labeled: `workload.sas.com/class=connect`</p><p>Tolerate the taint: `workload.sas.com/class=connect:NoSchedule`</p>|
-|Compute workloads|<p>Prefer to schedule on nodes that are labeled: `workload.sas.com/class=compute`</p><p>Tolerate the taint: `workload.sas.com/class=compute:NoSchedule`</p>|
-|Stateful workloads|<p>Prefer to schedule on nodes that are labeled: `workload.sas.com/class=stateful`</p><p>Tolerate the following taints:</p><p> - `workload.sas.com/class=stateful:NoSchedule`</p><p>- `workload.sas.com/class=stateless:NoSchedule`</p>|
-|Stateless workloads|<p>Prefer to schedule on nodes that are labeled: `workload.sas.com/class=stateless`</p><p>Tolerate the following taints:</p><p> -  `workload.sas.com/class=stateless:NoSchedule`</p><p> - `workload.sas.com/class=stateful:NoSchedule`</p>|
+***Default Taints and nodeAffinity Settings per Class*** 
+| **Workload Class** | **Default Settings** |
+|--------------------|----------------------|
+| CAS workloads | <p>Prefer to schedule on nodes that are labeled: `workload.sas.com/class=cas` </p><p>Tolerate the taint: `workload.sas.com/class=cas:NoSchedule` </p>|
+| <p>Connect workloads</p><p>**Note:** This workload class is not required if you <br>are using dynamically launched pods.</p> | <p>Prefer to schedule on nodes that are labeled: `workload.sas.com/class=connect`</p><p>Tolerate the taint: `workload.sas.com/class=connect:NoSchedule` </p> |
+| Compute workloads | <p>Prefer to schedule on nodes that are labeled: `workload.sas.com/class=compute`</p><p>Tolerate the taint: `workload.sas.com/class=compute:NoSchedule`</p> |
+| Stateful workloads | <p>Prefer to schedule on nodes that are labeled: `workload.sas.com/class=stateful`</p><p>Tolerate the following taints:<br> `workload.sas.com/class=stateful:NoSchedule`, `workload.sas.com/class=stateless:NoSchedule`</p> |
+| Stateless workloads | <p>Prefer to schedule on nodes that are labeled: `workload.sas.com/class=stateless`</p><p>Tolerate the following taints:<br>  `workload.sas.com/class=stateless:NoSchedule`, `workload.sas.com/class=stateful:NoSchedule`</p> |
 
 #### ***Manual Workload Placement Configuration***
 SAS requires that you identify the node or nodes on which CAS pods should be scheduled. SAS further recommends that you identify the nodes on which all classes should be scheduled. Follow the commands provided in “[Place the Workload on Nodes](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0wj0cyrn1pinen1wcadb0rx6vbm)**”** from the SAS Viya Platform Operations manual to manually configure the nodes with the labels and taints to properly place the workload on the nodes in your deployment.
@@ -445,19 +459,27 @@ Create a `MachineSet` definition YAML file for each SAS Viya workload class need
    Ensure that you set the `<clusterID>` and `<role>` parameter values that apply to your environment.
 1. If you are not sure which value to set for a specific field, you can check an existing machine set from your cluster:
 
-   ```oc get machinesets -n openshift-machine-api```
+   ```
+   oc get machinesets -n openshift-machine-api
+   ```
 
 1. Check values of a specific machine set:
 
-   ```oc get machineset <machineset\_name> -n openshift-machine-api -o yaml```
+   ```
+   oc get machineset <machineset_name> -n openshift-machine-api -o yaml
+   ```
 
 1. Create the new `MachineSet` CR:
 
-   ```oc create -f cas-smp-machineset.yaml```
+   ```
+   oc create -f cas-smp-machineset.yaml
+   ```
 
 1. View the list of machine sets:
 
-   ```oc get machineset -n openshift-machine-api```
+   ```
+   oc get machineset -n openshift-machine-api
+   ```
 
 When the new machine set is available, the DESIRED and CURRENT values match. If the machine set is not available, wait a few minutes and run the command again.
 
@@ -472,7 +494,9 @@ To deploy the cluster autoscaler, you create an instance of the `ClusterAutosca
 1. Create a YAML file for the `ClusterAutoscaler` resource that contains the customized resource definition (for example, `clusterautoscaler.yaml`).
 2. Create the resource in the cluster:
 
-   ```oc create -f clusterautoscaler.yaml```
+   ```
+   oc create -f clusterautoscaler.yaml
+   ```
 
 **IMPORTANT**: Ensure that the `maxNodesTotal` value in the `ClusterAutoscaler` resource definition that you create is large enough to account for the total possible number of machines in your cluster. This value must encompass the number of control plane machines and the possible number of compute machines that you might scale to.
 
@@ -486,7 +510,9 @@ To deploy the machine autoscaler, you create an instance of the `MachineAutosca
 
 1. Create the resource in the cluster:
 
-  ```oc create -f cas-mpp-autoscaler.yaml```
+  ```
+  oc create -f cas-mpp-autoscaler.yaml
+  ```
 
 For more information about defining the `MachineAutoScaler` resource definition, refer to the [OpenShift documentation](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#machine-autoscaler-about_applying-autoscaling).
 
