@@ -63,23 +63,32 @@ In the current iteration of SAS Viya on OpenShift, SAS only supports VMware vSph
 At the time this blog was written, Red Hat OpenShift versions 4.10 - 4.12 are supported for SAS Viya. SAS works to align their SAS Viya Kubernetes support levels with Red Hat OpenShift and typically adds support for the latest OpenShift version updates within 1-2 months of a given OpenShift version release. Additional details are <a name="_int_owinntrs"></a>provided later within this document; for some of the specific OpenShift components that support SAS Viya deployment; but they are <a name="_int_jsjdqbki"></a>provided here, at a high-level:
 
 - **OpenShift Ingress Operator**
-  SAS has specific requirements for forwarding cookies during transaction execution. As such, they used special techniques using the HAProxy to make that happen. So, in this iteration only the OpenShift Ingress Operator is supported. 
+
+   SAS has specific requirements for forwarding cookies during transaction execution. As such, they used special techniques using the HAProxy to make that happen. So, in this iteration only the OpenShift Ingress Operator is supported. 
+   
 - **OpenShift Routes** 
-  SAS prefers the use of native features with the environments with their products, so they take advantage of OpenShift routes.
+
+   SAS prefers the use of native features with the environments with their products, so they take advantage of OpenShift routes.
+   
 - **cert-utils-operator**
-  SAS requires the use of this operator to manage certificates for TLS support and create keystores.
+
+   SAS requires the use of this operator to manage certificates for TLS support and create keystores.
+   
 - **cert-manager**
-  SAS Viya supports two different certificate generators, which are used for enforcing full-stack TLS. The default generator uses OpenSSL and is supplied out-of-the-box by SAS. Alternatively, you can optionally deploy and use cert-manager to generate the certificates used to encrypt the pod-to-pod communication. 
+
+   SAS Viya supports two different certificate generators, which are used for enforcing full-stack TLS. The default generator uses OpenSSL and is supplied out-of-the-box by SAS. Alternatively, you can optionally deploy and use cert-manager to generate the certificates used to encrypt the pod-to-pod communication. 
+   
 - **Security Context Constraints**
-  Security Context Constraints (SCCs) provide permissions to pods and are required to allow them to run. SAS requires several custom SCCs to support SAS Viya Services with OpenShift. The SAS documentation provides information about the required SCCs to help understand their use in your environment and to address any security concerns.  Further details about the required custom SCCs are provided later within this document.
+
+   Security Context Constraints (SCCs) provide permissions to pods and are required to allow them to run. SAS requires several custom SCCs to support SAS Viya Services with OpenShift. The SAS documentation provides information about the required SCCs to help understand their use in your environment and to address any security concerns.  Further details about the required custom SCCs are provided later within this document.
 <br></br>
 
 ### **Deployment options – Red Hat OpenShift**
 There are various methods for [installing Red Hat OpenShift Container Platform on VMware vSphere,](https://docs.openshift.com/container-platform/4.12/installing/installing_vsphere/preparing-to-install-on-vsphere.html)  including:
 
-- _*Installer-provisioned infrastructure*_ (IPI) installation, which allows the installation program to pre-configure and automate the provisioning of the required resources.
-- The [_*Assisted Installer*_,](https://docs.openshift.com/container-platform/4.12/installing/installing_on_prem_assisted/installing-on-prem-assisted.html) which <a name="_int_0dxvuolc"></a>provides a user-friendly installation solution offered directly from the [Red Hat Hybrid Cloud Console.](https://console.redhat.com/openshift/assisted-installer/clusters/~new)
-- _*User-provisioned infrastructure*_ (UPI) installation, which provides a manual type of installation with the most control over the installation and configuration process.
+- _Installer-provisioned infrastructure_ (IPI) installation, which allows the installation program to pre-configure and automate the provisioning of the required resources.
+- The [_Assisted Installer_,](https://docs.openshift.com/container-platform/4.12/installing/installing_on_prem_assisted/installing-on-prem-assisted.html) which <a name="_int_0dxvuolc"></a>provides a user-friendly installation solution offered directly from the [Red Hat Hybrid Cloud Console.](https://console.redhat.com/openshift/assisted-installer/clusters/~new)
+- _User-provisioned infrastructure_ (UPI) installation, which provides a manual type of installation with the most control over the installation and configuration process.
 
 An IPI installation results in an OCP cluster with the vSphere cloud provider configuration settings from the installation, which enables additional automation and dynamic provisioning after installation:
 
@@ -87,7 +96,7 @@ An IPI installation results in an OCP cluster with the vSphere cloud provider co
 - [Host Node management for Node pools using MachineSets](https://docs.openshift.com/container-platform/4.12/machine_management/index.html).
 - [Autoscaling Nodes using the MachineAutoScaler and ClusterAutoScaler operators](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html). 
 
-Information about configuring these capabilities is supplied later within this document.
+Information about configuring these capabilities is supplied within Part 2 of this document.
 
 An [OpenShift installation on VMware vSphere](https://docs.openshift.com/container-platform/4.12/installing/installing_vsphere/preparing-to-install-on-vsphere.html) using the UPI or Assisted Installer methods can also be set up [post-installation with the vSphere cloud provider configuration](https://access.redhat.com/documentation/en-us/assisted_installer_for_openshift_container_platform/2022/html-single/assisted_installer_for_openshift_container_platform/index#vsphere-post-installation-configuration_installing-on-vsphere), to provide similar automation and dynamic provisioning capability as an IPI installation. This is out of the scope of this blog.
 <br></br>
@@ -220,18 +229,18 @@ For additional details about SCCs, please see the following:
 
 |**Service Account Name / SCC Name**|**REQUIRED<br>or<br>Optional**|**When needed**|
 | :- | :-: | :- |
-|**sas-cas-server**|**REQUIRED**|CAS with cloud native storage|
-|**cas-server-scc-host-launch**|**Optional**|CAS with host launch storage|
-|**cas-server-scc-sssd**|**Optional**|CAS with a custom SSSD|
-|**sas-opendistro**|**REQUIRED**|<p>Internal instance of OpenSearch</p><p>**NOTE**: A MachineConfig can be used as an alternative to this SCC.</p>|
-|**sas-connect-spawner**|**Optional**|<p>SAS/CONNECT servers launch in the Spawner pod, versus dynamically launched their own pods.</p><p>**NOTE**: Only needed with legacy SAS clients. Current SAS clients use dynamically launched pods. See the [SAS Platform Operations Guide](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n1or76vxaxyq38n162ayf8jqals1), for more information.</p>|
-|**sas-esp-project / nonroot**|**Optional**|SAS Event Stream Processing is included in your deployment|
-|**sas-microanalytic-score**|**Optional**|The sas-micro-analytic-score pod uses NFS volume mounts|
-|**sas-model-publish-kaniko / anyuid**|**Optional**|The kaniko service is used to publish models|
-|**sas-model-repository**|**Optional**|The sas-model-repository pod uses NFS volume mounts|
-|**sas-programming-environment / sas-watchdog**|**Optional**|SAS Watchdog is included in your deployment|
-|**sas-programming-environment / anyuid** |**Optional**|SAS Watchdog is included in your deployment|
-|**sas-programming-environment / hostmount-anyuid** |**Optional**|SAS Watchdog is included in your deployment, and using hostPath mounts.|
+|`sas-cas-server`|**REQUIRED**|CAS with cloud native storage|
+|`cas-server-scc-host-launch`|**Optional**|CAS with host launch storage|
+|`cas-server-scc-sssd`|**Optional**|CAS with a custom SSSD|
+|`sas-opendistro`|**REQUIRED**|<p>Internal instance of OpenSearch</p><p>**NOTE**: A MachineConfig can be used as an alternative to this SCC.</p>|
+|`sas-connect-spawner`|**Optional**|<p>SAS/CONNECT servers launch in the Spawner pod, versus dynamically launched their own pods.</p><p>**NOTE**: Only needed with legacy SAS clients. Current SAS clients use dynamically launched pods. See the [SAS Platform Operations Guide](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n1or76vxaxyq38n162ayf8jqals1), for more information.</p>|
+|`sas-esp-project / nonroot`|**Optional**|SAS Event Stream Processing is included in your deployment|
+|`sas-microanalytic-score`|**Optional**|The sas-micro-analytic-score pod uses NFS volume mounts|
+|`sas-model-publish-kaniko / anyuid`|**Optional**|The kaniko service is used to publish models|
+|`sas-model-repository`|**Optional**|The sas-model-repository pod uses NFS volume mounts|
+|`sas-programming-environment / sas-watchdog`|**Optional**|SAS Watchdog is included in your deployment|
+|`sas-programming-environment / anyuid` |**Optional**|SAS Watchdog is included in your deployment|
+|`sas-programming-environment / hostmount-anyuid` |**Optional**|SAS Watchdog is included in your deployment, and using hostPath mounts.|
 
 #### ***sas-cas-server***
 **REQUIRED:** Every deployment on OpenShift must apply one of the SCCs for the CAS server. By default, in a greenfield SAS Viya deployment for a new customer, we expect CAS to use cloud native storage and not need host launch capabilities.  So, at a minimum, the `cas-server-scc` SCC would be applied.
@@ -420,11 +429,11 @@ The following table provides the details about the example definition files prov
 
 |**Workload Class**|**Example MachineSet file**|**Example MachineAutoScaler file**|
 | :- | :- | :- |
-|<p>CAS workloads (SMP)</p><p>CAS workloads (MPP)</p>|<p>**cas-smp-machineset.yaml**</p><p>**cas-mpp-machineset.yaml**</p><p></p>|<p>**cas-smp-autoscaler.yaml**</p><p>**cas-mpp-autoscaler.yaml**</p>|
-|Connect workloads|**connect-machineset.yaml**|**connect-autoscaler.yaml**|
-|Compute workloads|**compute-machineset.yaml**|**compute-autoscaler.yaml**|
-|Stateful workloads|**stateful-machineset.yaml**|**stateful-autoscaler.yaml**|
-|Stateless workloads|**stateless-machineset.yaml**|**stateless-autoscaler.yaml**|
+|<p>CAS workloads (SMP)</p><p>CAS workloads (MPP)</p>|<p>`cas-smp-machineset.yaml`</p><p>`cas-mpp-machineset.yaml`</p><p></p>|<p>`cas-smp-autoscaler.yaml`</p><p>`cas-mpp-autoscaler.yaml`</p>|
+|Connect workloads|`connect-machineset.yaml`|`connect-autoscaler.yaml`|
+|Compute workloads|`compute-machineset.yaml`|`compute-autoscaler.yaml`|
+|Stateful workloads|`stateful-machineset.yaml`|`stateful-autoscaler.yaml`|
+|Stateless workloads|`stateless-machineset.yaml`|`stateless-autoscaler.yaml`|
 
 
 #### ***MachineSet***
