@@ -28,9 +28,9 @@ SAS Viya is an integrated platform that covers the entire AI and Analytics lifec
 
 Moving SAS Viya to OpenShift gives Viya unprecedented scalability that was unavailable in previous SAS releases. SAS takes advantage of the scalability by breaking Viya down into different workload types and recommends assigning each workload to a class of nodes, i.e., to a Machine Pool. This ensures that the proper resources are available to specific workloads. The following diagram shows the separation of workloads to pools.
 
-<img width="1089" alt="image" src="https://user-images.githubusercontent.com/48925593/235716577-0ff2874b-3b9f-4404-b5e4-82961a4f6904.png">
+![](sas-viya-reference-architecture-ocp.png)
 
-_<div align="center">Figure 1</div>_
+**_<div align="center">Figure 1</div>_**
 
 Note that the setup of pools is not mandatory and there might be good reasons to ignore the recommendation if the existing cluster infrastructure is not suitable for such a split. The placement of SAS workload classes can be enabled by applying predefined Kubernetes node labels and node taints.
 
@@ -112,9 +112,9 @@ The SAS Viya Deployment Operator provides an automated method for deploying and 
 As part of a DevOps pipeline, the operator can largely automate deployments and deployment updates, reducing dependency on the OpenShift administration team. For example, the SAS Deployment Operator nicely integrates with OpenShift GitOps, which are is a component of the Red Hat OpenShift Container Platform (OCP) that provide a turnkey CI/CD automation solution for continuous integration (CI) and continuous delivery (CD) tasks. OpenShift GitOps can be used to provide additional automation for a SAS Viya deployment by monitoring a Git repository for changes to the SAS CR manifest and automatically syncing its’ contents to the cluster. Pushing the CR manifest to the Git repository then triggers a sync with OpenShift GitOps. The CR will be deployed to Kubernetes, which in turn triggers the Operator and the deployment to start. Figure 2 illustrates this workflow:
 
 
-<img width="1089" alt="image" src="https://user-images.githubusercontent.com/48925593/236285467-6da02e6e-ae3d-4e5b-90d1-abab32ad7934.png">
+![](sas-viya-deployment-operator-ocp.png)
 
-_<div align="center">Figure 2</div>_
+**_<div align="center">Figure 2</div>_**
 
 For additional information, see the SAS blog titled “[Deploying SAS Viya using Red Hat OpenShift GitOps](https://communities.sas.com/t5/SAS-Communities-Library/Deploying-SAS-Viya-using-Red-Hat-OpenShift-GitOps/ta-p/780616)”
 
