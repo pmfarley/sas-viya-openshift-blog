@@ -1,4 +1,4 @@
-# SAS Viya on Red Hat OpenShift  – Part 1: Reference Architecture and Deployment considerations
+# SAS Viya on Red Hat OpenShift  – Part 1: Reference Architecture and Deployment Considerations
 **TARGET DATE:** _May 19, 2023 | by Patrick Farley and Hans-Joachim Edert_
 
 **<div align="center">DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY  -  DRAFT COPY</div>**   
