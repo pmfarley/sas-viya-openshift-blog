@@ -102,14 +102,14 @@ There are several approaches for deploying SAS Viya on Red Hat OpenShift, which 
 #### ***1. Manual deployment***
 After purchasing a SAS Viya license, customers receive a set of deployment templates (known as the “deployment assets” tarball) in YAML format which they need to modify to create the final deployment manifest (usually called “site.yaml”). SAS uses the `kustomize` tool for modifying the templates. Common customizations include the definition of a mirror repository, configuring TLS, high-availability, storage and other site-specific settings. The final deployment manifest can then be submitted to Kubernetes using multiple `kubectl` commands. 
 
-**CLUSTER ADMIN:** Note that the final manifest contains objects which require elevated privileges for deployment, for example Custom Resource Definitions (CRDs), `PodTemplates`, `ClusterRoleBindings` etc., which means that in most cases the SAS project team will need support from the OpenShift administration team to carry out the deployment. SAS has tagged all resources that need to be deployed according to the required permissions. This enables task sharing between the project team (with namespace-admin permissions) and the administration team (with cluster-admin permissions). However, it is important to keep in mind that this dependency will come up again with later updates for example.
+_CLUSTER ADMIN:_ Note that the final manifest contains objects which require elevated privileges for deployment, for example Custom Resource Definitions (CRDs), `PodTemplates`, `ClusterRoleBindings` etc., which means that in most cases the SAS project team will need support from the OpenShift administration team to carry out the deployment. SAS has tagged all resources that need to be deployed according to the required permissions. This enables task sharing between the project team (with namespace-admin permissions) and the administration team (with cluster-admin permissions). However, it is important to keep in mind that this dependency will come up again with later updates for example.
 
 #### ***2. SAS Deployment Operator***
 For that reason, using the SAS Deployment Operator might provide a better solution. SAS provides an operator for deploying and updating SAS Viya. The SAS Deployment Operator is not (yet) a certified operator so it will not be found in the OperatorHub or in the Red Hat Marketplace.
 
 The SAS Viya Deployment Operator provides an automated method for deploying and updating the SAS Viya environments. It runs in the OpenShift cluster and watches for declarative representations of SAS Viya deployments in the form of Custom Resources (CRs) of the type `SASDeployment`. When a new `SASDeployment` CR is created or an existing CR is updated, the Deployment Operator performs an initial deployment or updates an existing deployment to match the state that is described in the CR. A single instance of the operator can manage all SAS Viya deployments in the cluster.
 
-**CLUSTER ADMIN:** As part of a DevOps pipeline, the operator can largely automate deployments and deployment updates, reducing dependency on the OpenShift administration team. For example, the SAS Deployment Operator nicely integrates with OpenShift GitOps, which are is a component of the Red Hat OpenShift Container Platform (OCP) that provide a turnkey CI/CD automation solution for continuous integration (CI) and continuous delivery (CD) tasks. OpenShift GitOps can be used to provide additional automation for a SAS Viya deployment by monitoring a Git repository for changes to the SAS CR manifest and automatically syncing its’ contents to the cluster. Pushing the CR manifest to the Git repository then triggers a sync with OpenShift GitOps. The CR will be deployed to Kubernetes, which in turn triggers the Operator and the deployment to start. Figure 2 illustrates this workflow:
+_CLUSTER ADMIN:_ As part of a DevOps pipeline, the operator can largely automate deployments and deployment updates, reducing dependency on the OpenShift administration team. For example, the SAS Deployment Operator nicely integrates with OpenShift GitOps, which are is a component of the Red Hat OpenShift Container Platform (OCP) that provide a turnkey CI/CD automation solution for continuous integration (CI) and continuous delivery (CD) tasks. OpenShift GitOps can be used to provide additional automation for a SAS Viya deployment by monitoring a Git repository for changes to the SAS CR manifest and automatically syncing its’ contents to the cluster. Pushing the CR manifest to the Git repository then triggers a sync with OpenShift GitOps. The CR will be deployed to Kubernetes, which in turn triggers the Operator and the deployment to start. Figure 2 illustrates this workflow:
 
 ![](sas-viya-deployment-operator-ocp.png)
 
@@ -126,6 +126,8 @@ For more information, check the blog article titled “[New SAS Viya Deployment 
 ### **Conclusion**
 … We hope you found this blog helpful … Stay tuned for the second installment where we will be discussing security and storage considerations.
 
+<br></br>
+<br></br>
 
 # SAS Viya on Red Hat OpenShift – Part 2: Security and storage considerations
 **TARGET DATE:** _May 19, 2023 | by Patrick Farley and Hans-Joachim Edert_
@@ -194,7 +196,7 @@ In a Red Hat OpenShift environment, each Kubernetes pod is started with a defaul
 
 Most SAS Viya platform pods are deployed in the `restricted` SCC, which applies the highest level of security. Two other predefined SCCs are used by default. In addition, a few custom SCCs are either required by essential SAS Viya platform components, such as the CAS server, or optional with specific SAS offerings that might be included in your software order.
 
-**CLUSTER ADMIN:** A SCC acts like a request for privileges from the OpenShift API. In an OpenShift environment, each Kubernetes pod starts up with an association with a specific SCC, which limits the privileges that the pod can request. 
+_CLUSTER ADMIN:_ A SCC acts like a request for privileges from the OpenShift API. In an OpenShift environment, each Kubernetes pod starts up with an association with a specific SCC, which limits the privileges that the pod can request. 
 
 An administrator configures each pod to run with a certain SCC by granting the corresponding service account for that pod access to the SCC. For example, if pod A requires its own SCC, an administrator must grant access to that SCC for the service account under which pod A is launched. 
 
@@ -266,7 +268,7 @@ The `nonroot` SCC is a standard SCC defined by OpenShift. For more information a
 #### ***sas-model-publish-kaniko***
 **OPTIONAL:** To determine if the `sas-model-publish-kaniko` service account exists in your deployment, check for a README file in your deployment assets at `$deploy/sas-bases/examples/sas-model-publish/kaniko/README.md`. If the README file is present and you plan to publish models with SAS Model Manager or SAS Intelligent Decisioning to containers using kaniko, you must bind the `sas-model-publish-kaniko` service account to the `anyuid` SCC. The `anyuid` SCC is a standard SCC defined by OpenShift. 
 
-For more information about the `anyuid` SCC, see [Managing SCCs in OpenShift]. 
+For more information about the `anyuid` SCC, see [Managing SCCs in OpenShift](https://cloud.redhat.com/blog/managing-sccs-in-openshift). 
 
 #### ***sas-model-repository***
 **OPTIONAL:** To determine if the `sas-model-repository` SCC is needed for your deployment, check for a README file in your deployment assets at `$deploy/sas-bases/overlays/sas-model-repository/service-account/README.md`. If the README file is present, then the SCC is available and might be required for deployments on OpenShift.
@@ -332,7 +334,7 @@ Perform the following steps; refer to [**Adding kernel arguments to nodes**](htt
 
 You can see that scheduling on each worker node is disabled as the change is being applied.
 
-4. Check that the kernel argument worked by going to one of the worker nodes and verifying with the sysctl command or by listing the kernel command line arguments (in /proc/cmdline on the host):
+4. Check that the kernel argument worked by going to one of the worker nodes and verifying with the sysctl command or by listing the kernel command line arguments (in `/proc/cmdline` on the host):
 
    ```oc debug node/vsphere-k685x-worker-4kdtl
    sysctl vm.max_map_count
@@ -431,7 +433,7 @@ To deploy the machine set, you create an instance of the `MachineSet` resource.
 Create a `MachineSet` definition YAML file for each SAS Viya workload class needed, using the examples available above.
 
 1. Create a YAML file for the `MachineSet` resource that contains the customized resource definition for your selected SAS Viya workload class, using the examples available from the repo above.
-   Ensure that you set the <`clusterID`> and <`role`> parameter values that apply to your environment.
+   Ensure that you set the `<clusterID>` and `<role>` parameter values that apply to your environment.
 1. If you are not sure which value to set for a specific field, you can check an existing machine set from your cluster:
 
    ```oc get machinesets -n openshift-machine-api```
@@ -469,15 +471,15 @@ For more information about defining the `ClusterAutoscaler` resource definition
 
 
 #### ***MachineAutoScaler***
-To deploy the machine autoscaler, you create an instance of the *MachineAutoscaler* resource.
+To deploy the machine autoscaler, you create an instance of the `MachineAutoscaler` resource.
 
-1. Create a YAML file for the *MachineAutoscaler* resource that contains the customized resource definition (for example, <a name="_hlk133580713"></a>**cas-mpp-autoscaler.yaml**).
+1. Create a YAML file for the `MachineAutoscaler` resource that contains the customized resource definition (for example, `cas-mpp-autoscaler.yaml`).
 
 1. Create the resource in the cluster:
 
   ```oc create -f cas-mpp-autoscaler.yaml```
 
-For more information about defining the *MachineAutoScaler* resource definition, refer to the [OpenShift documentation](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#machine-autoscaler-about_applying-autoscaling).
+For more information about defining the `MachineAutoScaler` resource definition, refer to the [OpenShift documentation](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#machine-autoscaler-about_applying-autoscaling).
 
 
 <br></br>
@@ -496,29 +498,4 @@ For additional information, see the SAS blogs titled “
 
 [SAS Viya Temporary Storage on Red Hat OpenShift – Part 2: CAS DISK CACHE](https://communities.sas.com/t5/SAS-Communities-Library/SAS-Viya-Temporary-Storage-on-Red-Hat-OpenShift-Part-2-CAS-DISK/ta-p/859250)
 
-DOC DRAFT END
 
-
-
-**Background information for blog discussed in 2022…**
-…the focus would be on the security topics, especially on the bits where we need additional privileges which are typically not given to project owners on OCP.
-
-- I would start with saying that SAS Viya is a rather large software stack, not a single application
-- Most of the stack is based on microservices, but there are other components as well: a database (postgres), a key-value store (consul), a search engine (OpenSearch), a message queue (RabbitMQ) and some runtime engines written by SAS (the SAS compute and the CAS engines)
-- We try to “play by the book” when it comes to deployments on OpenShift:
-  - Everything is deployed into a given target namespace (when possible)
-  - We use operators wherever it makes sense (for operating the non-microservice components and for managing the software lifecycle)
-  - Which is a great technology for us to lower the administration efforts of the platform (especially when considering the size)
-  - Our components use the restricted SCC (Security Context Constraints) wherever possible
-  - Which again is great in eliminating many potential attack vectors for most of our components (a lot of stuff that you do not have to worry about)
-  - Most components can be deployed using a non-cluster-admin account
-  - Which supports the common operations model found at customer sites, where OCP (OpenShift Container Platform) admins usually create the projects and provide project-level permissions to their internal clients
-- There are some exceptions – some cannot be avoided due to Kubernetes standards; others are required because we need to support traditional programming language capabilities (backwards compatibility)
-  - We use operators and therefore need to deploy some global resources (CRDs)
-  - Some service accounts require a custom SCC, e.g., because we need to be able to pin the container process to a specific (non-root) id
-  - Unfortunately, this impacts the operations model mentioned above – we do need support from OCP admins to be able to deploy … The extent of that extra support is documented and separated from the rest.
-  - We are trying to minimize the extent of these non-standard situations. So far, we have removed one requirement completely and lowered the “severity” in two more cases. This is ongoing work, but honestly speaking we might not be able to come down to “zero” …
-
-For me, the main conclusion for all of this would be that we try our best to stick to the best practices provided by Red Hat. There are some cases where we must leave the path but even in these situations, we still follow Red Hat’s guidelines.
-
-[Managing SCCs in OpenShift]: https://cloud.redhat.com/blog/managing-sccs-in-openshift "opens in a new browser tab"
