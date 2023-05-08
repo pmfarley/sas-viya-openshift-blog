@@ -387,11 +387,11 @@ The following table summarizes the SAS Viya platform default deployment for each
 |***Default Taints and nodeAffinity Settings per Class***|
 | :- |
 |**Workload Class**|**Default Settings**|
-|CAS workloads|<p>Prefer to schedule on nodes that are labeled: <br>**workload.sas.com/class=cas**</p><p>Tolerate the taint: <br>**workload.sas.com/class=cas:NoSchedule**</p>|
-|<p>Connect workloads</p><p>**Note:** This workload class is not required if you are using dynamically launched pods.</p>|<p>Prefer to schedule on nodes that are labeled: <br>**workload.sas.com/class=connect**</p><p>Tolerate the taint: <br>**workload.sas.com/class=connect:NoSchedule**</p>|
-|Compute workloads|<p>Prefer to schedule on nodes that are labeled: <br>**workload.sas.com/class=compute**</p><p>Tolerate the taint: <br>**workload.sas.com/class=compute:NoSchedule**</p>|
-|Stateful workloads|<p>Prefer to schedule on nodes that are labeled: <br>**workload.sas.com/class=stateful**</p><p>Tolerate the following taints:</p><p>- **workload.sas.com/class=stateful:NoSchedule**</p><p>- **workload.sas.com/class=stateless:NoSchedule**</p>|
-|Stateless workloads|<p>Prefer to schedule on nodes that are labeled: <br>**workload.sas.com/class=<a name="_hlk133860260"></a>stateless**</p><p>Tolerate the following taints:</p><p>- **workload.sas.com/class=stateless:NoSchedule**</p><p>- **workload.sas.com/class=stateful:NoSchedule**</p>|
+|CAS workloads|Prefer to schedule on nodes that are labeled: `workload.sas.com/class=cas`<br>Tolerate the taint: `workload.sas.com/class=cas:NoSchedule`|
+|<p>Connect workloads</p><p>**Note:** This workload class is not required if you are using dynamically launched pods.</p>|<p>Prefer to schedule on nodes that are labeled: `workload.sas.com/class=connect`</p><p>Tolerate the taint: `workload.sas.com/class=connect:NoSchedule`</p>|
+|Compute workloads|<p>Prefer to schedule on nodes that are labeled: `workload.sas.com/class=compute`</p><p>Tolerate the taint: `workload.sas.com/class=compute:NoSchedule`</p>|
+|Stateful workloads|<p>Prefer to schedule on nodes that are labeled: `workload.sas.com/class=stateful`</p><p>Tolerate the following taints:</p><p> - `workload.sas.com/class=stateful:NoSchedule`</p><p>- `workload.sas.com/class=stateless:NoSchedule`</p>|
+|Stateless workloads|<p>Prefer to schedule on nodes that are labeled: `workload.sas.com/class=stateless`</p><p>Tolerate the following taints:</p><p> -  `workload.sas.com/class=stateless:NoSchedule`</p><p> - `workload.sas.com/class=stateful:NoSchedule`</p>|
 
 #### ***Manual Workload Placement Configuration***
 SAS requires that you identify the node or nodes on which CAS pods should be scheduled. SAS further recommends that you identify the nodes on which all classes should be scheduled. Follow the commands provided in “[Place the Workload on Nodes](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0wj0cyrn1pinen1wcadb0rx6vbm)**”** from the SAS Viya Platform Operations manual to manually configure the nodes with the labels and taints to properly place the workload on the nodes in your deployment.
