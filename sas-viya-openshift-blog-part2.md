@@ -106,9 +106,11 @@ For additional details about SCCs, please see the following:
 |`sas-programming-environment / anyuid` |**Optional**|SAS Watchdog is included in your deployment|
 |`sas-programming-environment / hostmount-anyuid` |**Optional**|SAS Watchdog is included in your deployment, and using hostPath mounts.|
 
-#### ***sas-cas-server***
+#### `sas-cas-server`
 **REQUIRED:** Every deployment on OpenShift must apply one of the SCCs for the CAS server. By default, in a greenfield SAS Viya deployment for a new customer, we expect CAS to use cloud native storage and not need host launch capabilities.  So, at a minimum, the `cas-server-scc` SCC would be applied.
 
+#### `cas-server-scc-host-launch`
+#### `cas-server-scc-sssd`
 **OPTIONAL:** If host launch or SSSD are required, then one of those related SCCs would be need to be applied in place of the `cas-server-scc` SCC.  Typically, host launch is only needed for existing SAS customers who are migrating to the cloud and already have access controls to their data defined using host users and groups.
 
 If the custom group "CAS Host Account Required" is used, apply the `cas-server-scc-host-launch` SCC. 
@@ -121,34 +123,34 @@ If the CAS server is configured to use a custom SSSD, apply the `cas-server-scc-
 - The CHOWN capability is necessary to support Kerberos execution, which requires modification of the ownership of the cache file that is created by a direct Kerberos connection. By default, the cache file is owned by runAsUser/runAsGroup identities, but in order to support Kerberos, it must be owned by the user’s host identity.
 
 
-#### ***sas-connect-spawner***
+#### `sas-connect-spawner`
 **OPTIONAL:** By default, no SCC is required for SAS/CONNECT and you can skip this item. The SCC is required only if you intend to launch your SAS/CONNECT servers in the Spawner pod, rather than in their own pods. 
 
 ***Why the SCC is needed*:** When launching SAS/CONNECT servers in the Spawner pod, the SAS/CONNECT Launcher must be able to launch the SAS/CONNECT Server under end user identity.
 
-#### ***sas-esp-project***
+#### `sas-esp-project`
 **OPTIONAL:** To determine if your deployment includes SAS Event Stream Processing, look for it in the "License Information" section of your Software Order Email (SOE) for the list of products that are included in your order. If your SOE is unavailable, look for `$deploy/sas-bases/examples/sas-esp-operator` in your deployment assets. If that directory exists, then your deployment includes SAS Event Stream Processing. If it does not exist, skip this SCC.
 
 To run SAS Event Stream Processing projects with a user other than `sas`, you must bind the `sas-esp-project` service account to the `nonroot` SCC.
 
 The `nonroot` SCC is a standard SCC defined by OpenShift. For more information about the `nonroot` SCC, see [Managing SCCs in OpenShift](https://cloud.redhat.com/blog/managing-sccs-in-openshift).
 
-#### ***sas-microanalytic-score***
+#### `sas-microanalytic-score`
 **OPTIONAL:** To determine if the `sas-microanalytic-score` SCC is needed for your deployment, check for a README file in your deployment assets at `$deploy/sas-bases/overlays/sas-microanalytic-score/service-account/README.md`. If the README file is present, then the SCC is available for deployments on OpenShift.
 
 ***Why the SCC is needed:*** Security context constraints are required in an OpenShift cluster if the `sas-micro-analytic-score` pod needs to mount an NFS volume. If the Python environment is made available through an NFS mount, the service account requires NFS volume mounting privileges.
 
-#### ***sas-model-publish-kaniko***
+#### `sas-model-publish-kaniko`
 **OPTIONAL:** To determine if the `sas-model-publish-kaniko` service account exists in your deployment, check for a README file in your deployment assets at `$deploy/sas-bases/examples/sas-model-publish/kaniko/README.md`. If the README file is present and you plan to publish models with SAS Model Manager or SAS Intelligent Decisioning to containers using kaniko, you must bind the `sas-model-publish-kaniko` service account to the `anyuid` SCC. The `anyuid` SCC is a standard SCC defined by OpenShift. 
 
 For more information about the `anyuid` SCC, see [Managing SCCs in OpenShift](https://cloud.redhat.com/blog/managing-sccs-in-openshift). 
 
-#### ***sas-model-repository***
+#### `sas-model-repository`
 **OPTIONAL:** To determine if the `sas-model-repository` SCC is needed for your deployment, check for a README file in your deployment assets at `$deploy/sas-bases/overlays/sas-model-repository/service-account/README.md`. If the README file is present, then the SCC is available and might be required for deployments on OpenShift.
 
 ***Why the SCC is needed:*** The `sas-model-repository` pod requires a service account with privileges if the Python environment is made available through an NFS mount. NFS volumes are not permitted in the `restricted` SCC, so an SCC that has NFS in the allowed volumes section is required.
 
-#### ***sas-opendistro***
+#### `sas-opendistro`
 **REQUIRED:** Every SAS Viya platform deployment contains sas-opendistro. 
 
 For optimal performance, deploying OpenSearch software requires the `vm.max_map_count` kernel parameter to be set on the OpenShift nodes running the stateful workloads to ensure there is adequate virtual memory available for use with mmap for accessing the search indices. 
@@ -235,7 +237,7 @@ You can see that scheduling on each worker node is disabled as the change is bei
 
    If listing the /proc/cmdline file, you should see the `vm.max_map_count=262144` argument added to the other kernel arguments.
 
-#### ***sas-watchdog-scc***
+#### `sas-watchdog-scc`
 **OPTIONAL:** SAS Watchdog is included in every SAS Viya platform deployment. If you choose to deploy SAS Watchdog, the SCC is required. 
 
 ***Why the SCC is needed:*** SAS Watchdog monitors processes to ensure that they comply with the terms of LOCKDOWN system option. It emulates the restrictions imposed by LOCKDOWN by restricting access only to files that exist in folders that are allowed by LOCKDOWN. It therefore requires elevated privileges provided by the custom SCC.
