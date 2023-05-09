@@ -130,9 +130,27 @@ The `sas-orchestration` utility offers the flexibility of both worlds: as a cont
 
 For more information, check the blog article titled “[New SAS Viya Deployment Methods](https://communities.sas.com/t5/SAS-Communities-Library/New-SAS-Viya-Deployment-Methods/ta-p/856206)”.
 
+### Performing a SAS Viya deployment from a process perspective
+It has probably already become clear that deploying SAS Viya is a “team sport activity” due to the size and complexity of the software stack. Typically, project teams on OpenShift are granted namespace-local, but not cluster-wide permissions by the OCP admin team (“admin” vs “cluster-admin” role). We’ll provide more details on the security requirements later within this document, but in short it means that the SAS project team will be lacking the necessary authorizations to carry out a deployment independently.
+
+Based on our experiences with previous deployments at customer sites, we found the following process approach to be helpful. For the sake of this blog, we’re describing the process for a manual deployment:
+
+<img width="1089" alt="image" src="deployment-process-chevron-diagram.png">
+
+**_<div align="center">Figure 3</div>_**
+
+The deployment process can be segmented into three phases (planning, preparing, performing) with separate tasks for the two main actors, the SAS project team (e.g. local SAS administrators and system engineers from SAS Institute) and the OpenShift administration team.
+
+PLANNING: it’s usually a good idea to start with a joint workshop where the SAS team gives a technical overview about SAS Viya to the OCP administrators. This is where topics such as security, sizing, storage, networking etc. need to be discussed. 
+
+PREPARATION: the second task typically is in the hands of the OCP administrators: they need to review the requirements and prepare the project setup. The SAS team can then start preparing the deployment manifest (basically a YAML file) which contains site-specific information (such as the DNS name or the supplemental-groups value which is specific to the project/namespace).
+
+PERFORMING: once the deployment manifests are ready to be submitted, both teams need to collaborate to submit the manifests. While the OpenShift administrators can focus on resources which require elevated permissions (like custom SCCs or CustomResourceDefinitions), the SAS project team will handle all the resources with namespace scope. The main deployment manifest contains predefined selectors that allow to make this distinction between.
+
+
 <br></br>
-### **Conclusion**
-… We hope you found this blog helpful … Stay tuned for the second installment where we will be discussing security and storage considerations.
+## **Conclusion**
+With that we’d like to conclude this first part of our blog. We hope you found it helpful to provide you with the basic know-how you’ll need to support your project team in deploying SAS Viya on OpenShift … Stay tuned for the second installment where we will be discussing security and storage considerations.
 
 <br></br>
 <br></br>
