@@ -56,7 +56,9 @@ The commodity services are basically the metadata management and storage service
 
 ## **Core Platform**
 In the current iteration of SAS Viya on OpenShift, SAS only supports VMware vSphere 7.0 Update 1 or later as the deployment platform. The details of VMware configuration will not be covered in this document with the assumption that VMware vSphere is well known in most environments. 
+
 At the time of this document, BareMetal is on the roadmap as an alternative for on-premise deployments.  When deployed on a different infrastructure provider, such as Azure, AWS, Google or BareMetal, SAS Viya runs under the “[SAS Support for Alternative Kubernetes Distributions](https://support.sas.com/en/technical-support/services-policies.html#k8s)” policy.
+
 At the time this blog was written, Red Hat OpenShift versions 4.10 - 4.12 are supported for SAS Viya. SAS works to align their SAS Viya Kubernetes support levels with Red Hat OpenShift and typically adds support for the latest OpenShift version updates within 1-2 months of a given OpenShift version release. Additional details about some of the specific OpenShift components that support the SAS Viya deployment are provided in Part 2 of this document, so we only want to provide a high-level overview here:
 
 - **OpenShift Ingress Operator**
