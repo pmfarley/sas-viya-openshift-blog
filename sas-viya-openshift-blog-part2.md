@@ -55,8 +55,8 @@ The following table gives an overview of all cases where a custom SCC (or an SCC
 |**SAS SERVICE** | **SERVICE ACCOUNT NAME / SCC NAME** |**REQUIRED<br>or<br>OPTIONAL**|**WHEN NEEDED**|
 | :- | :- | :-: | :- | 
 | **CAS SERVER** \* | `sas-cas-server`*|**REQUIRED**|CAS server needs to access cloud native storage|
-| |`cas-server-scc-host-launch`|**Optional**|CAS server runs in host launch configuration|
-| |`cas-server-scc-sssd`|**Optional**|CAS server needs additional sssd configuration|
+| |`sas-cas-server-host`|**Optional**|CAS server runs in host launch configuration|
+| |`sas-cas-server-sssd`|**Optional**|CAS server needs additional sssd configuration|
 | **SAS COMPUTE** |`sas-programming-environment / nonroot`** |**REQUIRED**|SAS compute sessions must be launched with specific user/group IDs|
 |  |`sas-programming-environment / hostmount-anyuid`** |**Optional**|SAS compute session needs to access hostPath mounts|
 |  |`sas-programming-environment / sas-watchdog`|**Optional**|LOCKDOWN mode needs to be enforced|
@@ -67,7 +67,7 @@ The following table gives an overview of all cases where a custom SCC (or an SCC
 | **SAS EVENT<br>STREAM<br>PROCESSING** |`sas-esp-project / nonroot`**|**Optional**|If SAS Event Stream Processing is included in your deployment|
 | **OPENSEARCH** |`sas-opendistro`|**Optional**|<p>For optimal performance, deploying OpenSearch software requires changes to a kernel setting</p>|
 
-   \* Every deployment on OpenShift must apply one of the SCCs for the CAS server. By default, in a greenfield SAS Viya deployment for a new customer, we expect CAS to use cloud native storage and not need host launch capabilities.  So, at a minimum, the cas-server-scc SCC would be applied.
+   \* Every deployment on OpenShift must apply one of the SCCs for the CAS server. By default, in a greenfield SAS Viya deployment for a new customer, we expect CAS to use cloud native storage and not need host launch capabilities.  So, at a minimum, the `cas-server-scc` SCC would be applied.
 
    ** These are standard SCCs defined by OpenShift. 
 
@@ -142,27 +142,14 @@ You can see that scheduling on each worker node is disabled as the change is bei
 
 <br></br>
 
-### **Workload Node Placement**
-The SAS Viya platform consists of multiple [Workload Classes](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0jo17lrlk83rsn1vvs2wqmewkt7). Each class of workload has a unique set of attributes that you must consider when planning your deployment. When planning the placement of the workload, it is helpful to think beyond the initial deployment and to also consider the Kubernetes maintenance life cycle.
-
-**IMPORTANT** SAS strongly recommends labeling and tainting all your nodes, especially the CAS nodes. Note, however, that the connect workload class is only required if you are not using dynamically launched pods. For more information about dynamically launched pods, see [connect](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n1or76vxaxyq38n162ayf8jqals1).
-
-Properties associated with the pods in your deployment describe the type of work that they perform. By using the following commands, you can configure where you want each class of pods to run, thereby enabling you to manage the associated workload.
-
-#### ***Manual Workload Placement Configuration***
-SAS requires that you identify the node or nodes on which CAS pods should be scheduled. SAS further recommends that you identify the nodes on which all classes should be scheduled. Follow the commands provided in “[Place the Workload on Nodes](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0wj0cyrn1pinen1wcadb0rx6vbm)**”** from the SAS Viya Platform Operations manual to manually configure the nodes with the labels and taints to properly place the workload on the nodes in your deployment.
-
-#### ***Automated Workload Placement Configuration***
-Red Hat OpenShift provides machine management as an automation method to manage the underlying cloud platform through a machine object, which is a subset of the node object.  This allows for the definition of compute machine sets that can be sized and matched to workloads, and scaled to meet workload demand.
-
-Node labels and taints can be included within the compute `MachineSet` definitions to automate their workload placement configuration at the compute machine creation time.
-
-### **OpenShift Machine Management and Autoscaling**
+## **OpenShift Machine Management**
 You can use machine management to flexibly work with underlying infrastructure of cloud platforms like vSphere to manage the OpenShift Container Platform cluster. You can control the cluster and perform auto-scaling, such as scaling up and down the cluster based on specific workload policies.
 
 The OpenShift Container Platform cluster can horizontally scale up and down when the load increases or decreases. It is important to have a cluster that adapts to changing workloads.
 
 Machine management is implemented as a CRD object that defines a new unique object Kind in the cluster and enables the Kubernetes API server to handle the object’s entire lifecycle. The Machine API Operator provisions the following resources: `Machine`, `MachineSet`, `ClusterAutoScaler`, `MachineAutoScaler`, and `MachineHealthCheck`.
+
+**NOTE**: You must have cluster-admin privileges to perform machine management.
 
 As a cluster administrator, you can perform the following tasks with compute machine sets:
 
@@ -173,29 +160,16 @@ As a cluster administrator, you can perform the following tasks with compute mac
 - [Create infrastructure compute machine sets](https://docs.openshift.com/container-platform/4.12/machine_management/creating-infrastructure-machinesets.html#creating-infrastructure-machinesets).
 - Configure and deploy a [machine health check](https://docs.openshift.com/container-platform/4.12/machine_management/deploying-machine-health-checks.html#deploying-machine-health-checks) to automatically fix damaged machines in a machine pool
 
-Autoscale your cluster to ensure flexibility to changing workloads. To [autoscale](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#applying-autoscaling) your OpenShift Container Platform cluster, you must first deploy a cluster autoscaler, and then deploy a machine autoscaler for each <a name="_int_jvmpgk2v"></a>compute machine set. 
+Red Hat OpenShift provides machine management as an automation method for managing the underlying cloud platform through a machine object, which is a subset of the node object.  This allows for the definition of compute machine sets that can be sized and matched to workload classes, and scaled to meet workload demand.
 
-- The [*cluster autoscaler*](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#cluster-autoscaler-about_applying-autoscaling) increases and decreases the size of the cluster based on deployment needs. 
-- The [*machine autoscaler*](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#machine-autoscaler-about_applying-autoscaling) adjusts the number of machines in the machine sets that you deploy in your OpenShift Container Platform cluster.
-
-#### ***Example Machine Management YAML Files***
-Example YAML files are available for the `ClusterAutoScaler`, `MachineAutoScaler` and `MachineSet` definitions from the following repo: <https://github.com/redhat-gpst/sas-viya-openshift>
-
-The following table provides the details about the example definition files provided for each of the SAS Viya [Workload Classes](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0jo17lrlk83rsn1vvs2wqmewkt7), based on the [minimum sizing recommendations for OpenShift](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n08i2gqb3vflqxn0zcydkgcood20.htm#p04uz29tbignsin10sk5ld8h6jn0).
-
-|**Workload Class**|**Example MachineSet file**|**Example MachineAutoScaler file**|
-| :- | :- | :- |
-|<p>CAS workloads (SMP)</p><p>CAS workloads (MPP)</p>|<p>`cas-smp-machineset.yaml`</p><p>`cas-mpp-machineset.yaml`</p><p></p>|<p>`cas-smp-autoscaler.yaml`</p><p>`cas-mpp-autoscaler.yaml`</p>|
-|Connect workloads|`connect-machineset.yaml`|`connect-autoscaler.yaml`|
-|Compute workloads|`compute-machineset.yaml`|`compute-autoscaler.yaml`|
-|Stateful workloads|`stateful-machineset.yaml`|`stateful-autoscaler.yaml`|
-|Stateless workloads|`stateless-machineset.yaml`|`stateless-autoscaler.yaml`|
+### 1. Workload Placement
+Part 1 of this blog detailed the SAS Viya workload classes and node pools that can be used to place the workloads on appropriate nodes within the cluster. The [workload placement configuration, from the _SAS Viya Platform Operations_ manual](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0wj0cyrn1pinen1wcadb0rx6vbm), including the node labels and taints can be included within the compute MachineSet definitions so they are preconfigured at compute machine creation time.
 
 
 #### ***MachineSet***
 To deploy the machine set, you create an instance of the `MachineSet` resource.
 
-Create a `MachineSet` definition YAML file for each SAS Viya workload class needed, using the examples available above.
+Create a MachineSet definition YAML file for each SAS Viya workload class needed.  Refer to the examples provided in the section titled “Example Machine Management YAML Files”.
 
 1. Create a YAML file for the `MachineSet` resource that contains the customized resource definition for your selected SAS Viya workload class, using the examples available from the repo above.
    Ensure that you set the `<clusterID>` and `<role>` parameter values that apply to your environment.
@@ -228,6 +202,30 @@ When the new machine set is available, the DESIRED and CURRENT values match.
 For more information about defining `MachineSets`, refer to the [OpenShift documentation](https://docs.openshift.com/container-platform/4.12/machine_management/creating_machinesets/creating-machineset-vsphere.html#machineset-yaml-vsphere_creating-machineset-vsphere).
 
 
+
+<br></br>
+
+### 2. Autoscaling
+Autoscale your cluster to ensure flexibility to changing workloads. To [autoscale](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#applying-autoscaling) your OpenShift Container Platform cluster, you must first deploy a cluster autoscaler, and then deploy a machine autoscaler for each <a name="_int_jvmpgk2v"></a>compute machine set. 
+
+- The [*cluster autoscaler*](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#cluster-autoscaler-about_applying-autoscaling) increases and decreases the size of the cluster based on deployment needs. 
+- The [*machine autoscaler*](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#machine-autoscaler-about_applying-autoscaling) adjusts the number of machines in the machine sets that you deploy in your OpenShift Container Platform cluster.
+
+#### ***Example Machine Management YAML Files***
+Example YAML files are available for the `ClusterAutoScaler`, `MachineAutoScaler` and `MachineSet` definitions from the following repo: <https://github.com/redhat-gpst/sas-viya-openshift>
+
+The following table provides the details about the example definition files provided for each of the SAS Viya [Workload Classes](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0jo17lrlk83rsn1vvs2wqmewkt7), based on the [minimum sizing recommendations for OpenShift](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n08i2gqb3vflqxn0zcydkgcood20.htm#p04uz29tbignsin10sk5ld8h6jn0).
+
+|**Workload Class**|**Example MachineSet file**|**Example MachineAutoScaler file**|
+| :- | :- | :- |
+|<p>CAS workloads (SMP)</p><p>CAS workloads (MPP)</p>|<p>`cas-smp-machineset.yaml`</p><p>`cas-mpp-machineset.yaml`</p><p></p>|<p>`cas-smp-autoscaler.yaml`</p><p>`cas-mpp-autoscaler.yaml`</p>|
+|Connect workloads|`connect-machineset.yaml`|`connect-autoscaler.yaml`|
+|Compute workloads|`compute-machineset.yaml`|`compute-autoscaler.yaml`|
+|Stateful workloads|`stateful-machineset.yaml`|`stateful-autoscaler.yaml`|
+|Stateless workloads|`stateless-machineset.yaml`|`stateless-autoscaler.yaml`|
+
+
+
 #### ***ClusterAutoScaler***
 Applying autoscaling to an OpenShift Container Platform cluster involves deploying a cluster autoscaler and then deploying machine autoscalers for each machine type in your cluster.
 
@@ -240,7 +238,7 @@ To deploy the cluster autoscaler, you create an instance of the `ClusterAutosca
    oc create -f clusterautoscaler.yaml
    ```
 
-**IMPORTANT**: Ensure that the `maxNodesTotal` value in the `ClusterAutoscaler` resource definition that you create is large enough to account for the total possible number of machines in your cluster. This value must encompass the number of control plane machines and the possible number of compute machines that you might scale to.
+**IMPORTANT**: Ensure that the `maxNodesTotal` value in the `ClusterAutoscaler` resource definition that you create is large enough to account for the total possible number of machines in your cluster. This value must encompass the number of control plane machines and the possible number of compute machines that you might scale to across all machine sets.
 
 For more information about defining the `ClusterAutoscaler` resource definition, refer to the [OpenShift documentation](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#cluster-autoscaler-cr_applying-autoscaling).
 
@@ -250,13 +248,14 @@ To deploy the machine autoscaler, you create an instance of the `MachineAutosca
 
 1. Create a YAML file for the `MachineAutoscaler` resource that contains the customized resource definition (for example, `cas-mpp-autoscaler.yaml`).
 
-1. Create the resource in the cluster:
+2. Create the resource in the cluster:
 
   ```
   oc create -f cas-mpp-autoscaler.yaml
   ```
 
 For more information about defining the `MachineAutoScaler` resource definition, refer to the [OpenShift documentation](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#machine-autoscaler-about_applying-autoscaling).
+
 
 
 <br></br>
