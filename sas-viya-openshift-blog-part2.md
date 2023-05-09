@@ -161,6 +161,7 @@ As a cluster administrator, you can perform the following tasks with compute mac
 - Configure and deploy a [machine health check](https://docs.openshift.com/container-platform/4.12/machine_management/deploying-machine-health-checks.html#deploying-machine-health-checks) to automatically fix damaged machines in a machine pool
 
 Red Hat OpenShift provides machine management as an automation method for managing the underlying cloud platform through a machine object, which is a subset of the node object.  This allows for the definition of compute machine sets that can be sized and matched to workload classes, and scaled to meet workload demand.
+<br></br>
 
 ### 1. Workload Placement
 Part 1 of this blog detailed the SAS Viya workload classes and node pools that can be used to place the workloads on appropriate nodes within the cluster. The [workload placement configuration, from the _SAS Viya Platform Operations_ manual](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0wj0cyrn1pinen1wcadb0rx6vbm), including the node labels and taints can be included within the compute MachineSet definitions so they are preconfigured at compute machine creation time.
@@ -241,6 +242,7 @@ To deploy the machine autoscaler, you create an instance of the `MachineAutosca
   ```
 
 For more information about defining the `MachineAutoScaler` resource definition, refer to the [OpenShift documentation](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#machine-autoscaler-about_applying-autoscaling).
+
 
 #### ***Example Machine Management YAML Files***
 Example YAML files are available for the `ClusterAutoScaler`, `MachineAutoScaler` and `MachineSet` definitions from the following repo: <https://github.com/redhat-gpst/sas-viya-openshift>
