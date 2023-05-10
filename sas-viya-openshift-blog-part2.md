@@ -266,9 +266,9 @@ The following table provides the details about the example definition files prov
 ### **SAS Viya Customization**
 
 #### ***Cloud Native Storage Integration***
-OpenShift on VMware vSphere supports the dynamic volume provisioning provided by the in-tree and CSI vSphere storage provider.
+OpenShift on VMware vSphere supports [dynamic provisioning](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-vsphere.html#dynamically-provisioning-vmware-vsphere-volumes) and [static provisioning](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-vsphere.html#vsphere-static-provisioning_persistent-storage-efs) of VMware vSphere volumes with the in-tree and [Container Storage Interface (CSI)  vSphere storage provider](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html).  
 
-This provides RWO mode
+If the underlying [vSphere environment supports the vSAN file service](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html#persistent-storage-csi-vsphere-rwx_persistent-storage-csi-vsphere), then vSphere CSI Driver Operator installed by OpenShift Container Platform supports provisioning of ReadWriteMany (RWX) volumes. If vSAN file service is not configured, then ReadWriteOnce (RWO) is the only access mode available. 
 
 OpenShift Data Foundation (ODF) can also utilize the dynamic volume provisioning provided by the in-tree and CSI vSphere storage provider, and provide object and file storage; RWO and RWX modes.
 
