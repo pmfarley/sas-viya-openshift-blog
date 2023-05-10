@@ -28,7 +28,7 @@ A SCC acts like a request for privileges from the OpenShift API. In an OpenShift
 
 An administrator configures each pod to run with a certain SCC by granting the corresponding service account for that pod access to the SCC. For example, if pod A requires its own SCC, an administrator must grant access to that SCC for the service account under which pod A is launched. 
 
-Use the OpenShift CLI tool (`oc`) to apply the SCC, and to assign the SCC to a service account. Refer to the SCC example files provided in the `$deploy/sas-bases/examples folder`.
+Use the OpenShift CLI tool (`oc`) to apply the SCC, and to assign the SCC to a service account. Refer to the SCC example files provided in the `$deploy/sas-bases/examples` folder.
 
 1.	Apply the SCC with the following command:
 
@@ -39,7 +39,7 @@ Use the OpenShift CLI tool (`oc`) to apply the SCC, and to assign the SCC to a s
 2.	Bind the SCC to the service account with the following command:
 
    ```
-   oc -n <name-of-namespace> adm policy add-scc-to-user <SCC Name> -z <Service Account Name>
+   oc -n <name-of-namespace> adm policy add-scc-to-user <scc name> -z <service account name>
    ```
 
 
