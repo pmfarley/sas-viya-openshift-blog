@@ -133,8 +133,10 @@ Perform the following steps; refer to [**Adding kernel arguments to nodes**](htt
       ```
       Starting pod/vsphere-k685x-worker-4kdtl-debug ...
       To use host binaries, run 'chroot /host'
-      sh-4.2# sysctl vm.max_map_count
+      
+      sh-4.2\# sysctl vm.max_map_count
       vm.max_map_count=262144
+      
       sh-4.2# exit
       ```
 
