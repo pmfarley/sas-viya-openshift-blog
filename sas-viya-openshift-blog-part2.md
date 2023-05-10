@@ -54,12 +54,12 @@ The following table gives an overview of all cases where a custom SCC (or an SCC
 
 |**SAS SERVICE** | **SERVICE ACCOUNT NAME / SCC NAME** |**REQUIRED<br>or<br>OPTIONAL**|**WHEN NEEDED**|
 | :- | :- | :-: | :- | 
-| **CAS SERVER** \* | `sas-cas-server`*|**REQUIRED**|CAS server needs to access cloud native storage|
+| **CAS SERVER** | `sas-cas-server`\*|**REQUIRED**|CAS server needs to access cloud native storage|
 | |`sas-cas-server-host`|**Optional**|CAS server runs in host launch configuration|
 | |`sas-cas-server-sssd`|**Optional**|CAS server needs additional sssd configuration|
-| **SAS COMPUTE** |`sas-programming-environment / nonroot`** |**REQUIRED**|SAS compute sessions must be launched with specific user/group IDs|
-|  |`sas-programming-environment / hostmount-anyuid`** |**Optional**|SAS compute session needs to access hostPath mounts|
-|  |`sas-programming-environment / sas-watchdog`|**Optional**|LOCKDOWN mode needs to be enforced|
+| **SAS COMPUTE** |<p>`sas-programming-environment` / `nonroot`**</p> |**REQUIRED**|SAS compute sessions must be launched with specific user/group IDs|
+|  |<p>`sas-programming-environment` / `hostmount-anyuid`**</p> |**Optional**|SAS compute session needs to access hostPath mounts|
+|  |<p>`sas-programming-environment` / `sas-watchdog`</p>|**Optional**|LOCKDOWN mode needs to be enforced|
 | **SAS/CONNECT** |`sas-connect-spawner`|**Optional**|Only needed with legacy SAS clients|
 | **MAS** |`sas-microanalytic-score`|**Optional**|If NFS volume mounts are needed|
 | **SAS MODEL<br>MANAGEMENT** |`sas-model-publish-kaniko / anyuid`**|**Optional**|If analytical models are published into runtime container images|
@@ -118,7 +118,7 @@ Perform the following steps; refer to [**Adding kernel arguments to nodes**](htt
    oc get nodes
    ```
 
-You can see that scheduling on each worker node is disabled as the change is being applied.
+   You can see that scheduling on each worker node is disabled as the change is being applied.
 
 6. Check that the kernel argument worked by going to one of the worker nodes and verifying with the sysctl command or by listing the kernel command line arguments (in `/proc/cmdline` on the host):
 
