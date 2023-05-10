@@ -8,7 +8,7 @@
 
 Welcome back to this 2nd part of our blog where we want to share some basic technical information about SAS Viya on the Red Hat OpenShift platform. While we have been discussing the reference architecture and details on the deployment process in the first part of the blog, we now want to dive deeper into security and storage topics, which are at the core of any deployment.
 
-## Security considerations
+## Security Considerations
 As discussed in the first part of this blog, the SAS Viya analytical platform is not just a single application, but a suite of integrated applications. While most services are microservices following the 12-fasctor-app pattern, SAS also uses compute engines and stateful services which are essential for the platform. SAS integrates with the standard security approach that applies to OpenShift, namely the use of [Security Context Constraints (SCCs)](https://cloud.redhat.com/blog/managing-sccs-in-openshift).
 
 Following Red Hat guidelines, most SAS Viya platform pods are deployed in the restricted SCC, which applies the highest level of security. However, there are a few exceptions: two other OpenShift predefined SCCs are used by default for some SAS services. In addition, a few custom SCCs are either required by essential SAS Viya platform components, such as the CAS server, or associated with specific SAS offerings that might be included in your software order.
