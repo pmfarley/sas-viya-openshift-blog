@@ -79,7 +79,7 @@ If privileged containers are not allowed in your environment, a `MachineConfig` 
 
 Perform the following steps; refer to [**Adding kernel arguments to nodes**](https://docs.openshift.com/container-platform/4.12/nodes/nodes/nodes-nodes-managing.html#nodes-nodes-kernel-arguments_nodes-nodes-jobs) in the OpenShift documentation.
 
-1. List existing MachineConfig` objects for your OpenShift Container Platform cluster to determine how to label your machine config:
+1. List existing `MachineConfig` objects for your OpenShift Container Platform cluster to determine how to label your machine config:
 
    ```
    oc get machineconfig
@@ -120,7 +120,7 @@ Perform the following steps; refer to [**Adding kernel arguments to nodes**](htt
 
    You can see that scheduling on each worker node is disabled as the change is being applied.
 
-6. Check that the kernel argument worked by going to one of the worker nodes and verifying with the sysctl command or by listing the kernel command line arguments (in `/proc/cmdline` on the host):
+6. Check that the kernel argument was applied by going to one of the worker nodes and verifying with the `sysctl` command, or by listing the kernel command line arguments in the `/proc/cmdline` file on the host:
 
    ```
    oc debug node/vsphere-k685x-worker-4kdtl
