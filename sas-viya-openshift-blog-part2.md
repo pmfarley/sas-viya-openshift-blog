@@ -280,9 +280,9 @@ Red Hat OpenShift Data Foundation (ODF) is persistent software-defined storage i
 Deployed, consumed, and managed through the Red Hat OpenShift administrator console, the platform is built on Ceph petabyte-scale persistent cloud storage, the Rook Kubernetes storage operator, and NooBaa multicloud object gateway technology supporting file, block, and object storage. ODF runs anywhere that Red Hat OpenShift does -- on-premises or in hybrid cloud environments. Dynamic, stateful, and highly available container-native storage can be provisioned and deprovisioned on demand with OpenShift Data Foundation.
 
 Deploying ODF on OpenShift using dynamic storage devices from the VMware vSphere storage provider (disk format: thin) provides you with the option to create the internal cluster storage resources during deployment. This results in the internal provisioning of the base services, which provides additional storage classes available to applications. 
-ODF provides ReadWriteOnce RWO (block, file) and ReadWriteMany RWX (shared file, shared block) volume modes.
+ODF provides _ReadWriteOnce_ RWO (block, file) and _ReadWriteMany_ RWX (shared file, shared block) volume modes.
 
-<center><img width="544" alt="image" src="openshift-data-foundation.png"></center>
+<p align="center"><img width="544" alt="image" src="openshift-data-foundation.png"></p>
 
 **_<div align="center">Figure 1</div>_**
 
