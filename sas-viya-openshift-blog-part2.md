@@ -282,9 +282,9 @@ Deployed, consumed, and managed through the Red Hat OpenShift administrator cons
 Deploying ODF on OpenShift using dynamic storage devices from the VMware vSphere storage provider (disk format: thin) provides you with the option to create the internal cluster storage resources during deployment. This results in the internal provisioning of the base services, which provides additional storage classes available to applications. 
 ODF provides ReadWriteOnce RWO (block, file) and ReadWriteMany RWX (shared file, shared block) volume modes.
 
-![image](https://github.com/pmfarley/sas-viya-openshift-blog/assets/48925593/9921b12d-57bf-4127-afdd-5320e79ff9f4)
+<img width="1089" alt="image" src="openshift-data-foundation.png">
 
-![image](https://github.com/pmfarley/sas-viya-openshift-blog/assets/48925593/f2625f9c-a935-4287-8375-f60933354e47)
+**_<div align="center">Figure 1</div>_**
 
 
 For additional information about SAS Viya Temporary Storage customizations, see the following SAS blogs:
