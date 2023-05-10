@@ -265,14 +265,27 @@ The following table provides the details about the example definition files prov
 <br></br>
 ### **SAS Viya Customization**
 
+#### ***Cloud Native Storage***
+Many SAS Viya components require highly performant storage, and SAS generally recommends sequential I/O bandwidth of 90-120 MB per second, per physical CPU core. 
+Cloud native persistent storage is required by multiple SAS Viya platform components, including both _ReadWriteMany_ (RWX) and _ReadWriteOnce_ (RWO) access modes.  
+
+
 #### ***Cloud Native Storage Integration***
 OpenShift on VMware vSphere supports [dynamic provisioning](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-vsphere.html#dynamically-provisioning-vmware-vsphere-volumes) and [static provisioning](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-vsphere.html#vsphere-static-provisioning_persistent-storage-efs) of VMware vSphere volumes with the in-tree and the [Container Storage Interface (CSI) vSphere storage provider](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html).  
 
 If the underlying [vSphere environment supports the vSAN file service](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html#persistent-storage-csi-vsphere-rwx_persistent-storage-csi-vsphere), then vSphere CSI Driver Operator installed by OpenShift Container Platform supports provisioning of ReadWriteMany (RWX) volumes. If vSAN file service is not configured, then ReadWriteOnce (RWO) is the only access mode available. 
 
-OpenShift Data Foundation (ODF) can also utilize the dynamic volume provisioning provided by the in-tree and CSI vSphere storage provider, and provide object and file storage; RWO and RWX modes.
+Red Hat OpenShift Data Foundation (ODF) is persistent software-defined storage integrated with and optimized for Red Hat OpenShift. Deployed, consumed, and managed through the Red Hat OpenShift administrator console, the platform is built on Ceph petabyte-scale persistent cloud storage, the Rook Kubernetes storage operator, and NooBaa multicloud object gateway technology. ODF runs anywhere that Red Hat OpenShift does—on-premises or in hybrid cloud environments. Dynamic, stateful, and highly available container-native storage can be provisioned and deprovisioned on demand with OpenShift Data Foundation.
 
-For additional information, see the SAS blogs titled “
+Deploying ODF on OpenShift using dynamic storage devices from the VMware vSphere storage provider (disk format: thin) provides you with the option to create the internal cluster storage resources during deployment. This results in the internal provisioning of the base services, which helps to make additional storage classes available to applications. 
+ODF provides ReadWriteOnce RWO (block, file) and ReadWriteMany RWX (shared file, shared block) volume modes.
+
+![image](https://github.com/pmfarley/sas-viya-openshift-blog/assets/48925593/9921b12d-57bf-4127-afdd-5320e79ff9f4)
+
+![image](https://github.com/pmfarley/sas-viya-openshift-blog/assets/48925593/f2625f9c-a935-4287-8375-f60933354e47)
+
+
+For additional information about SAS Viya Temporary Storage customizations, see the following SAS blogs:
 
 [SAS Viya Temporary Storage on Red Hat OpenShift – Part 1](https://communities.sas.com/t5/SAS-Communities-Library/SAS-Viya-Temporary-Storage-on-Red-Hat-OpenShift-Part-1/ta-p/858834)
 
