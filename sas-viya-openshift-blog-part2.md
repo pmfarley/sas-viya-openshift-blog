@@ -164,35 +164,36 @@ Red Hat OpenShift provides machine management as an automation method for managi
 <br></br>
 
 ### 1. Workload Placement
-Part 1 of this blog detailed the SAS Viya workload classes and node pools that can be used to place the workloads on appropriate nodes within the cluster. The [workload placement configuration, from the _SAS Viya Platform Operations_ manual](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0wj0cyrn1pinen1wcadb0rx6vbm), including the node labels and taints can be included within the compute MachineSet definitions so they are preconfigured at compute machine creation time.
+Part 1 of this blog detailed the SAS Viya workload classes and node pools that can be used to place the workloads on appropriate nodes within the cluster. The [workload placement configuration, from the _SAS Viya Platform Operations_ manual](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0wj0cyrn1pinen1wcadb0rx6vbm), provides the node labels and taints that can be included within the compute `MachineSet` definitions, so they are preconfigured at compute `Machine` creation time.
 
 
 #### ***MachineSet***
 To deploy the machine set, you create an instance of the `MachineSet` resource.
 
-Create a MachineSet definition YAML file for each SAS Viya workload class needed.  Refer to the examples provided in the section titled “Example Machine Management YAML Files”.
+Create a `MachineSet` definition YAML file for each SAS Viya workload class needed.  Refer to the examples provided in the section titled “Example Machine Management YAML Files”.
 
 1. Create a YAML file for the `MachineSet` resource that contains the customized resource definition for your selected SAS Viya workload class, using the examples available from the repo above.
    Ensure that you set the `<clusterID>` and `<role>` parameter values that apply to your environment.
-1. If you are not sure which value to set for a specific field, you can check an existing machine set from your cluster:
+   
+2. If you are not sure which value to set for a specific field, you can check an existing machine set from your cluster:
 
    ```
    oc get machinesets -n openshift-machine-api
    ```
 
-1. Check values of a specific machine set:
+3. Check values of a specific machine set:
 
    ```
    oc get machineset <machineset_name> -n openshift-machine-api -o yaml
    ```
 
-1. Create the new `MachineSet` CR:
+4. Create the new `MachineSet` CR:
 
    ```
    oc create -f cas-smp-machineset.yaml
    ```
 
-1. View the list of machine sets:
+5. View the list of machine sets:
 
    ```
    oc get machineset -n openshift-machine-api
