@@ -62,9 +62,9 @@ The following table gives an overview of all cases where a custom SCC (or an SCC
 |  |<p>`sas-programming-environment` / `sas-watchdog`</p>|**Optional**|LOCKDOWN mode needs to be enforced|
 | **SAS/CONNECT** |`sas-connect-spawner`|**Optional**|Only needed with legacy SAS clients|
 | **MAS** |`sas-microanalytic-score`|**Optional**|If NFS volume mounts are needed|
-| **SAS MODEL<br>MANAGEMENT** |`sas-model-publish-kaniko / anyuid`**|**Optional**|If analytical models are published into runtime container images|
+| **SAS MODEL<br>MANAGEMENT** |`sas-model-publish-kaniko` / `anyuid`**|**Optional**|If analytical models are published into runtime container images|
 |  |`sas-model-repository`|**Optional**|If NFS volume mounts are needed|
-| **SAS EVENT<br>STREAM<br>PROCESSING** |`sas-esp-project / nonroot`**|**Optional**|If SAS Event Stream Processing is included in your deployment|
+| **SAS EVENT<br>STREAM<br>PROCESSING** |`sas-esp-project` / `nonroot`**|**Optional**|If SAS Event Stream Processing is included in your deployment|
 | **OPENSEARCH** |`sas-opendistro`|**Optional**|<p>For optimal performance, deploying OpenSearch software requires changes to a kernel setting</p>|
 
    \* Every deployment on OpenShift must apply one of the SCCs for the CAS server. By default, in a greenfield SAS Viya deployment for a new customer, we expect CAS to use cloud native storage and not need host launch capabilities.  So, at a minimum, the `cas-server-scc` SCC would be applied.
