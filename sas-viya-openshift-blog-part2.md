@@ -266,8 +266,8 @@ The following table provides the details about the example definition files prov
 ### **SAS Viya Customization**
 
 #### ***Cloud Native Storage***
-Many SAS Viya components require highly performant storage, and SAS generally recommends sequential I/O bandwidth of 90-120 MB per second, per physical CPU core. 
-Cloud native persistent storage is required by multiple SAS Viya platform components, including both _ReadWriteMany_ (RWX) and _ReadWriteOnce_ (RWO) access modes.  
+Many SAS Viya components require highly performant storage, and SAS generally recommends a sequential I/O bandwidth of 90-120 MB per second, per physical CPU core. 
+[Cloud native persistent storage is required by multiple SAS Viya platform components](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0ampbltwqgkjkn1j3qogztsbbu0.htm#n0mmuxy47s2nnrn1l5rfb5fxtb4d), including both _ReadWriteMany_ (RWX) and _ReadWriteOnce_ (RWO) access modes.
 
 
 #### ***Cloud Native Storage Integration***
