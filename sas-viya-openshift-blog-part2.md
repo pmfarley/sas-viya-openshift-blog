@@ -269,6 +269,8 @@ Before we close off this blog series, we would like to spend a few words on the 
 
 This is one of the most important topics to be discussed when preparing the deployment on OpenShift as choosing a suitable storage configuration usually makes a key difference for the user experience. SAS compute sessions have always been heavily dependent on good disk I/O performance and this requirement has not changed with the latest SAS platform. 
 
+Many SAS Viya components require highly performant storage, and SAS generally recommends a sequential I/O bandwidth of 90-120 MB per second, per physical CPU core. Normally this would be achieved by utilizing a storage system that is backed by using SSD or NVMe disks.  SAS provides an automated utility script -- [rhel_iotest.sh](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0bqwd5t5y2va7n1u9xb57lfa9wx.htm#p1qz3rq1f758xkn1pctnlw7c3kn6), that uses UNIX/Linux dd commands to measure the I/O throughput of a file system in a Red Hat Enterprise Linux (RHEL) environment.
+
 Since this is a rather convoluted topic with lots of facets, here's a picture which hopefully helps you to keep your orientation for the rest of this section: 
 
 <p align="center"><img width="600" alt="image" src="sas-viya-storage.png"></p>
@@ -278,7 +280,7 @@ Since this is a rather convoluted topic with lots of facets, here's a picture wh
 This diagram tries to summarize the key storage requirements for SAS. Let’s start with the persistent storage requirements first.
 
 _Persistent storage_ is required for 2 purposes mainly:
-- for keeping configuration data created by the stateful services (like Consul, Redis etc.). This storage requirement is mandatory for the deployment. The storage needs to be made available through the Kubernetes CSI API and SAS requires persistent volumes in both RWO and RWX access mode. 
+- for keeping configuration data created by the stateful services (like Consul, Redis etc.). This storage requirement is mandatory for the deployment. The storage needs to be made available through the Kubernetes CSI API and [SAS requires persistent volumes in both RWO and RWX access modes](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0ampbltwqgkjkn1j3qogztsbbu0.htm#n0mmuxy47s2nnrn1l5rfb5fxtb4d). 
 - for keeping (file-based) business data. Strictly speaking this is optional, but it’s a very common situation that existing file shares with business data (SAS datasets, CSV files, Excel etc.) have to be made available to the SAS compute pods. These collections of files are either accessed through the CSI API (in RWX mode) or they could also be mounted directly to the pods using a direct NFS configuration etc. It’s important to state that poor disk I/O performance can turn into a real bottleneck for users of the Viya platform.
 
 Dynamic volume provisioning is provided by the in-tree and CSI vSphere storage provider for OpenShift on VMware vSphere. OpenShift Data Foundation (ODF) provides even more flexibility as it can also provide object and file storage with both RWO and RWX access modes.
@@ -298,12 +300,6 @@ There are a few technical options to provide this storage:
 
    - [SAS Viya Temporary Storage on Red Hat OpenShift – Part 2: CAS DISK CACHE](https://communities.sas.com/t5/SAS-Communities-Library/SAS-Viya-Temporary-Storage-on-Red-Hat-OpenShift-Part-2-CAS-DISK/ta-p/859250)
    - [Using generic ephemeral volumes for SASWORK storage](https://communities.sas.com/t5/SAS-Communities-Library/Using-generic-ephemeral-volumes-for-SASWORK-storage-on-Azure/ta-p/839257)
-
-
-#### ***Cloud Native Storage Integration***
-Many SAS Viya components require highly performant storage, and SAS generally recommends a sequential I/O bandwidth of 90-120 MB per second, per physical CPU core. Normally this would be achieved by utilizing a storage system that is backed by using SSD or NVMe disks.  SAS provides an automated utility script -- [rhel_iotest.sh](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0bqwd5t5y2va7n1u9xb57lfa9wx.htm#p1qz3rq1f758xkn1pctnlw7c3kn6), that uses UNIX/Linux dd commands to measure the I/O throughput of a file system in a Red Hat Enterprise Linux (RHEL) environment.
-
-[Cloud native persistent storage is required by multiple SAS Viya platform components](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0ampbltwqgkjkn1j3qogztsbbu0.htm#n0mmuxy47s2nnrn1l5rfb5fxtb4d), including both _ReadWriteMany_ (RWX) and _ReadWriteOnce_ (RWO) access modes.
 
 
 #### ***Cloud Native Storage Integration***
