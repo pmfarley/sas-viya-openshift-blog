@@ -264,7 +264,17 @@ The following table provides the details about the example definition files prov
 
 
 <br></br>
-### **SAS Viya Customization**
+### **SAS Viya Storage Requirements**
+Before we close off this blog series, we would like to spend a few words on the storage requirements of SAS Viya. If you’ve made it so far, you might already expect that a software stack like SAS Viya, which focuses on Data Management and Analytics, comes with the need for persistent (and ephemeral) storage. 
+
+This is one of the most important topics to be discussed when preparing the deployment on OpenShift as choosing a suitable storage configuration usually makes a key difference for the user experience. SAS compute sessions have always been heavily dependent on good disk I/O performance and this requirement has not changed with the latest SAS platform. 
+
+Since this is a rather convoluted topic with lots of facets, here's a picture which hopefully helps you to keep your orientation for the rest of this section: 
+
+<p align="center"><img width="600" alt="image" src="sas-viya-storage.png"></p>
+
+**_<div align="center">Figure 1</div>_**
+
 
 #### ***Cloud Native Storage***
 Many SAS Viya components require highly performant storage, and SAS generally recommends a sequential I/O bandwidth of 90-120 MB per second, per physical CPU core. Normally this would be achieved by utilizing a storage system that is backed by using SSD or NVMe disks.  SAS provides an automated utility script -- [rhel_iotest.sh](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0bqwd5t5y2va7n1u9xb57lfa9wx.htm#p1qz3rq1f758xkn1pctnlw7c3kn6), that uses UNIX/Linux dd commands to measure the I/O throughput of a file system in a Red Hat Enterprise Linux (RHEL) environment.
@@ -283,9 +293,9 @@ Deployed, consumed, and managed through the Red Hat OpenShift administrator cons
 Deploying ODF on OpenShift using dynamic storage devices from the VMware vSphere storage provider (disk format: thin) provides you with the option to create the internal cluster storage resources during deployment. This results in the internal provisioning of the base services, which provides additional storage classes available to applications. 
 ODF provides _ReadWriteOnce_ RWO (block, file) and _ReadWriteMany_ RWX (shared file, shared block) volume modes.
 
-<p align="center"><img width="544" alt="image" src="openshift-data-foundation.png"></p>
+<p align="center"><img width="600" alt="image" src="openshift-data-foundation.png"></p>
 
-**_<div align="center">Figure 1</div>_**
+**_<div align="center">Figure 2</div>_**
 
 
 The following table summarizes two of the [persistent storage solutions that may be used with OpenShift](https://docs.openshift.com/container-platform/4.12/storage/understanding-persistent-storage.html#pv-access-modes_understanding-persistent-storage) when deployed on VMware vSphere, including their supported volume access modes.
