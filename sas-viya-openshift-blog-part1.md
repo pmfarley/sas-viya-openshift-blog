@@ -142,11 +142,11 @@ Based on our experiences with previous deployments at customer sites, we found t
 
 The deployment process can be segmented into three phases (planning, preparing, performing) with separate tasks for the two main actors, the SAS project team (e.g. local SAS administrators and system engineers from SAS Institute) and the OpenShift administration team.
 
-PLANNING: it’s usually a good idea to start with a joint workshop where the SAS team gives a technical overview about SAS Viya to the OCP administrators. This is where topics such as security, sizing, storage, networking etc. need to be discussed. 
+- **PLANNING**: It’s usually a good idea to start with a joint workshop where the SAS team gives a technical overview about SAS Viya to the OCP administrators. This is where topics such as security, sizing, storage, networking etc. need to be discussed. 
 
-PREPARATION: the second task typically is in the hands of the OCP administrators: they need to review the requirements and prepare the project setup. The SAS team can then start preparing the deployment manifest (basically a YAML file) which contains site-specific information (such as the DNS name or the supplemental-groups value which is specific to the project/namespace).
+- **PREPARATION**: The second task typically is in the hands of the OCP administrators: they need to review the requirements and prepare the project setup. The SAS team can then start preparing the deployment manifest (basically a YAML file) which contains site-specific information (such as the DNS name or the supplemental-groups value which is specific to the project/namespace).
 
-PERFORMING: once the deployment manifests are ready to be submitted, both teams need to collaborate to submit the manifests. While the OpenShift administrators can focus on resources which require elevated permissions (like custom SCCs or CustomResourceDefinitions), the SAS project team will handle all the resources with namespace scope. The main deployment manifest contains predefined selectors that allow to make this distinction between.
+- **PERFORMING**: Once the deployment manifests are ready to be submitted, both teams need to collaborate to submit the manifests. While the OpenShift administrators can focus on resources which require elevated permissions (like custom SCCs or CustomResourceDefinitions), the SAS project team will handle all the resources with namespace scope. The main deployment manifest contains predefined selectors that allow to make this distinction between.
 
 
 <br></br>
