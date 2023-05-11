@@ -130,7 +130,7 @@ For additional information, see the SAS blog titled “[Deploying SAS Viya using
 #### ***3. `sas-orchestration` command line utility***
 The `sas-orchestration` utility offers the flexibility of both worlds: as a container image it can be launched manually on a Linux shell to create and submit the final deployment manifest (in other words:  it combines the `kustomize` and `kubectl` actions into one step) or it could be used as a step in a CI/CD pipeline, for example as a task in OpenShift Pipelines, Jenkins or Github Actions etc.
 
-_**NOTE**:   You must have cluster-admin privileges to perform a SAS Viya deployment using the `sas-orchestration` command line utility. _
+_**NOTE**:   You must have cluster-admin privileges to perform a SAS Viya deployment using the `sas-orchestration` command line utility._
 
 For more information, check the blog article titled “[New SAS Viya Deployment Methods](https://communities.sas.com/t5/SAS-Communities-Library/New-SAS-Viya-Deployment-Methods/ta-p/856206)”.
 
