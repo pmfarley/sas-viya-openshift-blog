@@ -99,7 +99,7 @@ An [OpenShift installation on VMware vSphere](https://docs.openshift.com/contain
 <br></br>
 
 ### **Deployment options – SAS Viya**
-There are several approaches for deploying SAS Viya on Red Hat OpenShift, which are described in the SAS Operations Guide:
+There are several approaches for deploying SAS Viya on Red Hat OpenShift, which are described in the [_SAS Operations Guide_](https://documentation.sas.com/doc/en/itopscdc/v_039/itopscon/p0839p972nrx25n1dq264egtgrcq.htm):
 
 - Manually by running `kubectl` commands
 - Using the SAS Deployment Operator
@@ -108,7 +108,7 @@ There are several approaches for deploying SAS Viya on Red Hat OpenShift, which 
 #### ***1. Manual deployment***
 After purchasing a SAS Viya license, customers receive a set of deployment templates (known as the “deployment assets” tarball) in YAML format which they need to modify to create the final deployment manifest (usually called “site.yaml”). SAS uses the `kustomize` tool for modifying the templates. Common customizations include the definition of a mirror repository, configuring TLS, high-availability, storage and other site-specific settings. The final deployment manifest can then be submitted to Kubernetes using multiple `kubectl` commands. 
 
-**NOTE**:   You must have cluster-admin privileges to perform a manual deployment.
+**NOTE**:   You must have cluster-admin privileges to perform a manual deployment of SAS Viya.
 
 Note that the final manifest contains objects which require elevated privileges for deployment, for example Custom Resource Definitions (CRDs), `PodTemplates`, `ClusterRoleBindings` etc., which means that in most cases the SAS project team will need support from the OpenShift administration team to carry out the deployment. SAS has tagged all resources that need to be deployed according to the required permissions. This enables task sharing between the project team (with namespace-admin permissions) and the administration team (with cluster-admin permissions). However, it is important to keep in mind that this dependency will come up again with later updates for example.
 
@@ -117,7 +117,7 @@ For that reason, using the SAS Deployment Operator might provide a better soluti
 
 The SAS Viya Deployment Operator provides an automated method for deploying and updating the SAS Viya environments. It runs in the OpenShift cluster and watches for declarative representations of SAS Viya deployments in the form of Custom Resources (CRs) of the type `SASDeployment`. When a new `SASDeployment` CR is created or an existing CR is updated, the Deployment Operator performs an initial deployment or updates an existing deployment to match the state that is described in the CR. A single instance of the operator can manage all SAS Viya deployments in the cluster.
 
-**NOTE**:   You must have cluster-admin privileges to perform a manual deployment.
+**NOTE**:   You must have cluster-admin privileges to perform an initial SAS Viya deployment using the SAS Viya Deployment Operator. However, updates to an existing deployment ...
 
 As part of a DevOps pipeline, the operator can largely automate deployments and deployment updates, reducing dependency on the OpenShift administration team. For example, the SAS Deployment Operator nicely integrates with OpenShift GitOps, which are is a component of the Red Hat OpenShift Container Platform (OCP) that provide a turnkey CI/CD automation solution for continuous integration (CI) and continuous delivery (CD) tasks. OpenShift GitOps can be used to provide additional automation for a SAS Viya deployment by monitoring a Git repository for changes to the SAS CR manifest and automatically syncing its’ contents to the cluster. Pushing the CR manifest to the Git repository then triggers a sync with OpenShift GitOps. The CR will be deployed to Kubernetes, which in turn triggers the Operator and the deployment to start. _Figure 2_ illustrates this workflow:
 
@@ -125,12 +125,12 @@ As part of a DevOps pipeline, the operator can largely automate deployments and 
 
 **_<div align="center">Figure 2</div>_**
 
-For additional information, see the SAS blog titled “[Deploying SAS Viya using Red Hat OpenShift GitOps](https://communities.sas.com/t5/SAS-Communities-Library/Deploying-SAS-Viya-using-Red-Hat-OpenShift-GitOps/ta-p/780616)”
+For additional information, see the SAS blog titled “[Deploying SAS Viya using Red Hat OpenShift GitOps](https://communities.sas.com/t5/SAS-Communities-Library/Deploying-SAS-Viya-using-Red-Hat-OpenShift-GitOps/ta-p/780616)”.
 
 #### ***3. `sas-orchestration` command line utility***
 The `sas-orchestration` utility offers the flexibility of both worlds: as a container image it can be launched manually on a Linux shell to create and submit the final deployment manifest (in other words:  it combines the `kustomize` and `kubectl` actions into one step) or it could be used as a step in a CI/CD pipeline, for example as a task in OpenShift Pipelines, Jenkins or Github Actions etc.
 
-**NOTE**:   You must have cluster-admin privileges to perform a manual deployment.
+**NOTE**:   You must have cluster-admin privileges to perform an initial SAS Viya deployment using the `sas-orchestration` command line utility. However, updates to an existing deployment ...
 
 For more information, check the blog article titled “[New SAS Viya Deployment Methods](https://communities.sas.com/t5/SAS-Communities-Library/New-SAS-Viya-Deployment-Methods/ta-p/856206)”.
 
