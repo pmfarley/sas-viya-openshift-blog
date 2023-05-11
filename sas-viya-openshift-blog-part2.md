@@ -167,6 +167,7 @@ Red Hat OpenShift provides machine management as an automation method for managi
 
 ### 1. Workload Placement
 Part 1 of this blog detailed the SAS Viya workload classes and node pools that can be used to place the workloads on appropriate nodes within the cluster. The [workload placement configuration, from the _SAS Viya Platform Operations_ manual](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0wj0cyrn1pinen1wcadb0rx6vbm), provides the node labels and taints that can be included within the compute `MachineSet` definitions, so they are preconfigured at compute `Machine` creation time.
+
 Refer to the examples provided in the section titled “_Example Machine Management YAML Files_”.
 
 #### ***MachineSet***
