@@ -255,7 +255,7 @@ The following table provides the details about the example definition files prov
 
 |**Workload Class**|**Example MachineSet file**|**Example MachineAutoScaler file**|
 | :- | :- | :- |
-|<p>CAS workloads (SMP)</p><p>CAS workloads (MPP)</p>|<p>`cas-smp-machineset.yaml`</p><p>`cas-mpp-machineset.yaml`</p><p></p>|<p>`cas-smp-autoscaler.yaml`</p><p>`cas-mpp-autoscaler.yaml`</p>|
+|<p>CAS workloads (SMP)</p><p>CAS workloads (MPP)</p>|<p>`cas-smp-machineset.yaml`</p><p>`cas-mpp-machineset.yaml`</p><p></p>|<p>[`cas-smp-autoscaler.yaml`](https://github.com/redhat-gpst/sas-viya-openshift/blob/main/cas-mpp-autoscaler.yaml)</p><p>`cas-mpp-autoscaler.yaml`</p>|
 |Connect workloads|`connect-machineset.yaml`|`connect-autoscaler.yaml`|
 |Compute workloads|`compute-machineset.yaml`|`compute-autoscaler.yaml`|
 |Stateful workloads|`stateful-machineset.yaml`|`stateful-autoscaler.yaml`|
