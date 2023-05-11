@@ -20,7 +20,7 @@ All custom SCCs which might be applied to the SAS deployment are shipped as part
    find ./sas-bases -name "*scc*.yaml"
    ```
 
-**NOTE**:   You must have cluster-admin privileges to manage SCCs.
+_**NOTE**:   You must have cluster-admin privileges to manage SCCs._
 
 A SCC acts like a request for privileges from the OpenShift API. In an OpenShift environment, each Kubernetes pod starts up with an association with a specific SCC, which limits the privileges that the pod can request. 
 
@@ -149,7 +149,7 @@ The OpenShift Container Platform cluster can horizontally scale up and down when
 
 Machine management is implemented as a CRD object that defines a new unique object Kind in the cluster and enables the Kubernetes API server to handle the object’s entire lifecycle. The Machine API Operator provisions the following resources: `Machine`, `MachineSet`, `ClusterAutoScaler`, `MachineAutoScaler`, and `MachineHealthCheck`.
 
-**NOTE**: You must have cluster-admin privileges to perform machine management.
+_**NOTE**: You must have cluster-admin privileges to perform machine management._
 
 As a cluster administrator, you can perform the following tasks with compute machine sets:
 
