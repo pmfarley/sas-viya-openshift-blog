@@ -287,6 +287,15 @@ ODF provides _ReadWriteOnce_ RWO (block, file) and _ReadWriteMany_ RWX (shared f
 **_<div align="center">Figure 1</div>_**
 
 
+The following table summarizes two of the [persistent storage solutions that may be used with OpenShift](https://docs.openshift.com/container-platform/4.12/storage/understanding-persistent-storage.html#pv-access-modes_understanding-persistent-storage) when deployed on VMware vSphere, including their supported volume access modes.
+
+|**Volume Plugins**|**ReadWriteOnce**|**ReadWriteMany**|
+| :- | :-: | :-: |
+| VMware vSphere | ✅ | ✅ \* |
+| Red Hat OpenShift Data Foundation | ✅ | ✅ |
+
+   \* If the underlying vSphere environment supports the vSAN file service, then the vSphere Container Storage Interface (CSI) Driver Operator installed by OpenShift Container Platform supports provisioning of ReadWriteMany (RWX) volumes. If you do not have vSAN file service configured, and you request RWX, the volume fails to get created and an error is logged. For more information, see "[VMware vSphere CSI Driver Operator](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html)" in the OpenShift documentation.
+
 For additional information about SAS Viya Temporary Storage customizations, see the following SAS blogs:
 
 [SAS Viya Temporary Storage on Red Hat OpenShift – Part 1](https://communities.sas.com/t5/SAS-Communities-Library/SAS-Viya-Temporary-Storage-on-Red-Hat-OpenShift-Part-1/ta-p/858834)
