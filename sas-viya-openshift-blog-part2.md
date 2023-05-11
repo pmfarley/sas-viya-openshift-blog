@@ -302,3 +302,7 @@ For additional information about SAS Viya Temporary Storage customizations, see 
 
 [SAS Viya Temporary Storage on Red Hat OpenShift – Part 2: CAS DISK CACHE](https://communities.sas.com/t5/SAS-Communities-Library/SAS-Viya-Temporary-Storage-on-Red-Hat-OpenShift-Part-2-CAS-DISK/ta-p/859250)
 
+<br></br>
+## **Conclusion**
+This concludes this our blog. We hope you found it helpful to provide you with the basic know-how you’ll need to support your project team in applying security and storage considerations for deployment of SAS Viya on OpenShift.
+
