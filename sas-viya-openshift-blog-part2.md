@@ -249,7 +249,7 @@ For more information about defining the `MachineAutoScaler` resource definition,
 
 
 #### ***Example Machine Management YAML Files***
-Example YAML files are available for the `ClusterAutoScaler`, `MachineAutoScaler` and `MachineSet` definitions from the following repo: <https://github.com/redhat-gpst/sas-viya-openshift>
+Example YAML files for the `ClusterAutoScaler`, `MachineAutoScaler` and `MachineSet` definitions are available from the following repo: <https://github.com/redhat-gpst/sas-viya-openshift>
 
 The following table provides the details about the example definition files provided for each of the SAS Viya [Workload Classes](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0jo17lrlk83rsn1vvs2wqmewkt7), based on the [minimum sizing recommendations for OpenShift](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n08i2gqb3vflqxn0zcydkgcood20.htm#p04uz29tbignsin10sk5ld8h6jn0).
 
