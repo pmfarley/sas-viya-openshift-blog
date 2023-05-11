@@ -77,7 +77,7 @@ The following table gives an overview of all cases where a custom SCC (or an SCC
 
 If privileged containers are not allowed in your environment, a `MachineConfig` can be used to set the `vm.max_map_count` kernel parameter for OpenSearch, as an alternative to using the `sas-opendistro` SCC with the init container. All nodes that run workloads in the [stateful workload class](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm) are affected by this requirement.
 
-Perform the following steps; refer to [Adding kernel arguments to nodes](https://docs.openshift.com/container-platform/4.12/nodes/nodes/nodes-nodes-managing.html#nodes-nodes-kernel-arguments_nodes-nodes-jobs) in the OpenShift documentation.
+Perform the following steps; refer to [_Adding kernel arguments to nodes_](https://docs.openshift.com/container-platform/4.12/nodes/nodes/nodes-nodes-managing.html#nodes-nodes-kernel-arguments_nodes-nodes-jobs) in the OpenShift documentation.
 
 1. List existing `MachineConfig` objects for your OpenShift Container Platform cluster to determine how to label your machine config:
 
@@ -167,12 +167,12 @@ Red Hat OpenShift provides machine management as an automation method for managi
 
 ### 1. Workload Placement
 Part 1 of this blog detailed the SAS Viya workload classes and node pools that can be used to place the workloads on appropriate nodes within the cluster. The [workload placement configuration, from the _SAS Viya Platform Operations_ manual](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0wj0cyrn1pinen1wcadb0rx6vbm), provides the node labels and taints that can be included within the compute `MachineSet` definitions, so they are preconfigured at compute `Machine` creation time.
-
+Refer to the examples provided in the section titled “_Example Machine Management YAML Files_”.
 
 #### ***MachineSet***
 To deploy the machine set, you create an instance of the `MachineSet` resource.
 
-Create a `MachineSet` definition YAML file for each SAS Viya workload class needed.  Refer to the examples provided in the section titled “Example Machine Management YAML Files”.
+Create a `MachineSet` definition YAML file for each SAS Viya workload class needed.  
 
 1. Create a YAML file for the `MachineSet` resource that contains the customized resource definition for your selected SAS Viya workload class, using the examples available from the repo above.
    Ensure that you set the `<clusterID>` and `<role>` parameter values that apply to your environment.
