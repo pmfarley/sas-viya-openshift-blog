@@ -277,24 +277,27 @@ Since this is a rather convoluted topic with lots of facets, here's a picture wh
 
 **_<div align="center">Figure 1</div>_**
 
-This diagram tries to summarize the key storage requirements for SAS. Let’s start with the persistent storage requirements first.
+This diagram tries to summarize the key storage requirements for SAS, using _persistent storage_ and _ephemeral storage_. Let’s start with the persistent storage requirements first.
 
-_Persistent storage_ is required for 2 purposes mainly:
-- for keeping configuration data created by the stateful services (like Consul, Redis etc.). This storage requirement is mandatory for the deployment. The storage needs to be made available through the Kubernetes CSI API and [SAS requires persistent volumes in both RWO and RWX access modes](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0ampbltwqgkjkn1j3qogztsbbu0.htm#n0mmuxy47s2nnrn1l5rfb5fxtb4d). 
-- for keeping (file-based) business data. Strictly speaking this is optional, but it’s a very common situation that existing file shares with business data (SAS datasets, CSV files, Excel etc.) have to be made available to the SAS compute pods. These collections of files are either accessed through the CSI API (in RWX mode) or they could also be mounted directly to the pods using a direct NFS configuration etc. It’s important to state that poor disk I/O performance can turn into a real bottleneck for users of the Viya platform.
+_**Persistent storage**_ is required for 2 purposes:
+- **Stateful services configuration data** (Consul, Redis etc.). This storage requirement is mandatory for the deployment, made available through the Kubernetes CSI API for [persistent volumes in both RWO and RWX access modes](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0ampbltwqgkjkn1j3qogztsbbu0.htm#n0mmuxy47s2nnrn1l5rfb5fxtb4d). 
+   
+- **File-based business data**. Strictly speaking this is optional, but it’s a very common situation that existing file shares with business data (SAS datasets, CSV files, Excel etc.) have to be made available to the SAS compute pods. These collections of files are either accessed through the CSI API (in RWX mode) or could also be mounted directly to the pods using a direct NFS configuration etc. It’s important to state that poor disk I/O performance can turn into a real bottleneck for users of the Viya platform.
 
-Dynamic volume provisioning is provided by the in-tree and CSI vSphere storage provider for OpenShift on VMware vSphere. OpenShift Data Foundation (ODF) provides even more flexibility as it can also provide object and file storage with both RWO and RWX access modes.
+[Dynamic volume provisioning is provided by the in-tree and CSI vSphere storage provider for OpenShift on VMware vSphere](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-vsphere.html#dynamically-provisioning-vmware-vsphere-volumes). OpenShift Data Foundation (ODF) provides even more flexibility as it can also provide file, block and object storage with both RWO and RWX access modes.
+<p></p>
 
-Moving on - providing _ephemeral storage_ is a major requirement for the SAS compute engine and the CAS server. Both engines heavily rely on fast storage for storing intermediate data which is no longer needed after the session has ended. Like what was said above, I/O performance is crucial for this storage to prevent it from turning into a bottleneck for users.
+_**Ephemeral storage**_ is a major requirement for the SAS compute engine and the CAS server. Both engines heavily rely on fast storage for storing intermediate data which is no longer needed after the session has ended. Like what was said above, I/O performance is crucial for this storage to prevent it from turning into a bottleneck for users.
 
-There are a few technical options to provide this storage:
-- Local storage on the worker node, mounted via `hostPath` configuration. While it would be easy to configure, it is often rejected for security reasons.
+There are a few technical options to provide ephemeral storage:
+- Local storage on the worker node:
+   -  mounted via **`hostPath` configuration**. While it would be easy to configure, it is often rejected for security reasons.
 
-- Local storage on the worker node, provisioned through the [OpenShift Local Storage Operator](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-local.html). <p>If you’re interested in learning more about this option, make sure to check out this blog titled [SAS Viya Temporary Storage on Red Hat OpenShift – Part 1](https://communities.sas.com/t5/SAS-Communities-Library/SAS-Viya-Temporary-Storage-on-Red-Hat-OpenShift-Part-1/ta-p/858834).</p>
+   - provisioned through the [**OpenShift Local Storage Operator**](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-local.html). <p>If you’re interested in learning more about this option, make sure to check out this blog titled</p> <p>[SAS Viya Temporary Storage on Red Hat OpenShift – Part 1](https://communities.sas.com/t5/SAS-Communities-Library/SAS-Viya-Temporary-Storage-on-Red-Hat-OpenShift-Part-1/ta-p/858834).</p>
 
-- **`emptyDir`** seems to be a tempting option at first and it certainly can be used for test environments, but it is strictly not recommended for production or near-production clusters.
+- **`emptyDir`** seems to be a tempting option at first, and it certainly can be used for test environments, but it is strictly not recommended for production or near-production clusters.
 
-- Finally, there is a new configuration option added with Kubernetes 1.23: [generic ephemeral volumes](https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/#generic-ephemeral-volumes-1). This configuration uses the `volumeClaimTemplate` keyword in pod manifests to create per-pod volumes “on-the-spot". 
+- Finally, [generic ephemeral volumes](https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/#generic-ephemeral-volumes-1) is a new configuration option with Kubernetes 1.23. This configuration uses the **`volumeClaimTemplate`** keyword in pod manifests to create per-pod volumes “on-the-spot". 
 
 - There are a couple of blogs available that describe how to configure ephemeral general volumes for the SAS compute engine and the CAS server:
 
