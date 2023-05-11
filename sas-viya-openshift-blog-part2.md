@@ -314,7 +314,7 @@ If the underlying [vSphere environment supports the vSAN file service](https://d
 Deployed, consumed, and managed through the Red Hat OpenShift administrator console, the ODF platform is built on _Ceph_ petabyte-scale persistent cloud storage, the _Rook_ Kubernetes storage operator, and _NooBaa_ multicloud object gateway technology supporting file, block, and object storage. ODF runs anywhere that Red Hat OpenShift does -- on-premises or in hybrid cloud environments. Dynamic, stateful, and highly available container-native storage can be provisioned and deprovisioned on demand with OpenShift Data Foundation.
 
 Deploying ODF with OpenShift on VMware VMs can use dynamic storage devices from the VMware vSphere storage provider, and provides you with the option to create the internal cluster storage resources during deployment. This results in the internal provisioning of the base services, and the additional storage classes available to applications. 
-ODF provides _ReadWriteOnce_ RWO (block, file) and _ReadWriteMany_ RWX (shared file, shared block) volume modes.
+ODF provides _ReadWriteOnce_ RWO (file, block) and _ReadWriteMany_ RWX (shared file, shared block) volume modes.
 
 <p align="center"><img width="600" alt="image" src="openshift-data-foundation.png"></p>
 
