@@ -294,7 +294,7 @@ The following table summarizes two of the [persistent storage solutions that may
 | VMware vSphere | ✅ | ✅ \* |
 | Red Hat OpenShift Data Foundation | ✅ | ✅ |
 
-   \* If the underlying vSphere environment supports the vSAN file service, then the vSphere Container Storage Interface (CSI) Driver Operator installed by OpenShift Container Platform supports provisioning of ReadWriteMany (RWX) volumes. If you do not have vSAN file service configured, and you request RWX, the volume fails to get created and an error is logged. For more information, see "[VMware vSphere CSI Driver Operator](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html)" in the OpenShift documentation.
+   \* If the underlying vSphere environment supports the vSAN file service, then the vSphere Container Storage Interface (CSI) Driver Operator installed by OpenShift Container Platform supports provisioning of _ReadWriteMany_ (RWX) volumes. If you do not have vSAN file service configured, and you request RWX, the volume fails to get created and an error is logged. For more information, see "[VMware vSphere CSI Driver Operator](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html)" in the OpenShift documentation.
 
 For additional information about SAS Viya Temporary Storage customizations, see the following SAS blogs:
 
