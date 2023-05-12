@@ -291,12 +291,12 @@ There are a few technical options to provide ephemeral storage:
 - **Local storage** on the worker node:
    -  Using a **`hostPath` configuration**. While it would be easy to configure, this is often rejected for security reasons.
 
-   - Using the [**OpenShift Local Storage Operator**](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-local.html). 
+   - Using the [**OpenShift Local Storage Operator**](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent_storage_local/persistent-storage-local.html). 
       If you’re interested in learning more about this option, make sure to check out this blog titled "[SAS Viya Temporary Storage on Red Hat OpenShift – Part 1](https://communities.sas.com/t5/SAS-Communities-Library/SAS-Viya-Temporary-Storage-on-Red-Hat-OpenShift-Part-1/ta-p/858834)".
 
 - **`emptyDir`** seems to be a tempting option at first, and it certainly can be used for test environments, but it is strictly not recommended for production or near-production clusters.
 
-- Finally, [generic ephemeral volumes](https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/#generic-ephemeral-volumes-1) is a new configuration option with Kubernetes 1.23. 
+- [**Generic ephemeral volumes**](https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/#generic-ephemeral-volumes-1) are a new configuration option with Kubernetes 1.23. 
    This configuration uses the **`volumeClaimTemplate`** keyword in pod manifests to create per-pod volumes “on-the-spot". 
 
 - There are a couple of blogs available that describe how to configure ephemeral general volumes for the SAS compute engine and the CAS server:
