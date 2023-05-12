@@ -275,12 +275,12 @@ Since this is a rather convoluted topic with lots of facets, here's a picture wh
 
 **_<div align="center">Figure 1</div>_**
 
-This diagram tries to summarize the key storage requirements for SAS, using _persistent storage_ and _ephemeral storage_. Let’s start with the persistent storage requirements first.
+Figure 1 summarizes the key storage requirements for SAS, using _persistent storage_ and _ephemeral storage_. 
 
-_**Persistent storage**_ is required for 2 purposes:
-- **Stateful services configuration data** (Consul, Redis etc.). This storage requirement is mandatory for the deployment, made available through the Kubernetes CSI API for [persistent volumes in both RWO and RWX access modes](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0ampbltwqgkjkn1j3qogztsbbu0.htm#n0mmuxy47s2nnrn1l5rfb5fxtb4d). 
+Starting with _**Persistent storage**_, which is required for two purposes:
+   - **Stateful services configuration data** (_Consul_, _Redis_, etc.). This storage requirement is mandatory for the deployment; made available through the Kubernetes CSI API for [persistent volumes in both RWO and RWX access modes](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0ampbltwqgkjkn1j3qogztsbbu0.htm#n0mmuxy47s2nnrn1l5rfb5fxtb4d). 
    
-- **File-based business data**. Strictly speaking this is optional, but it’s a very common situation that existing file shares with business data (SAS datasets, CSV files, Excel etc.) have to be made available to the SAS compute pods. These collections of files are either accessed through the CSI API (in RWX mode) or could also be mounted directly to the pods using a direct NFS configuration etc. It’s important to state that poor disk I/O performance can turn into a real bottleneck for users of the Viya platform.
+   - **File-based business data**. Optional, but it’s a very common situation that existing file shares with business data (SAS datasets, CSV files, Excel etc.) have to be made available to the SAS compute pods. These collections of files are either accessed through the CSI API (in RWX mode) or could also be mounted directly to the pods using a direct NFS configuration, etc. It’s important to state that poor disk I/O performance can turn into a real bottleneck for users of the Viya platform.
 
 [Dynamic volume provisioning is provided by the in-tree and CSI vSphere storage provider for OpenShift on VMware vSphere](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-vsphere.html#dynamically-provisioning-vmware-vsphere-volumes). OpenShift Data Foundation (ODF) provides even more flexibility as it can also provide file, block and object storage with both RWO and RWX access modes.
 <p></p>
