@@ -28,27 +28,28 @@ Moving SAS Viya to OpenShift gives Viya unprecedented scalability that was unava
 
 **_<div align="center">Figure 1</div>_**
 
-Note that the setup of pools is not mandatory and there might be reasons to ignore the recommendation if the existing cluster infrastructure is not suitable for such a split. Applying a workload placement strategy by using node pools provides a lot of benefits, as it allows you to tailor the cluster topology to workload requirements; you could, for example, choose different hardware configurations (nodes with additional storage, with GPU cards etc.). The placement of SAS workload classes can be enabled by applying predefined Kubernetes node labels and node taints.
+<p>Note that the setup of pools is not mandatory and there might be reasons to ignore the recommendation if the existing cluster infrastructure is not suitable for such a split. Applying a workload placement strategy by using node pools provides a lot of benefits, as it allows you to tailor the cluster topology to workload requirements; you could, for example, choose different hardware configurations (nodes with additional storage, with GPU cards etc.). The placement of SAS workload classes can be enabled by applying predefined Kubernetes node labels and node taints.</p>
+<p>Please refer to the 2nd installment of this blog for an in-depth discussion around machine management on OpenShift, which explains how this can be simplified and automated by capabilities uniquely available in OpenShift.</p>
 
 It might be helpful for a better understanding to briefly explain the workload classes mentioned in this diagram.
 
 ### **SAS Cloud Analytic Server (CAS) (CAS NODE POOL)**
 The core component at the heart of SAS Viya is the Cloud Analytics Server (CAS). It is an in-memory analytics engine. Data is loaded from the required data source into some in-memory tables then clients connect to CAS to run analytical routines against the data. The data loaded into memory for CAS can also be flushed to disk. This is why the CAS server usually has the highest resource requirements of all SAS Viya components: it is CPU- *and* memory-intensive and requires persistent storage accessible by all nodes hosting CAS pods.
 
-CAS can be deployed in one of two modes:  SMP (Symmetric Multi Processing), and MPP (Massive Parallel Processing). In SMP mode, only one CAS pod is being deployed, in MPP mode multiple CAS pods are used where one pod takes the role of a controller while the other pods are used for running the computations.
+CAS can be deployed in one of [two modes](https://go.documentation.sas.com/doc/en/sasadmincdc/v_039/casfun/n00001sascassrvmgt00000admin.htm):  _SMP_ (Symmetric Multi Processing), and _MPP_ (Massive Parallel Processing). In SMP mode, only one CAS pod is being deployed, in MPP mode multiple CAS pods are used where one pod takes the role of a controller while the other pods are used for running the computations.
 
 In a default configuration, i.e., when a CAS node pool is being used, each CAS pod runs on a separate worker node, claiming more than 90% of the available CPU and memory resources out-of-the-box. If there is no node pool available for CAS, transformer patches applied during the deployment limit the resource usage of CAS to the desired amount or allow co-existence of CAS with other workloads on the same node.
 
 ### **SAS Compute Services (COMPUTE NODE POOL)**
 SAS Compute services represent the traditional SAS processing capabilities as used in all previous releases of SAS. A SAS session is launched either interactively by a user from a web application or in batch mode to run as a Kubernetes job to execute submitted SAS code to transform or analyze data. Due to this approach, SAS sessions are highly parallelizable. The number of sessions (or Kubernetes jobs) running in parallel is only limited by the available hardware resources.
 
-The compute node pool is a good candidate for using the cluster autoscaler, if possible. Often customers have typical usage patterns that would directly benefit from this - for example, by intercepting usage peaks (scaling out for nightly batch workload, scaling in over the weekend, etc.).
+The compute node pool is a good candidate for using the cluster autoscaler, if possible. Often customers have typical usage patterns that would directly benefit from this - for example, by intercepting usage peaks (scaling out for nightly batch workload, scaling in over the weekend, etc.). Please refer to the section on Autoscaling in the 2nd installment of this blog for more OpenShift specific details.
 
 ### **SAS Microservices and Web Applications (STATELESS NODE POOL)**
-Most services in any SAS Viya deployment are designed as microservices (also known as 12 factor apps). They are responsible providing central services like auditing, authentication, etc. Also, grouped with these services are a set of stateless web applications which are the user interfaces which are exposed to end users, for example SAS Visual Analytics, SAS Model Manager and SAS Data Explorer.
+Most services in any SAS Viya deployment are designed as microservices (also known as "[_12 factor apps_](https://12factor.net/)"). They are responsible for providing central services like auditing, authentication, etc. Also, grouped with these services are a set of stateless web applications which are the user interfaces which are exposed to end users, for example: _SAS Visual Analytics_, _SAS Model Manager_ and _SAS Data Explorer_.
 
 ### **Infrastructure Services (STATEFUL NODE POOL)**
-The commodity services are basically the metadata management and storage services. They are made of several open-source technologies such as the internal SAS Postgres database, as well as Consul and RabbitMQ for messaging. This is where the critical operational data is stored. These services are rather I/O intensive and do require persistent storage.
+The commodity services are basically the metadata management and storage services. They are made of several open-source technologies such as the internal SAS _Postgres database_, as well as _Consul_ and _RabbitMQ_ for messaging. This is where the critical operational data is stored. These services are rather I/O intensive and do require persistent storage.
 
 <br></br>
 
@@ -77,15 +78,15 @@ At the time this blog was written, [Red Hat OpenShift versions 4.10 - 4.12 are s
    
 - **Security Context Constraints**
 
-   Security Context Constraints (SCCs) provide permissions to pods and are required to allow them to run. SAS requires several custom SCCs to support SAS Viya Services with OpenShift. The SAS documentation provides information about the required SCCs to help understand their use in your environment and to address any security concerns.  Further details about the required custom SCCs are provided in Part 2 of this document.
+   Security Context Constraints (SCCs) provide permissions to pods and are required to allow them to run. SAS requires several custom SCCs to support SAS Viya Services with OpenShift. The SAS documentation provides information about the required SCCs to help understand their use in your environment and to address any security concerns.  Further details about the required custom SCCs are provided in _Part 2_ of this document.
 <br></br>
 
 ### **Deployment options – Red Hat OpenShift**
-There are various methods for [installing Red Hat OpenShift Container Platform on VMware vSphere,](https://docs.openshift.com/container-platform/4.12/installing/installing_vsphere/preparing-to-install-on-vsphere.html)  including:
+There are various methods for [installing Red Hat OpenShift Container Platform on VMware vSphere,](https://docs.openshift.com/container-platform/4.12/installing/installing_vsphere/preparing-to-install-on-vsphere.html) including:
 
-- _Installer-provisioned infrastructure_ (IPI) installation, which allows the installation program to pre-configure and automate the provisioning of the required resources.
-- The [_Assisted Installer_,](https://docs.openshift.com/container-platform/4.12/installing/installing_on_prem_assisted/installing-on-prem-assisted.html) which <a name="_int_0dxvuolc"></a>provides a user-friendly installation solution offered directly from the [Red Hat Hybrid Cloud Console.](https://console.redhat.com/openshift/assisted-installer/clusters/~new)
-- _User-provisioned infrastructure_ (UPI) installation, which provides a manual type of installation with the most control over the installation and configuration process.
+- _**Installer-provisioned infrastructure**_ (IPI) installation, which allows the installation program to pre-configure and automate the provisioning of the required resources.
+- The [_**Assisted Installer**_,](https://docs.openshift.com/container-platform/4.12/installing/installing_on_prem_assisted/installing-on-prem-assisted.html) which <a name="_int_0dxvuolc"></a>provides a user-friendly installation solution offered directly from the [Red Hat Hybrid Cloud Console.](https://console.redhat.com/openshift/assisted-installer/clusters/~new)
+- _**User-provisioned infrastructure**_ (UPI) installation, which provides a manual type of installation with the most control over the installation and configuration process.
 
 An IPI installation results in an OCP cluster with the vSphere cloud provider configuration settings from the installation, which enables additional automation and dynamic provisioning after installation:
 
@@ -93,7 +94,7 @@ An IPI installation results in an OCP cluster with the vSphere cloud provider co
 - [Host Node management for Node pools using MachineSets](https://docs.openshift.com/container-platform/4.12/machine_management/index.html).
 - [Autoscaling Nodes using the MachineAutoScaler and ClusterAutoScaler operators](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html). 
 
-Information about configuring these capabilities is supplied within Part 2 of this document.
+Information about configuring these machine management and storage integration capabilities with OpenShift is supplied within _Part 2_ of this document.
 
 An [OpenShift installation on VMware vSphere](https://docs.openshift.com/container-platform/4.12/installing/installing_vsphere/preparing-to-install-on-vsphere.html) using the UPI or Assisted Installer methods can also be set up [post-installation with the vSphere cloud provider configuration](https://access.redhat.com/documentation/en-us/assisted_installer_for_openshift_container_platform/2022/html-single/assisted_installer_for_openshift_container_platform/index#vsphere-post-installation-configuration_installing-on-vsphere), to provide similar automation and dynamic provisioning capability as an IPI installation. This is out of the scope of this blog.
 <br></br>
@@ -106,18 +107,18 @@ There are several approaches for deploying SAS Viya on Red Hat OpenShift, which 
 - Using the `sas-orchestration` command line utility
 
 #### ***1. Manual deployment***
-After purchasing a SAS Viya license, customers receive a set of deployment templates (known as the “deployment assets” tarball) in YAML format which they need to modify to create the final deployment manifest (usually called “site.yaml”). SAS uses the `kustomize` tool for modifying the templates. Common customizations include the definition of a mirror repository, configuring TLS, high-availability, storage and other site-specific settings. The final deployment manifest can then be submitted to Kubernetes using multiple `kubectl` commands. 
+After purchasing a SAS Viya license, customers receive a set of deployment templates (known as the “deployment assets” tarball) in YAML format which they need to modify to create the final deployment manifest (usually called “site.yaml”). SAS uses the [`kustomize`](https://kustomize.io/) tool for modifying the templates. Common customizations include the definition of a mirror repository, configuring TLS, high-availability, storage and other site-specific settings. The final deployment manifest can then be submitted to Kubernetes using multiple `kubectl` commands. 
 
-_**NOTE**:   You must have cluster-admin privileges to perform a manual deployment of SAS Viya._
+_**NOTE**:  You must have cluster-admin privileges to perform a manual deployment of SAS Viya._
 
-Note that the final manifest contains objects which require elevated privileges for deployment, for example Custom Resource Definitions (CRDs), `PodTemplates`, `ClusterRoleBindings` etc., which means that in most cases the SAS project team will need support from the OpenShift administration team to carry out the deployment. SAS has tagged all resources that need to be deployed according to the required permissions. This enables task sharing between the project team (with namespace-admin permissions) and the administration team (with cluster-admin permissions). However, it is important to keep in mind that this dependency will come up again with later updates for example.
+Note that the final manifest contains objects which require elevated privileges for deployment, for example _Custom Resource Definitions_ (CRDs), `PodTemplates`, `ClusterRoleBindings` etc., which means that in most cases the SAS project team will need support from the OpenShift administration team to carry out the deployment. SAS has tagged all resources that need to be deployed according to the required permissions. This enables task sharing between the project team (with namespace-admin permissions) and the administration team (with cluster-admin permissions). However, it is important to keep in mind that this dependency will come up again with later updates for example.
 
 #### ***2. SAS Deployment Operator***
 For that reason, using the SAS Deployment Operator might provide a better solution. SAS provides an operator for deploying and updating SAS Viya. The SAS Deployment Operator is not (yet) a certified operator so it will not be found in the OperatorHub or in the Red Hat Marketplace.
 
-The SAS Viya Deployment Operator provides an automated method for deploying and updating the SAS Viya environments. It runs in the OpenShift cluster and watches for declarative representations of SAS Viya deployments in the form of Custom Resources (CRs) of the type `SASDeployment`. When a new `SASDeployment` CR is created or an existing CR is updated, the Deployment Operator performs an initial deployment or updates an existing deployment to match the state that is described in the CR. A single instance of the operator can manage all SAS Viya deployments in the cluster.
+The SAS Viya Deployment Operator provides an automated method for deploying and updating the SAS Viya environments. It runs in the OpenShift cluster and watches for declarative representations of SAS Viya deployments in the form of _Custom Resources_ (CRs) of the type `SASDeployment`. When a new `SASDeployment` CR is created or an existing CR is updated, the Deployment Operator performs an initial deployment or updates an existing deployment to match the state that is described in the CR. A single instance of the operator can manage all SAS Viya deployments in the cluster.
 
-_**NOTE**:   You must have cluster-admin privileges to perform an initial SAS Viya deployment using the SAS Viya Deployment Operator. However, updates to an existing deployment ..._
+_**NOTE**:  The Deployment Operator must have cluster-admin privileges to manage deployments._
 
 As part of a DevOps pipeline, the operator can largely automate deployments and deployment updates, reducing dependency on the OpenShift administration team. For example, the SAS Deployment Operator nicely integrates with OpenShift GitOps, which are is a component of the Red Hat OpenShift Container Platform (OCP) that provide a turnkey CI/CD automation solution for continuous integration (CI) and continuous delivery (CD) tasks. OpenShift GitOps can be used to provide additional automation for a SAS Viya deployment by monitoring a Git repository for changes to the SAS CR manifest and automatically syncing its’ contents to the cluster. Pushing the CR manifest to the Git repository then triggers a sync with OpenShift GitOps. The CR will be deployed to Kubernetes, which in turn triggers the Operator and the deployment to start. _Figure 2_ illustrates this workflow:
 
