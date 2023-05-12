@@ -332,7 +332,8 @@ The following table summarizes two of the [persistent storage solutions that may
 
 <br></br>
 ## **Conclusion**
-With this we’re coming to the end of our blog series about deploying SAS Viya on the Red Hat OpenShift container platform. In the 1st installment of the blog we started with giving an overview, described a reference architecture and discussed the deployment process, while in this part of the blog we focused on security considerations, cluster topology automation and storage requirements.
+With this we’re coming to the end of our blog series about deploying SAS Viya on the Red Hat OpenShift container platform. In the first installment of the blog, we started with giving an overview, described a reference architecture and discussed the deployment process, while in this part of the blog we focused on security considerations, cluster topology automation and storage requirements.
+
 We hope that you enjoyed reading the blogs and would like to invite you to get in touch with us if you have any questions or feedback.
 
 
