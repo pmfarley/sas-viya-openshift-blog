@@ -275,7 +275,7 @@ Since this is a rather convoluted topic with lots of facets, here's a picture wh
 
 **_<div align="center">Figure 1</div>_**
 
-Figure 1 summarizes the key storage requirements for SAS, using _persistent storage_ and _ephemeral storage_. 
+_Figure 1_ summarizes the key storage requirements for SAS, using _persistent storage_ and _ephemeral storage_. 
 
 _**Persistent storage**_, is required for two purposes:
    - **Stateful services configuration data** (_Consul_, _Redis_, etc.). This storage requirement is mandatory for the deployment; made available through the Kubernetes CSI API for [persistent volumes in both RWO and RWX access modes](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0ampbltwqgkjkn1j3qogztsbbu0.htm#n0mmuxy47s2nnrn1l5rfb5fxtb4d). 
