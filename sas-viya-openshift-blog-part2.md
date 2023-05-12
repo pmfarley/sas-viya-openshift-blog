@@ -265,11 +265,11 @@ The following table provides the details about the example definition files prov
 ### **SAS Viya Storage Requirements**
 Before we close off this blog series, we would like to spend a few words on the storage requirements of SAS Viya. If you’ve made it so far, you might already expect that a software stack like SAS Viya, which focuses on Data Management and Analytics, comes with the need for persistent (and ephemeral) storage. 
 
-This is one of the most important topics to be discussed when preparing the deployment on OpenShift as choosing a suitable storage configuration usually makes a key difference for the user experience. SAS compute sessions have always been heavily dependent on good disk I/O performance and this requirement has not changed with the latest SAS platform. 
+This is one of the most important topics to be discussed when preparing the deployment on OpenShift, as choosing a suitable storage configuration usually makes a key difference for the user experience. SAS compute sessions have always been heavily dependent on good disk I/O performance and this requirement has not changed with the latest SAS platform. 
 
-Many SAS Viya components require highly performant storage, and SAS generally recommends a sequential I/O bandwidth of 90-120 MB per second, per physical CPU core. Normally this would be achieved by utilizing a storage system that is backed by using SSD or NVMe disks.  SAS provides an automated utility script -- [rhel_iotest.sh](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0bqwd5t5y2va7n1u9xb57lfa9wx.htm#p1qz3rq1f758xkn1pctnlw7c3kn6), that uses UNIX/Linux dd commands to measure the I/O throughput of a file system in a Red Hat Enterprise Linux (RHEL) environment.
+Many SAS Viya components require highly performant storage, and SAS generally recommends a sequential I/O bandwidth of 90-120 MB per second, per physical CPU core. Normally this would be achieved by utilizing a storage system that is backed by using SSD or NVMe disks.  SAS provides an automated utility script -- [rhel_iotest.sh](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0bqwd5t5y2va7n1u9xb57lfa9wx.htm#p1qz3rq1f758xkn1pctnlw7c3kn6), that uses UNIX/Linux dd commands to measure the I/O throughput of a file system in a Red Hat Enterprise Linux (RHEL) environment.  This script can be used to compare the measured throughput of the storage in your environment to the recommendation.
 
-Since this is a rather convoluted topic with lots of facets, here's a picture which hopefully helps you to keep your orientation for the rest of this section: 
+Since this is a rather complex topic with lots of facets, here's a picture which hopefully helps you to keep your orientation for the rest of this section: 
 
 <p align="center"><img width="600" alt="image" src="sas-viya-storage.png"></p>
 
@@ -282,16 +282,15 @@ _**Persistent storage**_, is required for two purposes:
    
    - **File-based business data**. Optional, but it’s a very common situation that existing file shares with business data (SAS datasets, CSV files, Excel etc.) have to be made available to the SAS compute pods. These collections of files are either accessed through the CSI API (in RWX mode) or could also be mounted directly to the pods using a direct NFS configuration, etc. It’s important to state that poor disk I/O performance can turn into a real bottleneck for users of the Viya platform.
 
-[Dynamic volume provisioning is provided by the in-tree and CSI vSphere storage provider for OpenShift on VMware vSphere](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-vsphere.html#dynamically-provisioning-vmware-vsphere-volumes). OpenShift Data Foundation (ODF) provides even more flexibility as it can also provide file, block and object storage with both RWO and RWX access modes.
+[Dynamic volume provisioning is provided by the in-tree and CSI vSphere storage provider for OpenShift on VMware vSphere](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-vsphere.html#dynamically-provisioning-vmware-vsphere-volumes). OpenShift Data Foundation (ODF) provides added flexibility as it can also provide file, block and object storage with both RWO and RWX access modes.
 <p></p>
 
 _**Ephemeral storage**_ is a major requirement for the SAS compute engine and the CAS server. Both engines heavily rely on fast storage for storing intermediate data which is no longer needed after the session has ended. Like what was said above, I/O performance is crucial for this storage to prevent it from turning into a bottleneck for users.
 
-There are a few technical options to provide ephemeral storage:
-- **Local storage** on the worker node:
-   -  Using a **`hostPath` configuration**. While it would be easy to configure, this is often rejected for security reasons.
+There are a few technical options available to provide ephemeral storage, using **Local storage** on the worker node:
+-  Using a **`hostPath` configuration**. While it would be easy to configure, this is often rejected for security reasons.
 
-   - Using the [**OpenShift Local Storage Operator**](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent_storage_local/persistent-storage-local.html). 
+- Using the [**OpenShift Local Storage Operator**](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent_storage_local/persistent-storage-local.html). 
       If you’re interested in learning more about this option, make sure to check out this blog titled "[SAS Viya Temporary Storage on Red Hat OpenShift – Part 1](https://communities.sas.com/t5/SAS-Communities-Library/SAS-Viya-Temporary-Storage-on-Red-Hat-OpenShift-Part-1/ta-p/858834)".
 
 - **`emptyDir`** seems to be a tempting option at first, and it certainly can be used for test environments, but it is strictly not recommended for production or near-production clusters.
