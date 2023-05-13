@@ -105,7 +105,7 @@ There are several approaches for deploying SAS Viya on Red Hat OpenShift, which 
 - Using the `sas-orchestration` command line utility
 
 #### ***1. Manual Deployment***
-After purchasing a SAS Viya license, customers receive a set of deployment templates (known as the “deployment assets” tarball) in YAML format which they need to modify to create the final deployment manifest (usually called “site.yaml”). SAS uses the [`kustomize`](https://kustomize.io/) tool for modifying the templates. Common customizations include the definition of a mirror repository, configuring TLS, high-availability, storage and other site-specific settings. The final deployment manifest can then be submitted to Kubernetes using multiple `kubectl` commands. 
+After purchasing a SAS Viya license, customers receive a set of deployment templates (known as the _deployment assets_ tarball) in YAML format which they need to modify to create the final deployment manifest (usually called `site.yaml`). SAS uses the [`kustomize`](https://kustomize.io/) tool for modifying the templates. Common customizations include the definition of a mirror repository, configuring TLS, high-availability, storage and other site-specific settings. The final deployment manifest can then be submitted to Kubernetes using multiple `kubectl` commands. 
 
 _**NOTE**:  You must have cluster-admin privileges to manage deployments of SAS Viya._
 
