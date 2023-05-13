@@ -202,7 +202,7 @@ Create a `MachineSet` definition YAML file for each SAS Viya workload class need
 
 When the new machine set is available, the DESIRED and CURRENT values match. If the machine set is not available, wait a few minutes and run the command again.
 
-For more information about defining `MachineSets`, refer to "[Creating a compute machine set on vSphere](https://docs.openshift.com/container-platform/4.12/machine_management/creating_machinesets/creating-machineset-vsphere.html)" in the OpenShift documentation.
+For more information about defining `MachineSets`, refer to "[_Creating a compute machine set on vSphere_](https://docs.openshift.com/container-platform/4.12/machine_management/creating_machinesets/creating-machineset-vsphere.html)" in the OpenShift documentation.
 
 
 
