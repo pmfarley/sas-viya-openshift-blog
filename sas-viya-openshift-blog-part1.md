@@ -44,7 +44,7 @@ SAS Compute services represent the traditional SAS processing capabilities as us
 The compute node pool is a good candidate for using the cluster autoscaler, if possible. Often customers have typical usage patterns that would directly benefit from this - for example, by intercepting usage peaks (scaling out for nightly batch workload, scaling in over the weekend, etc.). Please refer to the section on _Autoscaling_ in the second installment of this blog for more OpenShift specific details.
 
 ### **SAS Microservices and Web Applications (STATELESS NODE POOL)**
-Most services in any SAS Viya deployment are designed as microservices (also known as "[_12 factor apps_](https://12factor.net/)"). They are responsible for providing central services like auditing, authentication, etc. Also, grouped with these services are a set of stateless web applications which are the user interfaces which are exposed to end users, for example: _SAS Visual Analytics_, _SAS Model Manager_ and _SAS Data Explorer_.
+Most services in any SAS Viya deployment are designed as microservices, also known as [_12 factor apps_](https://12factor.net/). They are responsible for providing central services like auditing, authentication, etc. Also, grouped with these services are a set of stateless web applications which are the user interfaces which are exposed to end users, for example: _SAS Visual Analytics_, _SAS Model Manager_ and _SAS Data Explorer_.
 
 ### **Infrastructure Services (STATEFUL NODE POOL)**
 The commodity services are basically the metadata management and storage services. They are made of several open-source technologies such as the internal SAS _Postgres database_, as well as _Consul_ and _RabbitMQ_ for messaging. This is where the critical operational data is stored. These services are rather I/O intensive and do require persistent storage.
@@ -83,7 +83,7 @@ At the time this blog was written, [Red Hat OpenShift versions 4.10 - 4.12 are s
 There are various methods for [installing Red Hat OpenShift Container Platform on VMware vSphere,](https://docs.openshift.com/container-platform/4.12/installing/installing_vsphere/preparing-to-install-on-vsphere.html) including:
 
 - _**Installer-provisioned infrastructure**_ (IPI) installation, which allows the installation program to pre-configure and automate the provisioning of the required resources.
-- The [_**Assisted Installer**_,](https://docs.openshift.com/container-platform/4.12/installing/installing_on_prem_assisted/installing-on-prem-assisted.html) which <a name="_int_0dxvuolc"></a>provides a user-friendly installation solution offered directly from the [Red Hat Hybrid Cloud Console.](https://console.redhat.com/openshift/assisted-installer/clusters/~new)
+- The [_**Assisted Installer**_,](https://docs.openshift.com/container-platform/4.12/installing/installing_on_prem_assisted/installing-on-prem-assisted.html) which provides a user-friendly installation solution offered directly from the [Red Hat Hybrid Cloud Console.](https://console.redhat.com/openshift/assisted-installer/clusters/~new)
 - _**User-provisioned infrastructure**_ (UPI) installation, which provides a manual type of installation with the most control over the installation and configuration process.
 
 An IPI installation results in an OCP cluster with the vSphere cloud provider configuration settings from the installation, which enables additional automation and dynamic provisioning after installation:
@@ -135,7 +135,7 @@ For more information about the `sas-orchestration` utility, see the SAS blog [_N
 
 <br></br>
 ### SAS Viya Deployment From A Process Perspective
-It has probably already become clear that deploying SAS Viya is a “team sport activity” due to the size and complexity of the software stack. Typically, project teams on OpenShift are granted namespace-local, but not cluster-wide permissions by the OCP admin team (“admin” vs “cluster-admin” role). We’ll provide more details on the security requirements later within _Part 2_ of this blog, but in short it means that the SAS project team will be lacking the necessary authorizations to carry out a deployment independently.
+It has probably already become clear that deploying SAS Viya is a “team sport activity” due to the size and complexity of the software stack. Typically, project teams on OpenShift are granted namespace-local, but not cluster-wide permissions by the OCP admin team (_admin_ vs _cluster-admin_ role). We’ll provide more details on the security requirements later within _Part 2_ of this blog, but in short it means that the SAS project team will be lacking the necessary authorizations to carry out a deployment independently.
 
 Based on our experiences with previous deployments at customer sites, we found the following process approach to be helpful. For the sake of this blog, we’re describing the process for a manual deployment:
 
