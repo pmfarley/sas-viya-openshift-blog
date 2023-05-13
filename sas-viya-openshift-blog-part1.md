@@ -105,7 +105,7 @@ There are several approaches for deploying SAS Viya on Red Hat OpenShift, which 
 - Using the `sas-orchestration` command line utility
 
 #### ***1. Manual Deployment***
-After purchasing a SAS Viya license, customers receive a set of deployment templates (known as the _deployment assets_ tarball) in YAML format which they need to modify to create the final deployment manifest (usually called `site.yaml`). SAS uses the [`kustomize`](https://kustomize.io/) tool for modifying the templates. Common customizations include the definition of a mirror repository, configuring TLS, high-availability, storage and other site-specific settings. The final deployment manifest can then be submitted to Kubernetes using multiple `kubectl` commands. 
+After purchasing a SAS Viya license, customers receive a set of deployment templates (known as the _deployment assets_ tarball) in YAML format which they need to modify to create the final deployment manifest (usually called `**site.yaml**`). SAS uses the [`kustomize`](https://kustomize.io/) tool for modifying the templates. Common customizations include the definition of a mirror repository, configuring TLS, high-availability, storage and other site-specific settings. The final deployment manifest can then be submitted to Kubernetes using multiple `kubectl` commands. 
 
 _**NOTE**:  You must have cluster-admin privileges to manage deployments of SAS Viya._
 
@@ -149,7 +149,7 @@ The deployment process can be segmented into three phases (planning, preparing, 
 
 - **PREPARATION**: The second task typically is in the hands of the OCP administrators: they need to review the requirements and prepare the project setup. The SAS team can then start preparing the deployment manifest (basically a YAML file) which contains site-specific information (such as the DNS name or the supplemental-groups value which is specific to the project/namespace).
 
-- **PERFORMING**: Once the deployment manifests are ready to be submitted, both teams need to collaborate to submit the manifests. While the OpenShift administrators can focus on resources which require elevated permissions (like custom SCCs or CustomResourceDefinitions), the SAS project team will handle all the resources with namespace scope. The main deployment manifest contains predefined selectors that allow to make this distinction between.
+- **PERFORMING**: Once the deployment manifests are ready to be submitted, both teams need to collaborate to submit the manifests. While the OpenShift administrators can focus on resources which require elevated permissions (like custom _SCCs_ or _CRDs_), the SAS project team will handle all the resources with namespace scope. The main deployment manifest contains predefined selectors that allow to make this distinction between.
 
 
 <br></br>
