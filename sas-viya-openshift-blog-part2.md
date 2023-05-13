@@ -43,7 +43,7 @@ Use the OpenShift CLI tool (`oc`) to apply the SCC, and to assign the SCC to a s
 
 For additional details about SCCs, please see the following:
 
-- For a full list and description of the required SCCs, see [_Security Context Constraints and Service Accounts_](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p1h8it1wdu2iaxn1bkd8anfcuxny.htm#p09z7ivwp61280n1jezh6i6qmoml) in *SAS Viya Platform: Deployment Guide*.
+- For a full list and description of the required SCCs, see [_Security Context Constraints and Service Accounts_](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p1h8it1wdu2iaxn1bkd8anfcuxny.htm#p09z7ivwp61280n1jezh6i6qmoml) in _SAS Viya Platform Deployment Guide_.
 - For SCC types, see [_SCCs and Pod Service Accounts_](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0bqwd5t5y2va7n1u9xb57lfa9wx.htm#p1qz3rq1f758xkn1pctnlw7c3kn6) in *System Requirements for the SAS Viya Platform*.
 - For more information for each SCC, see the `README.md` file (for Markdown format) below the `$deploy/sas-bases/examples` folder or below `$deploy/sas-bases/docs` (for HTML format).
 - For more information about applying SCCs with OpenShift, see the Red Hat blog [_Managing SCCs in OpenShift_](https://cloud.redhat.com/blog/managing-sccs-in-openshift).
@@ -164,7 +164,7 @@ Red Hat OpenShift provides machine management as an automation method for managi
 <br></br>
 
 ### 1. Workload Placement
-Part 1 of this blog detailed the SAS Viya workload classes and node pools that can be used to place the workloads on appropriate nodes within the cluster. The [workload placement configuration, from the _SAS Viya Platform Operations_ manual](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0wj0cyrn1pinen1wcadb0rx6vbm), provides the node labels and taints that can be included within the compute `MachineSet` definitions, so they are preconfigured at compute `Machine` creation time.
+Part 1 of this blog detailed the SAS Viya workload classes and node pools that can be used to place the workloads on appropriate nodes within the cluster. The [_workload placement configuration_](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0wj0cyrn1pinen1wcadb0rx6vbm), from the _SAS Viya Platform Operations Guide_, provides the node labels and taints that can be included within the compute `MachineSet` definitions, so they are preconfigured at compute `Machine` creation time.
 
 Refer to the `ClusterAutoScaler`, `MachineAutoScaler` and `MachineSet` definition examples provided in the _Example Machine Management YAML Files_ section below.
 
