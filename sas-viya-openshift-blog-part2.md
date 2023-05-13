@@ -243,7 +243,7 @@ To deploy the machine autoscaler, you create an instance of the `MachineAutosca
   oc create -f cas-mpp-autoscaler.yaml
   ```
 
-For more information about defining the `MachineAutoScaler` resource definition, refer to the [OpenShift documentation](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#machine-autoscaler-about_applying-autoscaling).
+For more information about defining the `MachineAutoScaler` resource definition, refer to "[_Configuring the machine autoscalers_](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#configuring-machineautoscaler)" in the OpenShift documentation.
 
 
 #### ***Example Machine Management YAML Files***
