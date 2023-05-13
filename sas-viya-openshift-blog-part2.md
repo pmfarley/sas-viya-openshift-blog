@@ -7,7 +7,7 @@ _May 19, 2023 | by Patrick Farley and Hans-Joachim Edert_
 Welcome back to this 2nd part of our blog where we want to share some basic technical information about SAS Viya on the Red Hat OpenShift platform. While we have been discussing the reference architecture and details on the deployment process in the first part of the blog, we now want to dive deeper into security and storage topics, which are at the core of any deployment.
 
 ## Security Considerations
-As discussed in the first part of this blog, the SAS Viya analytical platform is not just a single application, but a suite of integrated applications. While most services are microservices following the 12-fasctor-app pattern, SAS also uses compute engines and stateful services which are essential for the platform. SAS integrates with the standard security approach that applies to OpenShift, namely the use of [Security Context Constraints (SCCs)](https://cloud.redhat.com/blog/managing-sccs-in-openshift).
+As discussed in the first part of this blog, the SAS Viya analytical platform is not just a single application, but a suite of integrated applications. While most services are microservices following the 12-fasctor-app pattern, SAS also uses compute engines and stateful services which are essential for the platform. SAS integrates with the standard security approach that applies to OpenShift, namely the use of [_Security Context Constraints (SCCs)_](https://cloud.redhat.com/blog/managing-sccs-in-openshift).
 
 Following Red Hat guidelines, most SAS Viya platform pods are deployed in the `restricted` SCC, which applies the highest level of security. However, there are a few exceptions: three other OpenShift predefined SCCs are used for some SAS services (`nonroot`, `anyuid`, and `hostmount-anyuid`). In addition, a few custom SCCs are either required by essential SAS Viya platform components, such as the CAS server, or associated with specific SAS offerings that might be included in your software order.
 
@@ -43,10 +43,10 @@ Use the OpenShift CLI tool (`oc`) to apply the SCC, and to assign the SCC to a s
 
 For additional details about SCCs, please see the following:
 
-- For a full list and description of the required SCCs, see [Security Context Constraints and Service Accounts](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p1h8it1wdu2iaxn1bkd8anfcuxny.htm#p09z7ivwp61280n1jezh6i6qmoml) in *SAS Viya Platform: Deployment Guide*.
-- For SCC types, see [SCCs and Pod Service Accounts](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0bqwd5t5y2va7n1u9xb57lfa9wx.htm#p1qz3rq1f758xkn1pctnlw7c3kn6) in *System Requirements for the SAS Viya Platform*.
+- For a full list and description of the required SCCs, see [_Security Context Constraints and Service Accounts_](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p1h8it1wdu2iaxn1bkd8anfcuxny.htm#p09z7ivwp61280n1jezh6i6qmoml) in *SAS Viya Platform: Deployment Guide*.
+- For SCC types, see [_SCCs and Pod Service Accounts_](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0bqwd5t5y2va7n1u9xb57lfa9wx.htm#p1qz3rq1f758xkn1pctnlw7c3kn6) in *System Requirements for the SAS Viya Platform*.
 - For more information for each SCC, see the `README.md` file (for Markdown format) below the `$deploy/sas-bases/examples` folder or below `$deploy/sas-bases/docs` (for HTML format).
-- For more information about applying SCCs with OpenShift, see the Red Hat blog titled “[Managing SCCs in OpenShift](https://cloud.redhat.com/blog/managing-sccs-in-openshift)”.
+- For more information about applying SCCs with OpenShift, see the Red Hat blog [_Managing SCCs in OpenShift_](https://cloud.redhat.com/blog/managing-sccs-in-openshift).
 
 The following table gives an overview of all cases where a custom SCC (or an SCC other than restricted) is used: 
 
@@ -75,7 +75,7 @@ The following table gives an overview of all cases where a custom SCC (or an SCC
 
 If privileged containers are not allowed in your environment, a `MachineConfig` can be used to set the `vm.max_map_count` kernel parameter for OpenSearch, as an alternative to using the `sas-opendistro` SCC with the init container. All nodes that run workloads in the [stateful workload class](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm) are affected by this requirement.
 
-Perform the following steps; refer to "[_Adding kernel arguments to nodes_](https://docs.openshift.com/container-platform/4.12/nodes/nodes/nodes-nodes-managing.html#nodes-nodes-kernel-arguments_nodes-nodes-jobs)" in the OpenShift documentation.
+Perform the following steps; see [_Adding kernel arguments to nodes_](https://docs.openshift.com/container-platform/4.12/nodes/nodes/nodes-nodes-managing.html#nodes-nodes-kernel-arguments_nodes-nodes-jobs) in the OpenShift documentation.
 
 1. List existing `MachineConfig` objects for your OpenShift Container Platform cluster to determine how to label your machine config:
 
@@ -166,7 +166,7 @@ Red Hat OpenShift provides machine management as an automation method for managi
 ### 1. Workload Placement
 Part 1 of this blog detailed the SAS Viya workload classes and node pools that can be used to place the workloads on appropriate nodes within the cluster. The [workload placement configuration, from the _SAS Viya Platform Operations_ manual](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0wj0cyrn1pinen1wcadb0rx6vbm), provides the node labels and taints that can be included within the compute `MachineSet` definitions, so they are preconfigured at compute `Machine` creation time.
 
-Refer to the `ClusterAutoScaler`, `MachineAutoScaler` and `MachineSet` definition examples provided in the section below titled “_Example Machine Management YAML Files_”.
+Refer to the `ClusterAutoScaler`, `MachineAutoScaler` and `MachineSet` definition examples provided in the _Example Machine Management YAML Files_ section below.
 
 #### ***MachineSet***
 To deploy the machine set, you create an instance of the `MachineSet` resource.
@@ -202,7 +202,7 @@ Create a `MachineSet` definition YAML file for each SAS Viya workload class need
 
 When the new machine set is available, the DESIRED and CURRENT values match. If the machine set is not available, wait a few minutes and run the command again.
 
-For more information about defining `MachineSets`, refer to "[_Creating a compute machine set on vSphere_](https://docs.openshift.com/container-platform/4.12/machine_management/creating_machinesets/creating-machineset-vsphere.html)" in the OpenShift documentation.
+For more information about defining `MachineSets`, refer to [_Creating a compute machine set on vSphere_](https://docs.openshift.com/container-platform/4.12/machine_management/creating_machinesets/creating-machineset-vsphere.html) in the OpenShift documentation.
 
 
 
@@ -291,7 +291,7 @@ There are a few technical options available to provide this ephemeral storage, u
 -  **`hostPath` configuration**. While it would be easy to configure, this is often rejected for security reasons.
 
 - [**OpenShift Local Storage Operator**](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent_storage_local/persistent-storage-local.html). 
-      If you’re interested in learning more about this option, make sure to check out this SAS blog titled "[SAS Viya Temporary Storage on Red Hat OpenShift – Part 1](https://communities.sas.com/t5/SAS-Communities-Library/SAS-Viya-Temporary-Storage-on-Red-Hat-OpenShift-Part-1/ta-p/858834)".
+      If you’re interested in learning more about this option, see the SAS blog [_SAS Viya Temporary Storage on Red Hat OpenShift – Part 1_](https://communities.sas.com/t5/SAS-Communities-Library/SAS-Viya-Temporary-Storage-on-Red-Hat-OpenShift-Part-1/ta-p/858834).
 
 - **`emptyDir`**. This seems to be a tempting option at first, and it certainly can be used for test environments, but it is strictly not recommended for production or near-production clusters.
 
@@ -326,7 +326,7 @@ The following table summarizes two of the [persistent storage solutions that may
 | VMware vSphere | ✅ | ✅ \* |
 | Red Hat OpenShift Data Foundation | ✅ | ✅ |
 
-   \* If the underlying vSphere environment supports the vSAN file service, then the vSphere Container Storage Interface (CSI) Driver Operator installed by OpenShift Container Platform supports provisioning of _ReadWriteMany_ (RWX) volumes. If you do not have vSAN file service configured, and you request RWX, the volume fails to get created and an error is logged. For more information, see "[_VMware vSphere CSI Driver Operator_](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html)" in the OpenShift documentation.
+   \* If the underlying vSphere environment supports the vSAN file service, then the vSphere Container Storage Interface (CSI) Driver Operator installed by OpenShift Container Platform supports provisioning of _ReadWriteMany_ (RWX) volumes. If you do not have vSAN file service configured, and you request RWX, the volume fails to get created and an error is logged. For more information, see [_VMware vSphere CSI Driver Operator_](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html) in the OpenShift documentation.
 
 
 <br></br>
