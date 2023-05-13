@@ -66,13 +66,13 @@ At the time this blog was written, [Red Hat OpenShift versions 4.10 - 4.12 are s
 
    SAS prefers the use of native features with the environments with their products, so they take advantage of OpenShift routes.
    
-- **cert-utils-operator**
+- **`cert-utils-operator`**
 
    SAS requires the use of this operator to manage certificates for TLS support and create keystores.
    
-- **cert-manager**
+- **`cert-manager`**
 
-   SAS Viya supports two different certificate generators, which are used for enforcing full-stack TLS. The default generator uses OpenSSL and is supplied out-of-the-box by SAS. Alternatively, you can optionally deploy and use cert-manager to generate the certificates used to encrypt the pod-to-pod communication. 
+   SAS Viya supports two different certificate generators, which are used for enforcing full-stack TLS. The default generator uses OpenSSL and is supplied out-of-the-box by SAS. Alternatively, you can optionally deploy and use `cert-manager` to generate the certificates used to encrypt the pod-to-pod communication. 
    
 - **Security Context Constraints**
 
