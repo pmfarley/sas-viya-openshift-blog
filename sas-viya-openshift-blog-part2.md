@@ -229,7 +229,7 @@ To deploy the cluster autoscaler, you create an instance of the `ClusterAutosca
 
 **IMPORTANT**: Ensure that the `maxNodesTotal` value in the `ClusterAutoscaler` resource definition that you create is large enough to account for the total possible number of machines in your cluster. This value must encompass the number of control plane machines and the possible number of compute machines that you might scale to across all machine sets.
 
-For more information about defining the `ClusterAutoscaler` resource definition, refer to the [OpenShift documentation](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#cluster-autoscaler-cr_applying-autoscaling).
+For more information about defining the `ClusterAutoscaler` resource definition, refer to "[_Applying autoscaling to an OpenShift Container Platform cluster_](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html)" in the OpenShift documentation.
 
 
 #### ***MachineAutoScaler***
