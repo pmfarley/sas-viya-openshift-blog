@@ -143,7 +143,7 @@ Based on our experiences with previous deployments at customer sites, we found t
 
 **_<div align="center">Figure 3</div>_**
 
-The deployment process can be segmented into three phases (planning, preparing, performing) with separate tasks for the two main actors, the SAS project team (e.g. local SAS administrators and system engineers from SAS Institute) and the OpenShift administration team.
+The deployment process can be segmented into three phases (_planning_, _preparing_, and _performing_) with separate tasks for the two main actors, the SAS project team (e.g. local SAS administrators and system engineers from SAS Institute) and the OpenShift administration team.
 
 - **Planning**: It’s usually a good idea to start with a joint workshop where the SAS team gives a technical overview about SAS Viya to the OCP administrators. This is where topics such as security, sizing, storage, networking etc. need to be discussed. 
 
