@@ -298,8 +298,8 @@ There are a few technical options available to provide this ephemeral storage, u
 - **Generic ephemeral volumes**. This is a new configuration option introduced with [OpenShift 4.11](https://docs.openshift.com/container-platform/4.11/storage/generic-ephemeral-vols.html) / [Kubernetes 1.23](https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/#generic-ephemeral-volumes-1). This configuration uses the **`volumeClaimTemplate`** keyword in pod manifests to create per-pod volumes “on-the-spot". 
 
 There are a couple of SAS blogs available that describe how to configure ephemeral general volumes for the SAS compute engine and the CAS server:
-   - [SAS Viya Temporary Storage on Red Hat OpenShift – Part 2: CAS DISK CACHE](https://communities.sas.com/t5/SAS-Communities-Library/SAS-Viya-Temporary-Storage-on-Red-Hat-OpenShift-Part-2-CAS-DISK/ta-p/859250)
-   - [Using generic ephemeral volumes for SASWORK storage](https://communities.sas.com/t5/SAS-Communities-Library/Using-generic-ephemeral-volumes-for-SASWORK-storage-on-Azure/ta-p/839257)
+   - [_SAS Viya Temporary Storage on Red Hat OpenShift – Part 2: CAS DISK CACHE_](https://communities.sas.com/t5/SAS-Communities-Library/SAS-Viya-Temporary-Storage-on-Red-Hat-OpenShift-Part-2-CAS-DISK/ta-p/859250)
+   - [_Using generic ephemeral volumes for SASWORK storag_e](https://communities.sas.com/t5/SAS-Communities-Library/Using-generic-ephemeral-volumes-for-SASWORK-storage-on-Azure/ta-p/839257)
 
 <br></br>
 #### ***Cloud Native Storage Integration***
