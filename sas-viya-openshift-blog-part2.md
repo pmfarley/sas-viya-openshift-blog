@@ -299,7 +299,7 @@ There are a few technical options available to provide this ephemeral storage, u
 
 There are a couple of SAS blogs available that describe how to configure ephemeral general volumes for the SAS compute engine and the CAS server:
    - [_SAS Viya Temporary Storage on Red Hat OpenShift – Part 2: CAS DISK CACHE_](https://communities.sas.com/t5/SAS-Communities-Library/SAS-Viya-Temporary-Storage-on-Red-Hat-OpenShift-Part-2-CAS-DISK/ta-p/859250)
-   - [_Using generic ephemeral volumes for SASWORK storag_e](https://communities.sas.com/t5/SAS-Communities-Library/Using-generic-ephemeral-volumes-for-SASWORK-storage-on-Azure/ta-p/839257)
+   - [_Using generic ephemeral volumes for SASWORK storage_](https://communities.sas.com/t5/SAS-Communities-Library/Using-generic-ephemeral-volumes-for-SASWORK-storage-on-Azure/ta-p/839257)
 
 <br></br>
 #### ***Cloud Native Storage Integration***
