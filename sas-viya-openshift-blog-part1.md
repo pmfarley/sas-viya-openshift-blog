@@ -25,8 +25,9 @@ Moving SAS Viya to OpenShift gives Viya unprecedented scalability that was unava
 
 **_<div align="center">Figure 1</div>_**
 
-<p>Note that the setup of pools is not mandatory and there might be reasons to ignore the recommendation if the existing cluster infrastructure is not suitable for such a split. Applying a workload placement strategy by using node pools provides a lot of benefits, as it allows you to tailor the cluster topology to workload requirements; you could, for example, choose different hardware configurations (nodes with additional storage, with GPU cards etc.). The placement of SAS workload classes can be enabled by applying predefined Kubernetes node labels and node taints.</p>
-<p>Please refer to the [second installment of this blog](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-2-security-and-storage-considerations) for an in-depth discussion around machine management on OpenShift, which explains how this can be simplified and automated by capabilities uniquely available in OpenShift.</p>
+Note that the setup of pools is not mandatory and there might be reasons to ignore the recommendation if the existing cluster infrastructure is not suitable for such a split. Applying a workload placement strategy by using node pools provides a lot of benefits, as it allows you to tailor the cluster topology to workload requirements; you could, for example, choose different hardware configurations (nodes with additional storage, with GPU cards etc.). The placement of SAS workload classes can be enabled by applying predefined Kubernetes node labels and node taints.
+   
+Please refer to the [second installment of this blog](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-2-security-and-storage-considerations) for an in-depth discussion around machine management on OpenShift, which explains how this can be simplified and automated by capabilities uniquely available in OpenShift.
 
 It might be helpful for a better understanding to briefly explain the workload classes mentioned in this diagram.
 
@@ -55,7 +56,7 @@ In the current iteration of SAS Viya on OpenShift, SAS only supports VMware vSph
 
 At the time of this document, BareMetal is on the roadmap as an alternative for on-premise deployments.  When deployed on a different infrastructure provider, such as Azure, AWS, Google or BareMetal, SAS Viya runs under the [_SAS Support for Alternative Kubernetes Distributions_](https://support.sas.com/en/technical-support/services-policies.html#k8s) policy.
 
-At the time this blog was written, [Red Hat OpenShift versions 4.10 - 4.12 are supported for SAS Viya](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n098rczq46ffjfn1xbgfzahytnmx.htm#n0lrj1a1ia0fg9n1kxjlsedfg4dy). SAS works to align their SAS Viya Kubernetes support levels with Red Hat OpenShift and typically adds support for the latest OpenShift version updates within 1-2 months of a given OpenShift version release. Additional details about some of the specific OpenShift components that support the SAS Viya deployment are provided in _[Part 2 of this blog](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-2-security-and-storage-considerations)_, so we only want to provide a high-level overview here:
+At the time this blog was written, [Red Hat OpenShift versions 4.10 - 4.12 are supported for SAS Viya](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n098rczq46ffjfn1xbgfzahytnmx.htm#n0lrj1a1ia0fg9n1kxjlsedfg4dy). SAS works to align their SAS Viya Kubernetes support levels with Red Hat OpenShift and typically adds support for the latest OpenShift version updates within 1-2 months of a given OpenShift version release. Additional details about some of the specific OpenShift components that support the SAS Viya deployment are provided in [_Part 2 of this blog_](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-2-security-and-storage-considerations), so we only want to provide a high-level overview here:
 
 - **OpenShift Ingress Operator**
 
@@ -75,7 +76,7 @@ At the time this blog was written, [Red Hat OpenShift versions 4.10 - 4.12 are s
    
 - **Security Context Constraints**
 
-   Security Context Constraints (SCCs) provide permissions to pods and are required to allow them to run. SAS requires several custom SCCs to support SAS Viya Services with OpenShift. The SAS documentation provides information about the required SCCs to help understand their use in your environment and to address any security concerns.  Further details about the required custom SCCs are provided in _Part 2_ of this blog.
+   Security Context Constraints (SCCs) provide permissions to pods and are required to allow them to run. SAS requires several custom SCCs to support SAS Viya Services with OpenShift. The SAS documentation provides information about the required SCCs to help understand their use in your environment and to address any security concerns.  Further details about the required custom SCCs are provided in [_Part 2 of this blog_](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-2-security-and-storage-considerations).
 <br></br>
 
 ### **DEPLOYMENT OPTIONS – RED HAT OPENSHIFT**
@@ -91,7 +92,7 @@ An IPI installation results in an OCP cluster with the vSphere cloud provider co
 - [Host Node management for Node pools using MachineSets](https://docs.openshift.com/container-platform/4.12/machine_management/index.html).
 - [Autoscaling Nodes using the MachineAutoScaler and ClusterAutoScaler operators](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html). 
 
-Information about configuring these machine management and storage integration capabilities with OpenShift is supplied within _Part 2_ of this blog.
+Information about configuring these machine management and storage integration capabilities with OpenShift is supplied within [_Part 2 of this blog_](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-2-security-and-storage-considerations).
 
 An [OpenShift installation on VMware vSphere](https://docs.openshift.com/container-platform/4.12/installing/installing_vsphere/preparing-to-install-on-vsphere.html) using the UPI or Assisted Installer methods can also be set up [post-installation with the vSphere cloud provider configuration](https://access.redhat.com/documentation/en-us/assisted_installer_for_openshift_container_platform/2022/html-single/assisted_installer_for_openshift_container_platform/index#vsphere-post-installation-configuration_installing-on-vsphere), to provide similar automation and dynamic provisioning capability as an IPI installation. This is out of the scope of this blog.
 <br></br>
@@ -134,7 +135,7 @@ For more information about the `sas-orchestration` utility, see the SAS blog [_N
 
 <br></br>
 ### **SAS VIYA DEPLOYMENT FROM A PROCESS PERSPECTIVE**
-It has probably already become clear that deploying SAS Viya is a “team sport activity” due to the size and complexity of the software stack. Typically, project teams on OpenShift are granted namespace-local, but not cluster-wide permissions by the OCP admin team (_admin_ vs _cluster-admin_ role). We’ll provide more details on the security requirements later within _Part 2_ of this blog, but in short it means that the SAS project team will be lacking the necessary authorizations to carry out a deployment independently.
+It has probably already become clear that deploying SAS Viya is a “team sport activity” due to the size and complexity of the software stack. Typically, project teams on OpenShift are granted namespace-local, but not cluster-wide permissions by the OCP admin team (_admin_ vs _cluster-admin_ role). We’ll provide more details on the security requirements later within [_Part 2 of this blog_](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-2-security-and-storage-considerations), but in short it means that the SAS project team will be lacking the necessary authorizations to carry out a deployment independently.
 
 Based on our experiences with previous deployments at customer sites, we found the following process approach to be helpful. For the sake of this blog, we’re describing the process for a manual deployment in _Figure 3_:
 
