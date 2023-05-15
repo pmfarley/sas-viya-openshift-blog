@@ -1,8 +1,7 @@
 # SAS Viya on Red Hat OpenShift  – Part 1: Reference Architecture and Deployment Considerations
-_May 19, 2023 | by Patrick Farley and Hans-Joachim Edert_
+_May 19, 2023 | by Patrick Farley_
 
-**_<div align="center">This blog was written by Patrick Farley, Associate Principal Solutions Architect (Red Hat) </div>_**
-**_<div align="center">and Hans-Joachim Edert, Advisory Business Solutions Manager (SAS Institute) </div>_**
+**_<div align="center">This blog was written with the help of Hans-Joachim Edert, Advisory Business Solutions Manager (SAS Institute) </div>_**
 
 In this two-part blog, we will provide essential technical information about SAS Institute's latest analytic platform, [SAS Viya](https://www.sas.com/en_us/software/viya.html), as well as a reference architecture for deploying SAS Viya on Red Hat OpenShift Container Platform (OCP). Also, make sure to take a look at the second installment of this blog, where we will discuss security, machine management and storage considerations. Let’s start with a few introductory words before we get into the technical details.
 
@@ -31,22 +30,22 @@ Moving SAS Viya to OpenShift gives Viya unprecedented scalability that was unava
 
 It might be helpful for a better understanding to briefly explain the workload classes mentioned in this diagram.
 
-### **SAS Cloud Analytic Server (CAS) (CAS NODE POOL)**
+### **SAS CLOUD ANALYTIC SERVER (CAS) (CAS NODE POOL)**
 The core component at the heart of SAS Viya is the Cloud Analytics Server (CAS). It is an in-memory analytics engine. Data is loaded from the required data source into some in-memory tables then clients connect to CAS to run analytical routines against the data. The data loaded into memory for CAS can also be flushed to disk. This is why the CAS server usually has the highest resource requirements of all SAS Viya components: it is CPU- *and* memory-intensive and requires persistent storage accessible by all nodes hosting CAS pods.
 
 CAS can be deployed in one of [two modes](https://go.documentation.sas.com/doc/en/sasadmincdc/v_039/casfun/n00001sascassrvmgt00000admin.htm):  _SMP_ (Symmetric Multi Processing) mode -- as a single instance server, and _MPP_ (Massive Parallel Processing) mode -- as a distributed server. In SMP mode, only one CAS pod is being deployed, in MPP mode, multiple CAS pods are used where one pod takes the role of a controller while the other pods are used for running the computations.
 
 In a default configuration, i.e., when a CAS node pool is being used, each CAS pod runs on a separate worker node, claiming more than 90% of the available CPU and memory resources out-of-the-box. If there is no node pool available for CAS, transformer patches applied during the deployment limit the resource usage of CAS to the desired amount or allow co-existence of CAS with other workloads on the same node.
 
-### **SAS Compute Services (COMPUTE NODE POOL)**
+### **SAS COMPUTE SERVICES (COMPUTE NODE POOL)**
 SAS Compute services represent the traditional SAS processing capabilities as used in all previous releases of SAS. A SAS session is launched either interactively by a user from a web application or in batch mode to run as a Kubernetes job to execute submitted SAS code to transform or analyze data. Due to this approach, SAS sessions are highly parallelizable. The number of sessions (or Kubernetes jobs) running in parallel is only limited by the available hardware resources.
 
 The compute node pool is a good candidate for using the cluster autoscaler, if possible. Often customers have typical usage patterns that would directly benefit from this - for example, by intercepting usage peaks (scaling out for nightly batch workload, scaling in over the weekend, etc.). Please refer to the section on _Autoscaling_ in the second installment of this blog for more OpenShift specific details.
 
-### **SAS Microservices and Web Applications (STATELESS NODE POOL)**
+### **SAS MICROSERVICES AND WEB APPLICATIONS (STATELESS NODE POOL)**
 Most services in any SAS Viya deployment are designed as microservices, also known as [_12 factor apps_](https://12factor.net/). They are responsible for providing central services like auditing, authentication, etc. Also, grouped with these services are a set of stateless web applications which are the user interfaces which are exposed to end users, for example: _SAS Visual Analytics_, _SAS Model Manager_ and _SAS Data Explorer_.
 
-### **Infrastructure Services (STATEFUL NODE POOL)**
+### **INFRASTRUCTURE SERVICES (STATEFUL NODE POOL)**
 The commodity services are basically the metadata management and storage services. They are made of several open-source technologies such as the internal SAS _Postgres database_, as well as _Consul_ and _RabbitMQ_ for messaging. This is where the critical operational data is stored. These services are rather I/O intensive and do require persistent storage.
 
 <br></br>
@@ -79,7 +78,7 @@ At the time this blog was written, [Red Hat OpenShift versions 4.10 - 4.12 are s
    Security Context Constraints (SCCs) provide permissions to pods and are required to allow them to run. SAS requires several custom SCCs to support SAS Viya Services with OpenShift. The SAS documentation provides information about the required SCCs to help understand their use in your environment and to address any security concerns.  Further details about the required custom SCCs are provided in _Part 2_ of this blog.
 <br></br>
 
-### **Deployment Options – Red Hat OpenShift**
+### **DEPLOYMENT OPTIONS – RED HAT OPENSHIFT**
 There are various methods for [installing Red Hat OpenShift Container Platform on VMware vSphere,](https://docs.openshift.com/container-platform/4.12/installing/installing_vsphere/preparing-to-install-on-vsphere.html) including:
 
 - _**Installer-provisioned infrastructure**_ (IPI) installation, which allows the installation program to pre-configure and automate the provisioning of the required resources.
@@ -97,7 +96,7 @@ Information about configuring these machine management and storage integration c
 An [OpenShift installation on VMware vSphere](https://docs.openshift.com/container-platform/4.12/installing/installing_vsphere/preparing-to-install-on-vsphere.html) using the UPI or Assisted Installer methods can also be set up [post-installation with the vSphere cloud provider configuration](https://access.redhat.com/documentation/en-us/assisted_installer_for_openshift_container_platform/2022/html-single/assisted_installer_for_openshift_container_platform/index#vsphere-post-installation-configuration_installing-on-vsphere), to provide similar automation and dynamic provisioning capability as an IPI installation. This is out of the scope of this blog.
 <br></br>
 
-### **Deployment Options – SAS Viya**
+### **DEPLOYMENT OPTIONS – SAS VIYA**
 There are several approaches for deploying SAS Viya on Red Hat OpenShift, which are described in the [_SAS Operations Guide_](https://documentation.sas.com/doc/en/itopscdc/v_039/itopscon/p0839p972nrx25n1dq264egtgrcq.htm):
 
 - Manually by running `kubectl` commands
@@ -134,7 +133,7 @@ _**NOTE**:  You must have cluster-admin privileges to perform a SAS Viya deploym
 For more information about the `sas-orchestration` utility, see the SAS blog [_New SAS Viya Deployment Methods_](https://communities.sas.com/t5/SAS-Communities-Library/New-SAS-Viya-Deployment-Methods/ta-p/856206).
 
 <br></br>
-### SAS Viya Deployment From A Process Perspective
+### **SAS VIYA DEPLOYMENT FROM A PROCESS PERSPECTIVE**
 It has probably already become clear that deploying SAS Viya is a “team sport activity” due to the size and complexity of the software stack. Typically, project teams on OpenShift are granted namespace-local, but not cluster-wide permissions by the OCP admin team (_admin_ vs _cluster-admin_ role). We’ll provide more details on the security requirements later within _Part 2_ of this blog, but in short it means that the SAS project team will be lacking the necessary authorizations to carry out a deployment independently.
 
 Based on our experiences with previous deployments at customer sites, we found the following process approach to be helpful. For the sake of this blog, we’re describing the process for a manual deployment in _Figure 3_:
