@@ -137,7 +137,7 @@ For more information about the `sas-orchestration` utility, see the SAS blog [_N
 ### SAS Viya Deployment From A Process Perspective
 It has probably already become clear that deploying SAS Viya is a “team sport activity” due to the size and complexity of the software stack. Typically, project teams on OpenShift are granted namespace-local, but not cluster-wide permissions by the OCP admin team (_admin_ vs _cluster-admin_ role). We’ll provide more details on the security requirements later within _Part 2_ of this blog, but in short it means that the SAS project team will be lacking the necessary authorizations to carry out a deployment independently.
 
-Based on our experiences with previous deployments at customer sites, we found the following process approach to be helpful. For the sake of this blog, we’re describing the process for a manual deployment:
+Based on our experiences with previous deployments at customer sites, we found the following process approach to be helpful. For the sake of this blog, we’re describing the process for a manual deployment in _Figure 3_:
 
 <img width="1089" alt="image" src="deployment-process-chevron-diagram.png">
 
