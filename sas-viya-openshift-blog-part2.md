@@ -1,8 +1,7 @@
 # SAS Viya on Red Hat OpenShift – Part 2: Security and Storage Considerations
-_May 19, 2023 | by Patrick Farley and Hans-Joachim Edert_
+_May 22, 2023 | by Patrick Farley_
 
-**_<div align="center">This blog was written by Patrick Farley, Associate Principal Solutions Architect (Red Hat) </div>_**
-**_<div align="center">and Hans-Joachim Edert, Advisory Business Solutions Manager (SAS Institute) </div>_**
+**_<div align="center">This blog was written with the help of Hans-Joachim Edert, Advisory Business Solutions Manager (SAS Institute) </div>_**
 
 Welcome back to this 2nd part of our blog where we want to share some basic technical information about SAS Viya on the Red Hat OpenShift platform. While we have been discussing the reference architecture and details on the deployment process in the [first part of the blog](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-1-reference-architecture-and-deployment-considerations), we now want to dive deeper into security and storage topics, which are at the core of any deployment.
 
