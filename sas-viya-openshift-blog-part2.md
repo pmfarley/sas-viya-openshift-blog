@@ -173,8 +173,8 @@ To deploy the machine set, you create an instance of the `MachineSet` resource.
 
 Create a `MachineSet` definition YAML file for each SAS Viya workload class needed.  
 
-1. Create a YAML file for the `MachineSet` resource that contains the customized resource definition for your selected SAS Viya workload class, using the examples available from the repo above.
-   Ensure that you set the `<clusterID>` and `<role>` parameter values that apply to your environment.
+1. Create a YAML file for the `MachineSet` resource that contains the customized resource definition for your selected SAS Viya workload class, using the examples mentioned earlier.
+   Ensure that you set the _`<clusterID>`_ and _`<role>`_ parameter values that apply to your environment.
    
 2. If you are not sure which value to set for a specific field, you can check an existing machine set from your cluster:
 
@@ -280,7 +280,7 @@ _Figure 1_ summarizes the key storage requirements for SAS Viya, using _persiste
 _**Persistent storage**_, is required for two purposes with SAS Viya:
    - **Stateful services configuration data** (_Consul_, _Redis_, etc.). This storage requirement is mandatory for the deployment; made available through the Kubernetes CSI API for [persistent volumes in both RWO and RWX access modes](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n0ampbltwqgkjkn1j3qogztsbbu0.htm#n0mmuxy47s2nnrn1l5rfb5fxtb4d). 
    
-   - **File-based business data**. Optional, but it’s a very common situation that existing file shares with business data (SAS datasets, CSV files, Excel etc.) have to be made available to the SAS compute pods. These collections of files are either accessed through the CSI API (in RWX mode) or could also be mounted directly to the pods using a direct NFS configuration, etc. It’s important to state that poor disk I/O performance can turn into a real bottleneck for users of the Viya platform.
+   - **File-based business data**. Optional, but it’s a very common situation that existing file shares with business data (_SAS datasets_, _CSV files_, _Excel_ etc.) need to be made available to the SAS compute pods. These collections of files are either accessed through the CSI API (in RWX mode) or could also be mounted directly to the pods using a direct NFS configuration, etc. It’s important to state that poor disk I/O performance can turn into a real bottleneck for users of the Viya platform.
 
 [Dynamic volume provisioning is provided by the in-tree and CSI vSphere storage provider for OpenShift on VMware vSphere](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-vsphere.html#dynamically-provisioning-vmware-vsphere-volumes). OpenShift Data Foundation (ODF) provides added flexibility as it can also provide file, block and object storage with both RWO and RWX access modes.
 <p></p>
