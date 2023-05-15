@@ -332,7 +332,7 @@ In addition to the storage solutions mentioned here, there are additional CSI Dr
 
 <br></br>
 ## **Conclusion**
-With this we’re coming to the end of our blog series about deploying SAS Viya on the Red Hat OpenShift container platform. In the first installment of the blog, we started with giving an overview, described a reference architecture and discussed the deployment process, while in this part of the blog we focused on security considerations, cluster topology automation and storage requirements.
+With this we’re coming to the end of our blog series about deploying SAS Viya on the Red Hat OpenShift container platform. In the [first installment of the blog](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-1-reference-architecture-and-deployment-considerations), we started with giving an overview, described a reference architecture and discussed the deployment process, while in this part of the blog we focused on security considerations, cluster topology automation and storage requirements.
 
 We hope that you enjoyed reading the blogs and would like to invite you to get in touch with us if you have any questions or feedback.
 
