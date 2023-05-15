@@ -262,7 +262,7 @@ The following table provides the details about the example definition files prov
 
 
 <br></br>
-### **SAS Viya Storage Requirements**
+## **SAS Viya Storage Requirements**
 Before we close off this blog series, we would like to spend a few words on the storage requirements of SAS Viya. If you’ve made it so far, you might already expect that a software stack like SAS Viya, which focuses on Data Management and Analytics, comes with the need for persistent (and ephemeral) storage. 
 
 This is one of the most important topics to be discussed when preparing the deployment on OpenShift, as choosing a suitable storage configuration usually makes a key difference for the user experience. SAS compute sessions have always been heavily dependent on good disk I/O performance and this requirement has not changed with the latest SAS platform. 
@@ -302,7 +302,7 @@ There are a couple of SAS blogs available that describe how to configure ephemer
    - [_Using generic ephemeral volumes for SASWORK storage_](https://communities.sas.com/t5/SAS-Communities-Library/Using-generic-ephemeral-volumes-for-SASWORK-storage-on-Azure/ta-p/839257)
 
 <br></br>
-#### ***Cloud Native Storage Integration***
+### ***Cloud Native Storage Integration***
 **OpenShift on VMware vSphere** supports [dynamic provisioning](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-vsphere.html#dynamically-provisioning-vmware-vsphere-volumes) and [static provisioning](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-vsphere.html#vsphere-static-provisioning_persistent-storage-efs) of VMware vSphere volumes with the in-tree and the [Container Storage Interface (CSI) vSphere storage provider](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html).  
 
 If the underlying [vSphere environment supports the vSAN file service](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html#persistent-storage-csi-vsphere-rwx_persistent-storage-csi-vsphere), then the vSphere CSI Driver Operator installed by OpenShift supports provisioning of _ReadWriteMany_ (RWX) volumes. If vSAN file service is not configured, then _ReadWriteOnce_ (RWO) is the only access mode available. 
