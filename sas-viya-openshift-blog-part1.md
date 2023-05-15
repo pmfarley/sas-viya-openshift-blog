@@ -3,7 +3,7 @@ _May 19, 2023 | by Patrick Farley_
 
 **_<div align="center">This blog was written with the help of Hans-Joachim Edert, Advisory Business Solutions Manager (SAS Institute) </div>_**
 
-In this two-part blog, we will provide essential technical information about SAS Institute's latest analytic platform, [SAS Viya](https://www.sas.com/en_us/software/viya.html), as well as a reference architecture for deploying SAS Viya on Red Hat OpenShift Container Platform (OCP). Also, make sure to take a look at the second installment of this blog, where we will discuss security, machine management and storage considerations. Let’s start with a few introductory words before we get into the technical details.
+In this two-part blog, we will provide essential technical information about SAS Institute's latest analytic platform, [SAS Viya](https://www.sas.com/en_us/software/viya.html), as well as a reference architecture for deploying SAS Viya on Red Hat OpenShift Container Platform (OCP). Also, make sure to take a look at the [second installment of this blog](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-2-security-and-storage-considerations), where we will discuss security, machine management and storage considerations. Let’s start with a few introductory words before we get into the technical details.
 
 Since the launch of SAS Viya in 2020, SAS has offered a fully containerized analytic platform based on a cloud-native architecture. Due to the scale of the platform, SAS Viya requires Kubernetes as an underlying runtime environment and takes full advantage of the native benefits of this technology. 
 
@@ -26,7 +26,7 @@ Moving SAS Viya to OpenShift gives Viya unprecedented scalability that was unava
 **_<div align="center">Figure 1</div>_**
 
 <p>Note that the setup of pools is not mandatory and there might be reasons to ignore the recommendation if the existing cluster infrastructure is not suitable for such a split. Applying a workload placement strategy by using node pools provides a lot of benefits, as it allows you to tailor the cluster topology to workload requirements; you could, for example, choose different hardware configurations (nodes with additional storage, with GPU cards etc.). The placement of SAS workload classes can be enabled by applying predefined Kubernetes node labels and node taints.</p>
-<p>Please refer to the second installment of this blog for an in-depth discussion around machine management on OpenShift, which explains how this can be simplified and automated by capabilities uniquely available in OpenShift.</p>
+<p>Please refer to the [second installment of this blog](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-2-security-and-storage-considerations) for an in-depth discussion around machine management on OpenShift, which explains how this can be simplified and automated by capabilities uniquely available in OpenShift.</p>
 
 It might be helpful for a better understanding to briefly explain the workload classes mentioned in this diagram.
 
@@ -40,7 +40,7 @@ In a default configuration, i.e., when a CAS node pool is being used, each CAS p
 ### **SAS COMPUTE SERVICES (COMPUTE NODE POOL)**
 SAS Compute services represent the traditional SAS processing capabilities as used in all previous releases of SAS. A SAS session is launched either interactively by a user from a web application or in batch mode to run as a Kubernetes job to execute submitted SAS code to transform or analyze data. Due to this approach, SAS sessions are highly parallelizable. The number of sessions (or Kubernetes jobs) running in parallel is only limited by the available hardware resources.
 
-The compute node pool is a good candidate for using the cluster autoscaler, if possible. Often customers have typical usage patterns that would directly benefit from this - for example, by intercepting usage peaks (scaling out for nightly batch workload, scaling in over the weekend, etc.). Please refer to the section on _Autoscaling_ in the second installment of this blog for more OpenShift specific details.
+The compute node pool is a good candidate for using the cluster autoscaler, if possible. Often customers have typical usage patterns that would directly benefit from this - for example, by intercepting usage peaks (scaling out for nightly batch workload, scaling in over the weekend, etc.). Please refer to the section on _Autoscaling_ in the [second installment of this blog](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-2-security-and-storage-considerations) for more OpenShift specific details.
 
 ### **SAS MICROSERVICES AND WEB APPLICATIONS (STATELESS NODE POOL)**
 Most services in any SAS Viya deployment are designed as microservices, also known as [_12 factor apps_](https://12factor.net/). They are responsible for providing central services like auditing, authentication, etc. Also, grouped with these services are a set of stateless web applications which are the user interfaces which are exposed to end users, for example: _SAS Visual Analytics_, _SAS Model Manager_ and _SAS Data Explorer_.
@@ -55,7 +55,7 @@ In the current iteration of SAS Viya on OpenShift, SAS only supports VMware vSph
 
 At the time of this document, BareMetal is on the roadmap as an alternative for on-premise deployments.  When deployed on a different infrastructure provider, such as Azure, AWS, Google or BareMetal, SAS Viya runs under the [_SAS Support for Alternative Kubernetes Distributions_](https://support.sas.com/en/technical-support/services-policies.html#k8s) policy.
 
-At the time this blog was written, [Red Hat OpenShift versions 4.10 - 4.12 are supported for SAS Viya](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n098rczq46ffjfn1xbgfzahytnmx.htm#n0lrj1a1ia0fg9n1kxjlsedfg4dy). SAS works to align their SAS Viya Kubernetes support levels with Red Hat OpenShift and typically adds support for the latest OpenShift version updates within 1-2 months of a given OpenShift version release. Additional details about some of the specific OpenShift components that support the SAS Viya deployment are provided in _Part 2_ of this blog, so we only want to provide a high-level overview here:
+At the time this blog was written, [Red Hat OpenShift versions 4.10 - 4.12 are supported for SAS Viya](https://documentation.sas.com/doc/en/itopscdc/v_039/itopssr/n098rczq46ffjfn1xbgfzahytnmx.htm#n0lrj1a1ia0fg9n1kxjlsedfg4dy). SAS works to align their SAS Viya Kubernetes support levels with Red Hat OpenShift and typically adds support for the latest OpenShift version updates within 1-2 months of a given OpenShift version release. Additional details about some of the specific OpenShift components that support the SAS Viya deployment are provided in _[Part 2 of this blog](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-2-security-and-storage-considerations)_, so we only want to provide a high-level overview here:
 
 - **OpenShift Ingress Operator**
 
@@ -153,6 +153,6 @@ The deployment process can be segmented into three phases (_planning_, _preparin
 
 <br></br>
 ## **Conclusion**
-With that we’d like to conclude this first part of our blog. We hope you found it helpful to provide you with the basic know-how you’ll need to support your project team in deploying SAS Viya on OpenShift… Stay tuned for the second installment where we will be discussing security and storage considerations.
+With that we’d like to conclude this first part of our blog. We hope you found it helpful to provide you with the basic know-how you’ll need to support your project team in deploying SAS Viya on OpenShift… Stay tuned for the [second installment](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-2-security-and-storage-considerations) where we will be discussing security and storage considerations.
 <br></br>
 
