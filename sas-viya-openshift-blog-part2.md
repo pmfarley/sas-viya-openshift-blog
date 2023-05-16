@@ -162,7 +162,7 @@ As a cluster administrator, you can perform the following tasks with compute mac
 Red Hat OpenShift provides machine management as an automation method for managing the underlying cloud platform through a machine object, which is a subset of the node object.  This allows for the definition of compute machine sets that can be sized and matched to workload classes, and scaled to meet workload demand.
 <br></br>
 
-### 1. Workload Placement
+### 1. WORKLOAD PLACEMENT
 Part 1 of this blog detailed the SAS Viya workload classes and node pools that can be used to place the workloads on appropriate nodes within the cluster. The [_workload placement configuration_](https://documentation.sas.com/doc/en/itopscdc/v_039/dplyml0phy0dkr/p0om33z572ycnan1c1ecfwqntf24.htm#n0wj0cyrn1pinen1wcadb0rx6vbm), from the _SAS Viya Platform Operations Guide_, provides the node labels and taints that can be included within the compute `MachineSet` definitions, so they are preconfigured at compute `Machine` creation time.
 
 Refer to the `ClusterAutoScaler`, `MachineAutoScaler` and `MachineSet` definition examples provided in the _Example Machine Management YAML Files_ section below.
@@ -207,7 +207,7 @@ For more information about defining `MachineSets`, see [_Creating a compute mach
 
 <br></br>
 
-### 2. Autoscaling
+### 2. AUTOSCALING
 Autoscale your cluster to ensure flexibility to changing workloads. To [autoscale](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#applying-autoscaling) your OpenShift Container Platform cluster, you must first deploy a cluster autoscaler, and then deploy a machine autoscaler for each <a name="_int_jvmpgk2v"></a>compute machine set. 
 
 - The [*cluster autoscaler*](https://docs.openshift.com/container-platform/4.12/machine_management/applying-autoscaling.html#cluster-autoscaler-about_applying-autoscaling) increases and decreases the size of the cluster based on deployment needs. 
@@ -301,7 +301,7 @@ There are a couple of SAS blogs available that describe how to configure ephemer
    - [_Using generic ephemeral volumes for SASWORK storage_](https://communities.sas.com/t5/SAS-Communities-Library/Using-generic-ephemeral-volumes-for-SASWORK-storage-on-Azure/ta-p/839257)
 
 <br></br>
-### ***Cloud Native Storage Integration***
+### ***CLOUD NATIVE STORAGE INTEGRATION***
 **OpenShift on VMware vSphere** supports [dynamic provisioning](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-vsphere.html#dynamically-provisioning-vmware-vsphere-volumes) and [static provisioning](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-vsphere.html#vsphere-static-provisioning_persistent-storage-efs) of VMware vSphere volumes with the in-tree and the [Container Storage Interface (CSI) vSphere storage provider](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html).  
 
 If the underlying [vSphere environment supports the vSAN file service](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html#persistent-storage-csi-vsphere-rwx_persistent-storage-csi-vsphere), then the vSphere CSI Driver Operator installed by OpenShift supports provisioning of _ReadWriteMany_ (RWX) volumes. If vSAN file service is not configured, then _ReadWriteOnce_ (RWO) is the only access mode available. 
