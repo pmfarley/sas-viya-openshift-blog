@@ -302,6 +302,8 @@ There are a couple of SAS blogs available that describe how to configure ephemer
 
 <br></br>
 ### ***CLOUD NATIVE STORAGE INTEGRATION***
+In addition to the storage solutions mentioned in this section, there are additional CSI Driver Operators available that are suitable for use with OpenShift.  For more information, see the [Red Hat Ecosystem Catalog](https://catalog.redhat.com/software/containers/search?q=CSI).  The assumption is that whatever solution is used, it would need to meet the performance and volume access mode requirements mentioned in the previous section.    
+
 **OpenShift on VMware vSphere** supports [dynamic provisioning](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-vsphere.html#dynamically-provisioning-vmware-vsphere-volumes) and [static provisioning](https://docs.openshift.com/container-platform/4.12/storage/persistent_storage/persistent-storage-vsphere.html#vsphere-static-provisioning_persistent-storage-efs) of VMware vSphere volumes with the in-tree and the [Container Storage Interface (CSI) vSphere storage provider](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html).  
 
 If the underlying [vSphere environment supports the vSAN file service](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html#persistent-storage-csi-vsphere-rwx_persistent-storage-csi-vsphere), then the vSphere CSI Driver Operator installed by OpenShift supports provisioning of _ReadWriteMany_ (RWX) volumes. If vSAN file service is not configured, then _ReadWriteOnce_ (RWO) is the only access mode available. 
@@ -326,8 +328,6 @@ The following table summarizes two of the [persistent storage solutions that may
 | Red Hat OpenShift Data Foundation | ✅ | ✅ |
 
    \* If the underlying vSphere environment supports the vSAN file service, then the vSphere Container Storage Interface (CSI) Driver Operator installed by OpenShift Container Platform supports provisioning of _ReadWriteMany_ (RWX) volumes. If you do not have vSAN file service configured, and you request RWX, the volume fails to get created and an error is logged. For more information, see [_VMware vSphere CSI Driver Operator_](https://docs.openshift.com/container-platform/4.12/storage/container_storage_interface/persistent-storage-csi-vsphere.html) in the OpenShift documentation.
-
-In addition to the storage solutions mentioned here, there are additional CSI Driver Operators available for use with OpenShift that could be used.  For more information, see the [Red Hat Ecosystem Catalog](https://catalog.redhat.com/software/containers/search?q=CSI).
 
 <br></br>
 ## **Conclusion**
