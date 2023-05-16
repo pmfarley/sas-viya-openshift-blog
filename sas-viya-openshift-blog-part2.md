@@ -322,7 +322,7 @@ ODF provides _ReadWriteOnce_ RWO (file, block) and _ReadWriteMany_ RWX (shared f
 
 The following table summarizes two of the [persistent storage solutions that may be used with OpenShift](https://docs.openshift.com/container-platform/4.12/storage/understanding-persistent-storage.html#pv-access-modes_understanding-persistent-storage) when deployed on VMware vSphere, including their supported volume access modes.
 
-|**Volume Plugins**|**ReadWriteOnce**|**ReadWriteMany**|
+|**Volume Plugins**|**ReadWriteOnce (RWO)**|**ReadWriteMany (RWX)**|
 | :- | :-: | :-: |
 | VMware vSphere | ✅ | ✅ \* |
 | Red Hat OpenShift Data Foundation | ✅ | ✅ |
