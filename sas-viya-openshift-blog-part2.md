@@ -6,7 +6,7 @@ _May 22, 2023 | by Patrick Farley_
 Welcome back to this 2nd part of our blog where we want to share some basic technical information about SAS Viya on the Red Hat OpenShift platform. While we have been discussing the reference architecture and details on the deployment process in the [first part of the blog](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-1-reference-architecture-and-deployment-considerations), we now want to dive deeper into security and storage topics, which are at the core of any deployment.
 
 ## Security Considerations
-As discussed in the [first part of this blog](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-1-reference-architecture-and-deployment-considerations), the SAS Viya analytical platform is not just a single application, but a suite of integrated applications. While most services are microservices following the 12-fasctor-app pattern, SAS also uses compute engines and stateful services which are essential for the platform. SAS integrates with the standard security approach that applies to OpenShift, namely the use of [_Security Context Constraints (SCCs)_](https://cloud.redhat.com/blog/managing-sccs-in-openshift).
+As discussed in the [first part of this blog](https://content.cloud.redhat.com/blog/sas-viya-on-red-hat-openshift-part-1-reference-architecture-and-deployment-considerations), the SAS Viya analytical platform is not just a single application, but a suite of integrated applications. While most services are microservices following the 12-factor-app pattern, SAS also uses compute engines and stateful services which are essential for the platform. SAS integrates with the standard security approach that applies to OpenShift, namely the use of [_Security Context Constraints (SCCs)_](https://cloud.redhat.com/blog/managing-sccs-in-openshift).
 
 Following Red Hat guidelines, most SAS Viya platform pods are deployed in the `restricted` SCC, which applies the highest level of security. However, there are a few exceptions: two other OpenShift predefined SCCs are used for some SAS services (`nonroot` and `hostmount-anyuid`). In addition, a few custom SCCs are either required by essential SAS Viya platform components, such as the CAS server, or associated with specific SAS offerings that might be included in your software order.
 
@@ -56,13 +56,13 @@ The following table gives an overview of all cases where a custom SCC (or an SCC
 | |`sas-cas-server-host`|**Optional**|CAS server runs in host launch configuration|
 | |`sas-cas-server-sssd`|**Optional**|CAS server needs additional sssd configuration|
 | **SAS COMPUTE** |`sas-programming-environment` / `nonroot`** |**REQUIRED**|SAS compute sessions must be launched with specific user/group IDs|
-|  |`sas-programming-environment` / `hostmount-anyuid`** |**Optional**|Only needed if SAS compute session needs to access<br>data on hostPath mounts|
+|  |`sas-programming-environment` / `hostmount-anyuid`** |**Optional**|Only needed if SAS compute session needs to<br>access data on hostPath mounts|
 |  |`sas-programming-environment` / `sas-watchdog`|**Optional**|LOCKDOWN mode needs to be enforced|
 | **SAS/CONNECT** |`sas-connect-spawner`|**Optional**|Only needed with legacy SAS clients|
 | **MAS** |`sas-microanalytic-score`|**Optional**|If NFS volume mounts are needed|
 | **SAS MODEL MANAGEMENT** |`sas-model-publish-kaniko` / `anyuid`**|**Optional**|If analytical models are published into runtime container images|
 |  |`sas-model-repository`|**Optional**|If NFS volume mounts are needed|
-| **SAS EVENT STREAM PROCESSING** |`sas-esp-project` / `nonroot`**|**Optional**|If SAS Event Stream Processing is included in your<br>deployment|
+| **SAS EVENT STREAM PROCESSING** |`sas-esp-project` / `nonroot`**|**Optional**|If SAS Event Stream Processing is included in<br>your deployment|
 | **OPENSEARCH** |`sas-opendistro`|**Optional** \*** |For optimal performance, deploying OpenSearch<br>software requires changes to a kernel setting.<br>Optionally, you can use a MachineConfig to apply the kernel parameter as documented below.|
 
 
