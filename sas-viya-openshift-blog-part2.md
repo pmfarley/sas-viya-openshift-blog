@@ -72,7 +72,7 @@ The following table gives an overview of all cases where a custom SCC (or an SCC
 
    ** These are standard SCCs defined by OpenShift. 
 
-   *** The OpenSearch team [recommends](https://opensearch.org/docs/1.0/opensearch/install/important-settings/) to change the `vm.max_map_count` kernel parameter. The SAS deployment uses an init container to implement this change which requires elevated privileges. It it is possible to disable the mmap support completely, however this is discouraged since doing so will negatively impact performance and may result in out of memory exceptions. 
+   *** The OpenSearch team [recommends](https://opensearch.org/docs/1.0/opensearch/install/important-settings/) to change the `vm.max_map_count` kernel parameter. The SAS deployment uses an init container to implement this change which requires elevated privileges. Once the init-container terminates, the privileges are dropped and the runtime container uses the restricted SCC. It is possible to disable the mmap support completely, however this is discouraged since doing so will negatively impact performance and may result in out of memory exceptions. 
 
 **OPENSEARCH SYSCTL MACHINECONFIG**
 
